@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  --color-primary: #9b59b6;
+  --color-dark: #262626;
+}
+
+body {
+  @apply antialiased text-default bg-dark scheme-light dark:scheme-dark;
+}
