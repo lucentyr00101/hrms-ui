@@ -5,6 +5,7 @@ export default defineAppConfig({
       // Value can be the variable name declared in the main.css file.
       primary: "primary",
       dark: "dark",
+      black: "black",
     },
     input: {
       slots: {
@@ -21,6 +22,29 @@ export default defineAppConfig({
       defaultVariants: {
         size: "lg",
       },
+    },
+    navigationMenu: {
+      slots: {
+        link: "text-md before:rounded-full",
+      },
+      variants: {
+        orientation: {
+          vertical: {
+            link: "py-4 px-5",
+          },
+        },
+      },
+      compoundVariants: [
+        {
+          variant: "pill",
+          active: true,
+          highlight: false,
+          class: {
+            link: "before:bg-primary text-white",
+            linkLeadingIcon: "text-white",
+          },
+        },
+      ],
     },
   },
 });

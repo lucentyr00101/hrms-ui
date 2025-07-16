@@ -4,6 +4,7 @@
 @theme static {
   --color-primary: #9b59b6;
   --color-dark: #262626;
+  --color-black: #171717;
 }
 
 body {
