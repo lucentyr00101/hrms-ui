@@ -5,5 +5,10 @@ export default defineAppConfig({
       // Value can be the variable name declared in the main.css file.
       primary: "primary",
     },
+    button: {
+      defaultVariants: {
+        size: "lg",
+      },
+    },
   },
 });
