@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { FormSubmitEvent } from "@nuxt/ui";
+import { loginSchema, type LoginSchema } from "~/schemas/login";
+
 definePageMeta({
   layout: "auth",
 });
@@ -8,14 +11,20 @@ const state = reactive({
   password: "",
 });
 
-const onSubmit = () => {
-  console.log("form submitted", state);
+const onSubmit = (event: FormSubmitEvent<LoginSchema>) => {
+  const { data } = event;
+  console.log("form submitted", data);
 };
 </script>
 
 <template>
   <UCard class="max-w-fit">
-    <UForm :state="state" class="space-y-4" @submit="onSubmit">
+    <UForm
+      :schema="loginSchema"
+      :state="state"
+      class="space-y-4"
+      @submit="onSubmit"
+    >
       <UFormField label="Email" name="email">
         <UInput v-model="state.email" />
       </UFormField>
@@ -24,7 +33,7 @@ const onSubmit = () => {
         <UInput v-model="state.password" type="password" />
       </UFormField>
 
-      <UButton type="submit">Submit</UButton>
+      <UButton block type="submit">Submit</UButton>
     </UForm>
   </UCard>
 </template>
