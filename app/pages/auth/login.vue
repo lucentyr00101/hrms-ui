@@ -20,7 +20,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   authToken.value = 'TEST_TOKEN';
   
   // Redirect to dashboard
-  await navigateTo('/');
+  await navigateTo('/dashboard');
 };
 </script>
 
