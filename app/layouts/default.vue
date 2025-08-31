@@ -1,6 +1,8 @@
 <template>
-  <div class="flex">
+  <div class="flex min-h-screen">
     <SideNav />
-    <NuxtPage />
+    <main class="flex-1">
+      <NuxtPage />
+    </main>
   </div>
 </template>
