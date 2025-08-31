@@ -2,11 +2,11 @@
 @import "@nuxt/ui";
 
 @theme static {
-  --color-primary: #9b59b6;
-  --color-dark: #262626;
-  --color-black: #171717;
+  --color-primary: #0ea5e9;
+  --color-dark: #374151;
+  --color-black: #1f2937;
 }
 
 body {
-  @apply antialiased text-default bg-dark scheme-light dark:scheme-dark;
+  @apply antialiased text-default bg-gray-50 scheme-light dark:scheme-dark;
 }

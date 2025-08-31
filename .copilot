@@ -1,0 +1,80 @@
+# GitHub Copilot Instructions for HRMS UI
+
+## Project Overview
+This is a Human Resource Management System (HRMS) user interface built with:
+- **Nuxt 4** - Vue.js-based full-stack framework
+- **Nuxt UI** - Component library for consistent design
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS** - Utility-first CSS framework
+
+## Code Style & Conventions
+
+### Vue.js Components
+- Use `<script setup lang="ts">` syntax for all Vue components
+- Follow TypeScript strict mode
+- Use Composition API consistently
+- Use auto-imports for Nuxt composables and utilities
+
+### File Structure
+- `app/components/` - Reusable Vue components
+- `app/pages/` - Route-based pages
+- `app/layouts/` - Layout components (default, auth)
+- `app/constants/` - Application constants
+- `app/schemas/` - Validation schemas
+- `app/assets/css/` - Global styles
+
+### UI Components
+- Use Nuxt UI components (UButton, UInput, UForm, etc.)
+- Follow the established design system with eye-friendly colors
+- Primary color: `#0ea5e9` (sky-500)
+- Use consistent spacing and sizing patterns
+
+### Forms & Validation
+- Use UForm with validation schemas (Yup)
+- Follow established form patterns from login.vue
+- Use TypeScript interfaces for form data
+
+### Navigation
+- Use UNavigationMenu for consistent navigation
+- Follow the sidebar navigation pattern
+- Use Material Symbols icons (`i-material-symbols:*`)
+
+### Theme & Colors
+- Light mode preference by default
+- Eye-friendly color palette optimized for long usage
+- Use semantic color names (primary, dark, black)
+- Maintain high contrast ratios for accessibility
+
+## Development Guidelines
+
+### When creating new features:
+1. Follow existing component patterns
+2. Use TypeScript for type safety
+3. Implement proper form validation
+4. Ensure responsive design
+5. Test with light theme (default)
+
+### When modifying existing code:
+1. Maintain backward compatibility
+2. Keep changes minimal and focused
+3. Follow established naming conventions
+4. Update types if needed
+
+### Common Patterns
+- Page components should use definePageMeta for layout specification
+- Use reactive() for complex form state
+- Import types with `type` keyword
+- Use auto-imports for Nuxt utilities
+
+## Key Dependencies
+- `@nuxt/ui` - UI component library
+- `@nuxt/image` - Optimized image handling
+- `@nuxt/eslint` - Code linting
+- `yup` - Schema validation
+- Material Symbols - Icon system
+
+## Build & Development
+- `npm run dev` - Development server
+- `npm run build` - Production build
+- `npm run preview` - Preview production build
+- Follow ESLint rules for consistent code style
