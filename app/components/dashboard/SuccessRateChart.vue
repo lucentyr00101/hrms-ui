@@ -19,7 +19,7 @@
 
       <!-- Chart Container -->
       <div class="h-48 flex items-center justify-center">
-        <canvas ref="chartCanvas" class="max-w-full max-h-full"></canvas>
+        <Doughnut :data="chartData" :options="chartOptions" />
       </div>
 
       <!-- Additional Stats -->
@@ -42,16 +42,13 @@
 </template>
 
 <script setup lang="ts">
-import { Chart as ChartJS, ArcElement, DoughnutController, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'vue-chartjs';
 import { DUMMY_DASHBOARD_STATS, DUMMY_CHART_DATA } from '~/constants/DUMMY_DASHBOARD_DATA';
 
-ChartJS.register(ArcElement, DoughnutController, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const stats = DUMMY_DASHBOARD_STATS;
-const chartCanvas = ref<HTMLCanvasElement | null>(null);
-let chartInstance: ChartJS | null = null;
-
 const chartData = DUMMY_CHART_DATA.successRates;
 
 const chartOptions = {
@@ -78,20 +75,4 @@ const chartOptions = {
   },
   cutout: '60%'
 };
-
-onMounted(() => {
-  if (chartCanvas.value) {
-    chartInstance = new ChartJS(chartCanvas.value, {
-      type: 'doughnut',
-      data: chartData,
-      options: chartOptions
-    });
-  }
-});
-
-onUnmounted(() => {
-  if (chartInstance) {
-    chartInstance.destroy();
-  }
-});
 </script>

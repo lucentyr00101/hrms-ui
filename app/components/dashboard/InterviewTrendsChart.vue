@@ -3,7 +3,7 @@
     <div class="space-y-4">
       <!-- Chart Container -->
       <div class="h-64">
-        <canvas ref="chartCanvas" class="w-full h-full"></canvas>
+        <Line :data="chartData" :options="chartOptions" />
       </div>
 
       <!-- Trend Summary -->
@@ -32,12 +32,12 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  LineController,
   Title,
   Tooltip,
   Legend,
   Filler
 } from 'chart.js';
+import { Line } from 'vue-chartjs';
 import { DUMMY_CHART_DATA } from '~/constants/DUMMY_DASHBOARD_DATA';
 
 ChartJS.register(
@@ -45,15 +45,11 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  LineController,
   Title,
   Tooltip,
   Legend,
   Filler
 );
-
-const chartCanvas = ref<HTMLCanvasElement | null>(null);
-let chartInstance: ChartJS | null = null;
 
 const chartData = DUMMY_CHART_DATA.interviewTrends;
 
@@ -96,20 +92,4 @@ const chartOptions = {
     intersect: false
   }
 };
-
-onMounted(() => {
-  if (chartCanvas.value) {
-    chartInstance = new ChartJS(chartCanvas.value, {
-      type: 'line',
-      data: chartData,
-      options: chartOptions
-    });
-  }
-});
-
-onUnmounted(() => {
-  if (chartInstance) {
-    chartInstance.destroy();
-  }
-});
 </script>

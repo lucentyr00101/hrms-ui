@@ -3,7 +3,7 @@
     <div class="space-y-4">
       <!-- Chart Container -->
       <div class="h-48 flex items-center justify-center">
-        <canvas ref="chartCanvas" class="max-w-full max-h-full"></canvas>
+        <Doughnut :data="chartData" :options="chartOptions" />
       </div>
 
       <!-- Department List -->
@@ -32,13 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import { Chart as ChartJS, ArcElement, DoughnutController, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'vue-chartjs';
 import { DUMMY_CHART_DATA } from '~/constants/DUMMY_DASHBOARD_DATA';
 
-ChartJS.register(ArcElement, DoughnutController, Tooltip, Legend);
-
-const chartCanvas = ref<HTMLCanvasElement | null>(null);
-let chartInstance: ChartJS | null = null;
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const chartData = DUMMY_CHART_DATA.departmentLeaves;
 
@@ -66,20 +64,4 @@ const chartOptions = {
     }
   }
 };
-
-onMounted(() => {
-  if (chartCanvas.value) {
-    chartInstance = new ChartJS(chartCanvas.value, {
-      type: 'doughnut',
-      data: chartData,
-      options: chartOptions
-    });
-  }
-});
-
-onUnmounted(() => {
-  if (chartInstance) {
-    chartInstance.destroy();
-  }
-});
 </script>
