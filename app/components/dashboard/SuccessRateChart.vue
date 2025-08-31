@@ -42,11 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, DoughnutController, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'vue-chartjs';
 import { DUMMY_DASHBOARD_STATS, DUMMY_CHART_DATA } from '~/constants/DUMMY_DASHBOARD_DATA';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, DoughnutController, Tooltip, Legend);
 
 const stats = DUMMY_DASHBOARD_STATS;
 const chartCanvas = ref<HTMLCanvasElement | null>(null);
