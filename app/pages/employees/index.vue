@@ -216,8 +216,8 @@ const handleAddEmployee = () => {
 };
 
 const handleViewProfile = (employee: Employee) => {
-  // TODO: Implement view profile functionality
-  console.log('View profile:', employee);
+  // Navigate to employee profile page
+  navigateTo(`/employees/${employee.id}`);
 };
 
 const handleEditEmployee = (employee: Employee) => {
