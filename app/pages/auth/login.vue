@@ -6,21 +6,34 @@ definePageMeta({
   layout: "auth",
 });
 
+const { login } = useUser();
+
 const state = reactive({
   email: "",
   password: "",
 });
 
+const error = ref("");
+const isLoading = ref(false);
+
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   const { data } = event;
-  console.log("form submitted", data);
+  error.value = "";
+  isLoading.value = true;
   
-  // Create and save auth_token cookie
-  const authToken = useCookie('auth_token');
-  authToken.value = 'TEST_TOKEN';
-  
-  // Redirect to dashboard
-  await navigateTo('/dashboard');
+  try {
+    const result = login(data.email, data.password);
+    if (result.success) {
+      // Redirect to dashboard
+      await navigateTo('/dashboard');
+    } else {
+      error.value = result.error || "Login failed";
+    }
+  } catch (err) {
+    error.value = "An error occurred during login";
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 
@@ -99,11 +112,29 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           />
         </UFormField>
 
+        <!-- Error Message -->
+        <div v-if="error" class="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
+        </div>
+
+        <!-- Demo Credentials -->
+        <div class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <h4 class="text-sm font-medium text-blue-800 dark:text-blue-300 mb-2">Demo Credentials:</h4>
+          <div class="space-y-1 text-xs text-blue-600 dark:text-blue-400">
+            <div><strong>Admin:</strong> admin@hrms.com / password</div>
+            <div><strong>HR:</strong> hr@hrms.com / password</div>
+            <div><strong>Manager:</strong> manager@hrms.com / password</div>
+            <div><strong>Employee:</strong> employee@hrms.com / password</div>
+          </div>
+        </div>
+
         <UButton 
           block 
           type="submit" 
           size="lg"
           class="mt-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl rounded-xl font-semibold"
+          :loading="isLoading"
+          :disabled="isLoading"
           :ui="{
             base: 'focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0',
             font: 'font-medium',
@@ -115,7 +146,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         >
           <div class="flex items-center justify-center space-x-2">
             <UIcon name="i-material-symbols:login" class="w-5 h-5" />
-            <span>Sign In</span>
+            <span>{{ isLoading ? 'Signing In...' : 'Sign In' }}</span>
           </div>
         </UButton>
       </UForm>
