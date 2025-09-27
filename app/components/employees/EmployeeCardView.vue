@@ -62,11 +62,14 @@
 
           <!-- Status Badge -->
           <div class="flex justify-between items-center pt-2">
-            <UBadge
-              :color="getStatusColor(employee.status)"
-              :label="getStatusLabel(employee.status)"
-              size="sm"
-            />
+            <span 
+              :class="[
+                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                getStatusClasses(employee.status)
+              ]"
+            >
+              {{ getStatusLabel(employee.status) }}
+            </span>
           </div>
         </div>
       </div>
@@ -129,16 +132,16 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const getStatusColor = (status: string) => {
+const getStatusClasses = (status: string) => {
   switch (status) {
     case 'active':
-      return 'green';
+      return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-800 dark:text-emerald-100';
     case 'inactive':
-      return 'red';
+      return 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
     case 'on-leave':
-      return 'yellow';
+      return 'bg-amber-100 text-amber-800 dark:bg-amber-800 dark:text-amber-100';
     default:
-      return 'gray';
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
   }
 };
 
