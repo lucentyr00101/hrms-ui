@@ -15,3 +15,17 @@ export const navItems = [
     to: "/interviews",
   },
 ];
+
+// Additional navigation sections for collapsible groups
+export const additionalNavItems = [
+  {
+    label: "Reports",
+    icon: "i-material-symbols:analytics",
+    to: "/reports",
+  },
+  {
+    label: "Settings",
+    icon: "i-material-symbols:settings", 
+    to: "/settings",
+  },
+];
