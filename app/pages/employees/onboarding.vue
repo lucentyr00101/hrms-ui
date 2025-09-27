@@ -175,7 +175,7 @@
               />
             </UFormField>
             <UFormField label="Department" name="department" required>
-              <USelectMenu 
+              <USelect 
                 v-model="formData.department"
                 :options="departmentOptions"
                 placeholder="Select department"
@@ -195,14 +195,14 @@
               />
             </UFormField>
             <UFormField label="Employment Type" name="employmentType" required>
-              <USelectMenu 
+              <USelect 
                 v-model="formData.employmentType"
                 :options="employmentTypeOptions"
                 placeholder="Select employment type"
               />
             </UFormField>
             <UFormField label="Work Location" name="workLocation" required>
-              <USelectMenu 
+              <USelect 
                 v-model="formData.workLocation"
                 :options="workLocationOptions"
                 placeholder="Select work location"
