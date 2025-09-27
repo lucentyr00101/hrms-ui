@@ -210,7 +210,6 @@ export const DUMMY_EMPLOYEES: Employee[] = [
     startDate: '2021-05-17',
     employeeId: 'EMP010'
   }
-<<<<<<< HEAD
 ];
 
 // Dummy documents data
@@ -336,6 +335,3 @@ export const DUMMY_EMPLOYEE_ACTIVITIES: Record<string, ActivityItem[]> = {
     }
   ]
 };
-=======
-];
->>>>>>> master
