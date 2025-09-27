@@ -560,7 +560,7 @@ const submitOnboarding = async () => {
     
     // Redirect to success page
     navigateTo({
-      path: '/employees/onboarding/success',
+      path: '/employees/onboarding-success',
       query: { 
         name: `${formData.value.firstName} ${formData.value.lastName}`,
         employeeId: formData.value.employeeId
