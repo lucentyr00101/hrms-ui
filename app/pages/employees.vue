@@ -11,7 +11,8 @@
         </p>
       </div>
       <div class="text-sm text-gray-500 dark:text-gray-400">
-        {{ filteredEmployees.length }} {{ filteredEmployees.length === 1 ? 'employee' : 'employees' }} found
+        {{ allFilteredEmployees.length }} {{ allFilteredEmployees.length === 1 ? 'employee' : 'employees' }} found
+        {{ totalPages > 1 ? `(Page ${currentPage} of ${totalPages})` : '' }}
       </div>
     </div>
 
@@ -25,7 +26,7 @@
     />
 
     <!-- Employee Directory Content -->
-    <div v-if="filteredEmployees.length > 0">
+    <div v-if="allFilteredEmployees.length > 0">
       <!-- Card View -->
       <EmployeeCardView
         v-if="viewMode === 'card'"
@@ -43,6 +44,32 @@
         @edit-employee="handleEditEmployee"
         @archive-employee="handleArchiveEmployee"
       />
+
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="text-sm text-gray-700 dark:text-gray-300">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+          {{ Math.min(currentPage * itemsPerPage, allFilteredEmployees.length) }} 
+          of {{ allFilteredEmployees.length }} employees
+        </div>
+        
+        <UPagination
+          v-model="currentPage"
+          :page-count="itemsPerPage"
+          :total="allFilteredEmployees.length"
+          :ui="{
+            wrapper: 'flex items-center gap-1',
+            rounded: '!rounded-full min-w-[32px] justify-center',
+            default: {
+              activeButton: {
+                variant: 'solid'
+              }
+            }
+          }"
+          show-last
+          show-first
+        />
+      </div>
     </div>
 
     <!-- Empty State -->
@@ -98,24 +125,36 @@ const searchQuery = ref('');
 const departmentFilter = ref<string | undefined>(undefined);
 const statusFilter = ref<string | undefined>(undefined);
 
+// Pagination
+const currentPage = ref(1);
+const itemsPerPage = ref(6); // Show 6 employees per page for better UX
+const totalPages = ref(1);
+
 // Load employees data (in real app, this would come from an API)
 const employees = ref<Employee[]>(DUMMY_EMPLOYEES);
 
 // Computed properties
-const filteredEmployees = computed(() => {
+const allFilteredEmployees = computed(() => {
   let filtered = employees.value;
 
-  // Apply search filter
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
-    filtered = filtered.filter(emp => 
-      emp.firstName.toLowerCase().includes(query) ||
-      emp.lastName.toLowerCase().includes(query) ||
-      emp.email.toLowerCase().includes(query) ||
-      emp.position.toLowerCase().includes(query) ||
-      emp.department.toLowerCase().includes(query) ||
-      emp.employeeId.toLowerCase().includes(query)
-    );
+  // Apply search filter - make it more robust
+  if (searchQuery.value && searchQuery.value.trim()) {
+    const query = searchQuery.value.trim().toLowerCase();
+    filtered = filtered.filter(emp => {
+      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
+      const searchFields = [
+        fullName,
+        emp.firstName.toLowerCase(),
+        emp.lastName.toLowerCase(),
+        emp.email.toLowerCase(),
+        emp.position.toLowerCase(),
+        emp.department.toLowerCase(),
+        emp.employeeId.toLowerCase(),
+        emp.phone.replace(/\D/g, '') // Remove non-digits for phone search
+      ];
+      
+      return searchFields.some(field => field.includes(query));
+    });
   }
 
   // Apply department filter
@@ -131,6 +170,22 @@ const filteredEmployees = computed(() => {
   return filtered;
 });
 
+const filteredEmployees = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return allFilteredEmployees.value.slice(start, end);
+});
+
+// Update total pages whenever filtered employees change
+watchEffect(() => {
+  totalPages.value = Math.ceil(allFilteredEmployees.value.length / itemsPerPage.value);
+  
+  // Reset to page 1 if current page is beyond available pages
+  if (currentPage.value > totalPages.value && totalPages.value > 0) {
+    currentPage.value = 1;
+  }
+});
+
 const hasFilters = computed(() => {
   return departmentFilter.value || statusFilter.value;
 });
@@ -138,15 +193,21 @@ const hasFilters = computed(() => {
 // Event handlers
 const handleSearch = (query: string) => {
   searchQuery.value = query;
+  currentPage.value = 1; // Reset to first page when searching
 };
 
 const handleFilterChange = (filters: { department?: string; status?: string }) => {
   departmentFilter.value = filters.department;
   statusFilter.value = filters.status;
+  currentPage.value = 1; // Reset to first page when filtering
 };
 
 const handleViewChange = (mode: 'card' | 'table') => {
   viewMode.value = mode;
+};
+
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
 };
 
 const handleAddEmployee = () => {
@@ -173,5 +234,6 @@ const clearFilters = () => {
   searchQuery.value = '';
   departmentFilter.value = undefined;
   statusFilter.value = undefined;
+  currentPage.value = 1; // Reset to first page when clearing filters
 };
 </script>

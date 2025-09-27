@@ -7,7 +7,8 @@
         size="lg"
         placeholder="Search employees..."
         :trailing-icon="searchQuery ? undefined : 'i-material-symbols:search'"
-        @input="$emit('search', searchQuery)"
+        @input="handleSearchInput"
+        @keyup.enter="handleSearchSubmit"
       >
         <template v-if="searchQuery" #trailing>
           <UButton
@@ -112,5 +113,28 @@ const statusOptions = computed(() => [
 const clearSearch = () => {
   searchQuery.value = '';
   emit('search', '');
+};
+
+// Better search handling with debounce
+let searchTimeout: NodeJS.Timeout | null = null;
+
+const handleSearchInput = () => {
+  // Clear existing timeout
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+  
+  // Debounce search by 300ms for better performance
+  searchTimeout = setTimeout(() => {
+    emit('search', searchQuery.value);
+  }, 300);
+};
+
+const handleSearchSubmit = () => {
+  // Immediate search on Enter key
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+  emit('search', searchQuery.value);
 };
 </script>
