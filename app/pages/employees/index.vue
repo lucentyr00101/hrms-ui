@@ -111,6 +111,14 @@
       </div>
     </div>
   </div>
+
+  <!-- Offboarding Modal -->
+  <EmployeeOffboardingModal 
+    v-if="selectedEmployeeForArchive"
+    v-model="showOffboardingModal"
+    :employee="selectedEmployeeForArchive"
+    @archived="handleEmployeeArchived"
+  />
 </template>
 
 <script setup lang="ts">
@@ -118,6 +126,7 @@ import { DUMMY_EMPLOYEES, type Employee } from '~/constants/EMPLOYEE_DATA';
 import EmployeeFilters from '~/components/employees/EmployeeFilters.vue';
 import EmployeeCardView from '~/components/employees/EmployeeCardView.vue';
 import EmployeeTableView from '~/components/employees/EmployeeTableView.vue';
+import EmployeeOffboardingModal from '~/components/employees/EmployeeOffboardingModal.vue';
 
 // Reactive data
 const viewMode = ref<'card' | 'table'>('card');
@@ -211,8 +220,8 @@ const handlePageChange = (page: number) => {
 };
 
 const handleAddEmployee = () => {
-  // TODO: Implement add employee functionality
-  console.log('Add employee clicked');
+  // Navigate to onboarding flow
+  navigateTo('/employees/onboarding');
 };
 
 const handleViewProfile = (employee: Employee) => {
@@ -225,9 +234,24 @@ const handleEditEmployee = (employee: Employee) => {
   console.log('Edit employee:', employee);
 };
 
+// Offboarding modal state
+const showOffboardingModal = ref(false);
+const selectedEmployeeForArchive = ref<Employee | null>(null);
+
 const handleArchiveEmployee = (employee: Employee) => {
-  // TODO: Implement archive employee functionality
-  console.log('Archive employee:', employee);
+  selectedEmployeeForArchive.value = employee;
+  showOffboardingModal.value = true;
+};
+
+const handleEmployeeArchived = (employee: Employee) => {
+  console.log('Employee archived:', employee);
+  // In a real app, you would update the employee list or refetch data
+  // For now, we'll just close the modal
+  showOffboardingModal.value = false;
+  selectedEmployeeForArchive.value = null;
+  
+  // You could show a toast notification here
+  // toast.success(`${employee.firstName} ${employee.lastName} has been archived successfully.`);
 };
 
 const clearFilters = () => {
