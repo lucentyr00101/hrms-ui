@@ -343,6 +343,7 @@
 
   <!-- Cancel Confirmation Modal -->
   <ConfirmModal
+    v-if="showCancelModal"
     v-model="showCancelModal"
     title="Cancel Onboarding"
     message="Are you sure you want to cancel the onboarding process? All entered data will be lost."
