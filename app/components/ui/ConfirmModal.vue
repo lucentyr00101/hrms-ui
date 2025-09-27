@@ -55,9 +55,9 @@
           <!-- Cancel Button Slot -->
           <slot name="cancel-button">
             <UButton 
-              color="gray" 
-              variant="outline" 
-              size="md"
+              :color="cancelColor" 
+              :variant="cancelVariant" 
+              :size="size"
               @click="cancel"
               class="w-full sm:w-auto"
             >
@@ -69,7 +69,8 @@
           <slot name="confirm-button">
             <UButton 
               :color="confirmColor"
-              size="md"
+              :variant="confirmVariant"
+              :size="size"
               @click="confirm"
               class="w-full sm:w-auto"
             >
@@ -110,8 +111,16 @@ interface Props {
   confirmLabel?: string;
   /** Cancel button text */
   cancelLabel?: string;
-  /** Confirm button color theme */
-  confirmColor?: 'primary' | 'red' | 'orange' | 'amber' | 'yellow' | 'lime' | 'green' | 'emerald' | 'teal' | 'cyan' | 'sky' | 'blue' | 'indigo' | 'violet' | 'purple' | 'fuchsia' | 'pink' | 'rose' | 'gray';
+  /** Confirm button color theme (Nuxt UI v4.0.0 semantic colors) */
+  confirmColor?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error' | 'neutral';
+  /** Cancel button color theme */
+  cancelColor?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error' | 'neutral';
+  /** Confirm button variant */
+  confirmVariant?: 'solid' | 'outline' | 'soft' | 'subtle' | 'ghost' | 'link';
+  /** Cancel button variant */
+  cancelVariant?: 'solid' | 'outline' | 'soft' | 'subtle' | 'ghost' | 'link';
+  /** Button size */
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
 interface Emits {
@@ -130,7 +139,11 @@ const props = withDefaults(defineProps<Props>(), {
   iconClass: 'text-orange-500',
   confirmLabel: 'Confirm',
   cancelLabel: 'Cancel',
-  confirmColor: 'primary'
+  confirmColor: 'primary',
+  cancelColor: 'neutral',
+  confirmVariant: 'solid',
+  cancelVariant: 'outline',
+  size: 'md'
 });
 
 const emit = defineEmits<Emits>();
