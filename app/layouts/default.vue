@@ -37,7 +37,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+  <UApp>
+    <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
     <!-- Mobile Sidebar Overlay -->
     <div 
       v-if="showMobileSidebar"
@@ -69,4 +70,5 @@ onMounted(() => {
     <!-- Mobile Bottom Navigation -->
     <BottomNav />
   </div>
+  </UApp>
 </template>
