@@ -69,11 +69,18 @@ import { getDashboardLayout } from '~/types/dashboard';
 // Import all possible widget components
 import PendingActionsWidget from '~/components/dashboard/PendingActionsWidget.vue';
 import EmployeeStatsWidget from '~/components/dashboard/EmployeeStatsWidget.vue';
+import RecruitmentPipelineWidget from '~/components/dashboard/RecruitmentPipelineWidget.vue';
+import DepartmentOverviewWidget from '~/components/dashboard/DepartmentOverviewWidget.vue';
+import SystemMetricsWidget from '~/components/dashboard/SystemMetricsWidget.vue';
 import TeamActivityWidget from '~/components/dashboard/TeamActivityWidget.vue';
 import LeaveRequestsWidget from '~/components/dashboard/LeaveRequestsWidget.vue';
+import TeamPerformanceWidget from '~/components/dashboard/TeamPerformanceWidget.vue';
+import UpcomingReviewsWidget from '~/components/dashboard/UpcomingReviewsWidget.vue';
 import PersonalInfoWidget from '~/components/dashboard/PersonalInfoWidget.vue';
 import MyRequestsWidget from '~/components/dashboard/MyRequestsWidget.vue';
 import AnnouncementsWidget from '~/components/dashboard/AnnouncementsWidget.vue';
+import LeaveBalanceWidget from '~/components/dashboard/LeaveBalanceWidget.vue';
+import PayrollSummaryWidget from '~/components/dashboard/PayrollSummaryWidget.vue';
 
 // Keep existing components for fallback
 import InterviewStats from '~/components/dashboard/InterviewStats.vue';
