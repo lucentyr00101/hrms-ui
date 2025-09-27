@@ -60,17 +60,30 @@
 
         <UTabs :items="tabs" class="mt-8">
           <template #item="{ item }">
-            <div class="py-4">
-              <h4 class="text-lg font-semibold mb-4">{{ item.label }}</h4>
-              <p v-if="item.key === 'info'">
-                This is where the employee information will be displayed and edited.
-              </p>
-              <p v-else-if="item.key === 'documents'">
-                This is where employee documents will be managed.
-              </p>
-              <p v-else-if="item.key === 'activity'">
-                This is where the activity timeline will be displayed.
-              </p>
+            <!-- Info Tab -->
+            <div v-if="item.key === 'info'" class="py-4">
+              <EmployeeInfoTab 
+                :employee="employee"
+                :is-edit-mode="isEditMode"
+                :form-state="formState"
+                @update:form-state="updateFormState"
+              />
+            </div>
+
+            <!-- Documents Tab -->
+            <div v-else-if="item.key === 'documents'" class="py-4">
+              <EmployeeDocumentsTab 
+                :employee-id="employee.id"
+                :documents="employeeDocuments"
+              />
+            </div>
+
+            <!-- Activity Tab -->
+            <div v-else-if="item.key === 'activity'" class="py-4">
+              <EmployeeActivityTab 
+                :employee-id="employee.id"
+                :activities="employeeActivities"
+              />
             </div>
           </template>
         </UTabs>
@@ -80,8 +93,9 @@
 </template>
 
 <script setup lang="ts">
-import type { Employee } from '~/constants/EMPLOYEE_DATA';
-import { DUMMY_EMPLOYEES } from '~/constants/EMPLOYEE_DATA';
+import type { Employee, EmployeeDocument, ActivityItem } from '~/constants/EMPLOYEE_DATA';
+import { DUMMY_EMPLOYEES, DUMMY_EMPLOYEE_DOCUMENTS, DUMMY_EMPLOYEE_ACTIVITIES } from '~/constants/EMPLOYEE_DATA';
+import { employeeInfoSchema, type EmployeeInfoSchema } from '~/schemas/employee';
 
 // Get employee ID from route
 const route = useRoute();
@@ -91,6 +105,11 @@ const employeeId = route.params.id as string;
 const pending = ref(false);
 const error = ref(false);
 const employee = ref<Employee | null>(null);
+const employeeDocuments = ref<EmployeeDocument[]>([]);
+const employeeActivities = ref<ActivityItem[]>([]);
+const isEditMode = ref(false);
+const saving = ref(false);
+const formState = ref<EmployeeInfoSchema | null>(null);
 
 // Tabs configuration
 const tabs = [
@@ -122,10 +141,106 @@ const loadEmployeeData = async () => {
     }
     
     employee.value = foundEmployee;
+    employeeDocuments.value = DUMMY_EMPLOYEE_DOCUMENTS[employeeId] || [];
+    employeeActivities.value = DUMMY_EMPLOYEE_ACTIVITIES[employeeId] || [];
+    
+    // Initialize form state
+    initializeFormState();
   } catch (err) {
     error.value = true;
   } finally {
     pending.value = false;
+  }
+};
+
+// Initialize form state for editing
+const initializeFormState = () => {
+  if (employee.value) {
+    formState.value = {
+      firstName: employee.value.firstName,
+      lastName: employee.value.lastName,
+      email: employee.value.email,
+      phone: employee.value.phone,
+      position: employee.value.position,
+      department: employee.value.department,
+      manager: employee.value.manager || '',
+      employeeId: employee.value.employeeId,
+      dateOfBirth: employee.value.dateOfBirth || '',
+      street: employee.value.address?.street || '',
+      city: employee.value.address?.city || '',
+      state: employee.value.address?.state || '',
+      zipCode: employee.value.address?.zipCode || '',
+      country: employee.value.address?.country || '',
+      salary: employee.value.salary || 0,
+      employmentType: employee.value.employmentType || 'fullTime',
+      workLocation: employee.value.workLocation || 'office',
+    };
+  }
+};
+
+// Toggle edit mode
+const toggleEditMode = () => {
+  isEditMode.value = true;
+  initializeFormState();
+};
+
+// Cancel edit
+const cancelEdit = () => {
+  isEditMode.value = false;
+  initializeFormState();
+};
+
+// Handle save
+const handleSave = async () => {
+  if (!formState.value || !employee.value) return;
+  
+  saving.value = true;
+  try {
+    // Validate form
+    await employeeInfoSchema.validate(formState.value);
+    
+    // Simulate API save
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Update employee data
+    employee.value = {
+      ...employee.value,
+      firstName: formState.value.firstName,
+      lastName: formState.value.lastName,
+      email: formState.value.email,
+      phone: formState.value.phone,
+      position: formState.value.position,
+      department: formState.value.department,
+      manager: formState.value.manager,
+      employeeId: formState.value.employeeId,
+      dateOfBirth: formState.value.dateOfBirth,
+      address: {
+        street: formState.value.street,
+        city: formState.value.city,
+        state: formState.value.state,
+        zipCode: formState.value.zipCode,
+        country: formState.value.country
+      },
+      salary: formState.value.salary,
+      employmentType: formState.value.employmentType,
+      workLocation: formState.value.workLocation
+    };
+    
+    isEditMode.value = false;
+    
+    // Show success notification
+    console.log('Employee profile updated successfully');
+  } catch (err) {
+    console.error('Failed to update employee:', err);
+  } finally {
+    saving.value = false;
+  }
+};
+
+// Update form state
+const updateFormState = (newState: Partial<EmployeeInfoSchema>) => {
+  if (formState.value) {
+    formState.value = { ...formState.value, ...newState };
   }
 };
 
@@ -134,7 +249,7 @@ const getStatusColor = (status: string) => {
   switch (status) {
     case 'active': return 'green';
     case 'inactive': return 'red';
-    case 'onLeave': return 'yellow';
+    case 'on-leave': return 'yellow';
     default: return 'gray';
   }
 };
@@ -143,7 +258,7 @@ const formatStatus = (status: string) => {
   switch (status) {
     case 'active': return 'Active';
     case 'inactive': return 'Inactive';
-    case 'onLeave': return 'On Leave';
+    case 'on-leave': return 'On Leave';
     default: return status;
   }
 };

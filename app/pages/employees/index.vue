@@ -1,6 +1,7 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div>
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
           Employees
@@ -9,114 +10,104 @@
           Manage your organization's employees and their information.
         </p>
       </div>
-      <UButton color="primary">
-        <UIcon name="i-material-symbols:person-add" class="w-4 h-4 mr-2" />
-        Add Employee
-      </UButton>
+      <div class="text-sm text-gray-500 dark:text-gray-400">
+        {{ allFilteredEmployees.length }} {{ allFilteredEmployees.length === 1 ? 'employee' : 'employees' }} found
+        {{ totalPages > 1 ? `(Page ${currentPage} of ${totalPages})` : '' }}
+      </div>
     </div>
 
-    <!-- Search and Filters -->
-    <UCard>
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0 sm:space-x-4">
-        <div class="flex-1 max-w-md">
-          <UInput 
-            v-model="searchQuery"
-            placeholder="Search employees..."
-            @input="filterEmployees"
-          >
-            <template #leading>
-              <UIcon name="i-material-symbols:search" class="w-4 h-4 text-gray-400" />
-            </template>
-          </UInput>
-        </div>
-        <div class="flex items-center space-x-2">
-          <USelectMenu
-            v-model="selectedDepartment"
-            :options="departmentOptions"
-            placeholder="All Departments"
-            @change="filterEmployees"
-          />
-          <USelectMenu
-            v-model="selectedStatus"
-            :options="statusOptions"
-            placeholder="All Status"
-            @change="filterEmployees"
-          />
-        </div>
-      </div>
-    </UCard>
+    <!-- Filters and Search -->
+    <EmployeeFilters
+      :view-mode="viewMode"
+      @search="handleSearch"
+      @filter-change="handleFilterChange"
+      @view-change="handleViewChange"
+      @add-employee="handleAddEmployee"
+    />
 
-    <!-- Employees List -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        v-for="employee in filteredEmployees"
-        :key="employee.id"
-        class="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer"
-        @click="navigateToProfile(employee.id)"
-      >
-        <div class="p-6">
-          <div class="flex items-center space-x-4 mb-4">
-            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <span class="text-lg font-bold text-white">
-                {{ employee.firstName[0] }}{{ employee.lastName[0] }}
-              </span>
-            </div>
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                {{ employee.firstName }} {{ employee.lastName }}
-              </h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                {{ employee.position }}
-              </p>
-            </div>
-            <UBadge 
-              :color="getStatusColor(employee.status)"
-              :label="formatStatus(employee.status)"
-              size="sm"
-            />
-          </div>
-          
-          <div class="space-y-2">
-            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-              <UIcon name="i-material-symbols:business" class="w-4 h-4 mr-2" />
-              {{ employee.department }}
-            </div>
-            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-              <UIcon name="i-material-symbols:email" class="w-4 h-4 mr-2" />
-              {{ employee.email }}
-            </div>
-            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-              <UIcon name="i-material-symbols:phone" class="w-4 h-4 mr-2" />
-              {{ employee.phone }}
-            </div>
-            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-              <UIcon name="i-material-symbols:calendar-today" class="w-4 h-4 mr-2" />
-              Joined {{ formatDate(employee.hireDate) }}
-            </div>
-          </div>
-          
-          <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-              <span class="text-sm text-gray-500 dark:text-gray-400">Employee ID</span>
-              <span class="text-sm font-medium text-gray-900 dark:text-white">{{ employee.employeeId }}</span>
-            </div>
-          </div>
+    <!-- Employee Directory Content -->
+    <div v-if="allFilteredEmployees.length > 0">
+      <!-- Card View -->
+      <EmployeeCardView
+        v-if="viewMode === 'card'"
+        :employees="filteredEmployees"
+        @view-profile="handleViewProfile"
+        @edit-employee="handleEditEmployee"
+        @archive-employee="handleArchiveEmployee"
+      />
+
+      <!-- Table View -->
+      <EmployeeTableView
+        v-else
+        :employees="filteredEmployees"
+        @view-profile="handleViewProfile"
+        @edit-employee="handleEditEmployee"
+        @archive-employee="handleArchiveEmployee"
+      />
+
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="text-sm text-gray-700 dark:text-gray-300">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+          {{ Math.min(currentPage * itemsPerPage, allFilteredEmployees.length) }} 
+          of {{ allFilteredEmployees.length }} employees
         </div>
+        
+        <UPagination
+          v-model="currentPage"
+          :page-count="itemsPerPage"
+          :total="allFilteredEmployees.length"
+          :ui="{
+            wrapper: 'flex items-center gap-1',
+            rounded: '!rounded-full min-w-[32px] justify-center',
+            default: {
+              activeButton: {
+                variant: 'solid'
+              }
+            }
+          }"
+          show-last
+          show-first
+        />
       </div>
     </div>
 
     <!-- Empty State -->
-    <div v-if="filteredEmployees.length === 0" class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div
+      v-else
+      class="bg-white dark:bg-gray-800 rounded-lg shadow p-6"
+    >
       <div class="text-center py-12">
-        <UIcon name="i-material-symbols:emoji-people" class="w-16 h-16 mx-auto text-gray-400 mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No employees found</h3>
+        <UIcon 
+          name="i-material-symbols:emoji-people" 
+          class="w-16 h-16 mx-auto text-gray-400 mb-4" 
+        />
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          {{ searchQuery || hasFilters ? 'No employees match your criteria' : 'No employees found' }}
+        </h3>
         <p class="text-gray-600 dark:text-gray-400 mb-4">
-          {{ searchQuery || selectedDepartment || selectedStatus ? 'Try adjusting your filters.' : 'Get started by adding your first employee.' }}
+          {{ searchQuery || hasFilters 
+            ? 'Try adjusting your search query or filters.' 
+            : 'Get started by adding your first employee.' 
+          }}
         </p>
-        <UButton v-if="!searchQuery && !selectedDepartment && !selectedStatus" color="primary">
-          <UIcon name="i-material-symbols:person-add" class="w-4 h-4 mr-2" />
-          Add Employee
-        </UButton>
+        <div class="flex justify-center gap-3">
+          <UButton
+            v-if="searchQuery || hasFilters"
+            color="gray"
+            variant="outline"
+            @click="clearFilters"
+          >
+            Clear Filters
+          </UButton>
+          <UButton 
+            color="primary"
+            @click="handleAddEmployee"
+          >
+            <UIcon name="i-material-symbols:person-add" class="w-4 h-4 mr-2" />
+            Add Employee
+          </UButton>
+        </div>
       </div>
     </div>
   </div>
@@ -124,98 +115,125 @@
 
 <script setup lang="ts">
 import { DUMMY_EMPLOYEES, type Employee } from '~/constants/EMPLOYEE_DATA';
+import EmployeeFilters from '~/components/employees/EmployeeFilters.vue';
+import EmployeeCardView from '~/components/employees/EmployeeCardView.vue';
+import EmployeeTableView from '~/components/employees/EmployeeTableView.vue';
 
-// Reactive state
+// Reactive data
+const viewMode = ref<'card' | 'table'>('card');
 const searchQuery = ref('');
-const selectedDepartment = ref('');
-const selectedStatus = ref('');
-const filteredEmployees = ref<Employee[]>([...DUMMY_EMPLOYEES]);
+const departmentFilter = ref<string | undefined>(undefined);
+const statusFilter = ref<string | undefined>(undefined);
 
-// Filter options
-const departmentOptions = [
-  'Engineering',
-  'Marketing',
-  'Sales',
-  'HR',
-  'Finance',
-  'Operations',
-  'Design',
-  'Product'
-];
+// Pagination
+const currentPage = ref(1);
+const itemsPerPage = ref(6); // Show 6 employees per page for better UX
+const totalPages = ref(1);
 
-const statusOptions = [
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' },
-  { label: 'On Leave', value: 'onLeave' }
-];
+// Load employees data (in real app, this would come from an API)
+const employees = ref<Employee[]>(DUMMY_EMPLOYEES);
 
-// Filter employees
-const filterEmployees = () => {
-  let filtered = [...DUMMY_EMPLOYEES];
-  
-  // Search filter
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase();
-    filtered = filtered.filter(employee =>
-      employee.firstName.toLowerCase().includes(query) ||
-      employee.lastName.toLowerCase().includes(query) ||
-      employee.email.toLowerCase().includes(query) ||
-      employee.position.toLowerCase().includes(query) ||
-      employee.employeeId.toLowerCase().includes(query)
-    );
+// Computed properties
+const allFilteredEmployees = computed(() => {
+  let filtered = employees.value;
+
+  // Apply search filter - make it more robust
+  if (searchQuery.value && searchQuery.value.trim()) {
+    const query = searchQuery.value.trim().toLowerCase();
+    filtered = filtered.filter(emp => {
+      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
+      const searchFields = [
+        fullName,
+        emp.firstName.toLowerCase(),
+        emp.lastName.toLowerCase(),
+        emp.email.toLowerCase(),
+        emp.position.toLowerCase(),
+        emp.department.toLowerCase(),
+        emp.employeeId.toLowerCase(),
+        emp.phone.replace(/\D/g, '') // Remove non-digits for phone search
+      ];
+      
+      return searchFields.some(field => field.includes(query));
+    });
   }
-  
-  // Department filter
-  if (selectedDepartment.value) {
-    filtered = filtered.filter(employee => 
-      employee.department === selectedDepartment.value
-    );
+
+  // Apply department filter
+  if (departmentFilter.value) {
+    filtered = filtered.filter(emp => emp.department === departmentFilter.value);
   }
-  
-  // Status filter
-  if (selectedStatus.value) {
-    filtered = filtered.filter(employee => 
-      employee.status === selectedStatus.value
-    );
+
+  // Apply status filter
+  if (statusFilter.value) {
+    filtered = filtered.filter(emp => emp.status === statusFilter.value);
   }
-  
-  filteredEmployees.value = filtered;
-};
 
-// Navigation
-const navigateToProfile = (employeeId: string) => {
-  navigateTo(`/employees/${employeeId}`);
-};
-
-// Utility functions
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'active': return 'green';
-    case 'inactive': return 'red';
-    case 'onLeave': return 'yellow';
-    default: return 'gray';
-  }
-};
-
-const formatStatus = (status: string) => {
-  switch (status) {
-    case 'active': return 'Active';
-    case 'inactive': return 'Inactive';
-    case 'onLeave': return 'On Leave';
-    default: return status;
-  }
-};
-
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
-};
-
-// Initialize
-onMounted(() => {
-  filterEmployees();
+  return filtered;
 });
+
+const filteredEmployees = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return allFilteredEmployees.value.slice(start, end);
+});
+
+// Update total pages whenever filtered employees change
+watchEffect(() => {
+  totalPages.value = Math.ceil(allFilteredEmployees.value.length / itemsPerPage.value);
+  
+  // Reset to page 1 if current page is beyond available pages
+  if (currentPage.value > totalPages.value && totalPages.value > 0) {
+    currentPage.value = 1;
+  }
+});
+
+const hasFilters = computed(() => {
+  return departmentFilter.value || statusFilter.value;
+});
+
+// Event handlers
+const handleSearch = (query: string) => {
+  searchQuery.value = query;
+  currentPage.value = 1; // Reset to first page when searching
+};
+
+const handleFilterChange = (filters: { department?: string; status?: string }) => {
+  departmentFilter.value = filters.department;
+  statusFilter.value = filters.status;
+  currentPage.value = 1; // Reset to first page when filtering
+};
+
+const handleViewChange = (mode: 'card' | 'table') => {
+  viewMode.value = mode;
+};
+
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+};
+
+const handleAddEmployee = () => {
+  // TODO: Implement add employee functionality
+  console.log('Add employee clicked');
+};
+
+const handleViewProfile = (employee: Employee) => {
+  // Navigate to employee profile page
+  navigateTo(`/employees/${employee.id}`);
+};
+
+const handleEditEmployee = (employee: Employee) => {
+  // TODO: Implement edit employee functionality
+  console.log('Edit employee:', employee);
+};
+
+const handleArchiveEmployee = (employee: Employee) => {
+  // TODO: Implement archive employee functionality
+  console.log('Archive employee:', employee);
+};
+
+const clearFilters = () => {
+  searchQuery.value = '';
+  departmentFilter.value = undefined;
+  statusFilter.value = undefined;
+  currentPage.value = 1; // Reset to first page when clearing filters
+};
 </script>
