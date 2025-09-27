@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model="isOpen" prevent-close>
+  <UModal :open="isOpen" prevent-close>
     <UCard
       :ui="{
         ring: '',
@@ -22,11 +22,13 @@
         </div>
       </template>
 
-      <div class="py-4">
-        <p class="text-gray-700 dark:text-gray-300">
-          {{ message }}
-        </p>
-      </div>
+      <template #content>
+        <div class="py-4">
+          <p class="text-gray-700 dark:text-gray-300">
+            {{ message }}
+          </p>
+        </div>
+      </template>
 
       <template #footer>
         <div class="flex justify-end space-x-3">
