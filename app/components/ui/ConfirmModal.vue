@@ -1,5 +1,5 @@
 <template>
-  <UModal :open="isOpen">
+  <UModal v-model="isOpen">
     <UCard>
       <template #header>
         <div class="flex items-center space-x-3">
@@ -15,13 +15,11 @@
         </div>
       </template>
 
-      <template #content>
-        <div class="py-4">
-          <p class="text-gray-700 dark:text-gray-300">
-            {{ message }}
-          </p>
-        </div>
-      </template>
+      <div class="py-4">
+        <p class="text-gray-700 dark:text-gray-300">
+          {{ message }}
+        </p>
+      </div>
 
       <template #footer>
         <div class="flex justify-end space-x-3">
