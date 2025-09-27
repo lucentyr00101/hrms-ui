@@ -344,7 +344,7 @@
   <!-- Cancel Confirmation Modal -->
   <ConfirmModal
     v-if="showCancelModal"
-    v-model="showCancelModal"
+    :open="showCancelModal"
     title="Cancel Onboarding"
     message="Are you sure you want to cancel the onboarding process? All entered data will be lost."
     description="This action cannot be undone"
@@ -354,6 +354,7 @@
     cancel-label="Continue"
     confirm-color="orange"
     @confirm="confirmCancel"
+    @close="showCancelModal = false"
   />
 </template>
 
