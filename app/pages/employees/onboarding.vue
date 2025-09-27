@@ -74,147 +74,142 @@
         </template>
 
         <!-- Step 1: Personal Information -->
-        <div v-if="currentStep === 1" class="space-y-6">
+        <UForm 
+          v-if="currentStep === 1" 
+          :schema="personalInfoSchema" 
+          :state="formData" 
+          class="space-y-6"
+          @submit="handleStepSubmit"
+        >
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <UFormGroup label="First Name" required>
+            <UFormField label="First Name" name="firstName" required>
               <UInput 
                 v-model="formData.firstName" 
                 placeholder="Enter first name"
-                :error="getFieldError('firstName')"
               />
-            </UFormGroup>
-            <UFormGroup label="Last Name" required>
+            </UFormField>
+            <UFormField label="Last Name" name="lastName" required>
               <UInput 
                 v-model="formData.lastName" 
                 placeholder="Enter last name"
-                :error="getFieldError('lastName')"
               />
-            </UFormGroup>
-            <UFormGroup label="Email Address" required>
+            </UFormField>
+            <UFormField label="Email Address" name="email" required>
               <UInput 
                 v-model="formData.email" 
                 type="email"
                 placeholder="Enter email address"
-                :error="getFieldError('email')"
               />
-            </UFormGroup>
-            <UFormGroup label="Phone Number" required>
+            </UFormField>
+            <UFormField label="Phone Number" name="phone" required>
               <UInput 
                 v-model="formData.phone" 
                 placeholder="Enter phone number"
-                :error="getFieldError('phone')"
               />
-            </UFormGroup>
-            <UFormGroup label="Date of Birth" required>
+            </UFormField>
+            <UFormField label="Date of Birth" name="dateOfBirth" required>
               <UInput 
                 v-model="formData.dateOfBirth" 
                 type="date"
-                :error="getFieldError('dateOfBirth')"
               />
-            </UFormGroup>
-            <UFormGroup label="Employee ID" required>
+            </UFormField>
+            <UFormField label="Employee ID" name="employeeId" required>
               <UInput 
                 v-model="formData.employeeId" 
                 placeholder="Enter employee ID"
-                :error="getFieldError('employeeId')"
               />
-            </UFormGroup>
+            </UFormField>
           </div>
 
           <!-- Address Section -->
           <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
             <h4 class="text-md font-medium text-gray-900 dark:text-white mb-4">Address Information</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <UFormGroup label="Street Address" required class="md:col-span-2">
+              <UFormField label="Street Address" name="street" required class="md:col-span-2">
                 <UInput 
                   v-model="formData.street" 
                   placeholder="Enter street address"
-                  :error="getFieldError('street')"
                 />
-              </UFormGroup>
-              <UFormGroup label="City" required>
+              </UFormField>
+              <UFormField label="City" name="city" required>
                 <UInput 
                   v-model="formData.city" 
                   placeholder="Enter city"
-                  :error="getFieldError('city')"
                 />
-              </UFormGroup>
-              <UFormGroup label="State" required>
+              </UFormField>
+              <UFormField label="State" name="state" required>
                 <UInput 
                   v-model="formData.state" 
                   placeholder="Enter state"
-                  :error="getFieldError('state')"
                 />
-              </UFormGroup>
-              <UFormGroup label="Zip Code" required>
+              </UFormField>
+              <UFormField label="Zip Code" name="zipCode" required>
                 <UInput 
                   v-model="formData.zipCode" 
                   placeholder="Enter zip code"
-                  :error="getFieldError('zipCode')"
                 />
-              </UFormGroup>
-              <UFormGroup label="Country" required>
+              </UFormField>
+              <UFormField label="Country" name="country" required>
                 <UInput 
                   v-model="formData.country" 
                   placeholder="Enter country"
-                  :error="getFieldError('country')"
                 />
-              </UFormGroup>
+              </UFormField>
             </div>
           </div>
-        </div>
+        </UForm>
 
         <!-- Step 2: Employment Details -->
-        <div v-if="currentStep === 2" class="space-y-6">
+        <UForm 
+          v-else-if="currentStep === 2" 
+          :schema="employmentInfoSchema" 
+          :state="formData" 
+          class="space-y-6"
+          @submit="handleStepSubmit"
+        >
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <UFormGroup label="Position" required>
+            <UFormField label="Position" name="position" required>
               <UInput 
                 v-model="formData.position" 
                 placeholder="Enter position/job title"
-                :error="getFieldError('position')"
               />
-            </UFormGroup>
-            <UFormGroup label="Department" required>
+            </UFormField>
+            <UFormField label="Department" name="department" required>
               <USelectMenu 
                 v-model="formData.department"
                 :options="departmentOptions"
                 placeholder="Select department"
-                :error="getFieldError('department')"
               />
-            </UFormGroup>
-            <UFormGroup label="Manager" required>
+            </UFormField>
+            <UFormField label="Manager" name="manager" required>
               <UInput 
                 v-model="formData.manager" 
                 placeholder="Enter manager name"
-                :error="getFieldError('manager')"
               />
-            </UFormGroup>
-            <UFormGroup label="Salary" required>
+            </UFormField>
+            <UFormField label="Salary" name="salary" required>
               <UInput 
                 v-model.number="formData.salary" 
                 type="number"
                 placeholder="Enter annual salary"
-                :error="getFieldError('salary')"
               />
-            </UFormGroup>
-            <UFormGroup label="Employment Type" required>
+            </UFormField>
+            <UFormField label="Employment Type" name="employmentType" required>
               <USelectMenu 
                 v-model="formData.employmentType"
                 :options="employmentTypeOptions"
                 placeholder="Select employment type"
-                :error="getFieldError('employmentType')"
               />
-            </UFormGroup>
-            <UFormGroup label="Work Location" required>
+            </UFormField>
+            <UFormField label="Work Location" name="workLocation" required>
               <USelectMenu 
                 v-model="formData.workLocation"
                 :options="workLocationOptions"
                 placeholder="Select work location"
-                :error="getFieldError('workLocation')"
               />
-            </UFormGroup>
+            </UFormField>
           </div>
-        </div>
+        </UForm>
 
         <!-- Step 3: Documents & Verification -->
         <div v-if="currentStep === 3" class="space-y-6">
@@ -345,25 +340,66 @@
       </div>
     </div>
   </div>
+
+  <!-- Cancel Confirmation Modal -->
+  <ConfirmModal
+    v-model="showCancelModal"
+    title="Cancel Onboarding"
+    message="Are you sure you want to cancel the onboarding process? All entered data will be lost."
+    description="This action cannot be undone"
+    icon="i-material-symbols:warning"
+    icon-class="text-orange-500"
+    confirm-label="Yes, Cancel"
+    cancel-label="Continue"
+    confirm-color="orange"
+    @confirm="confirmCancel"
+  />
 </template>
 
 <script setup lang="ts">
-import { employeeInfoSchema } from '~/schemas/employee';
+import type { FormSubmitEvent } from '@nuxt/ui';
+import { object, string, number } from 'yup';
 import { DEPARTMENTS } from '~/constants/EMPLOYEE_DATA';
+import ConfirmModal from '~/components/ui/ConfirmModal.vue';
 
 // Page meta
 definePageMeta({
   title: 'Employee Onboarding'
 });
 
+// Personal information schema for step 1
+const personalInfoSchema = object({
+  firstName: string().required('First name is required'),
+  lastName: string().required('Last name is required'),
+  email: string().email('Invalid email format').required('Email is required'),
+  phone: string().required('Phone number is required'),
+  dateOfBirth: string().required('Date of birth is required'),
+  employeeId: string().required('Employee ID is required'),
+  street: string().required('Street address is required'),
+  city: string().required('City is required'),
+  state: string().required('State is required'),
+  zipCode: string().required('Zip code is required'),
+  country: string().required('Country is required')
+});
+
+// Employment information schema for step 2
+const employmentInfoSchema = object({
+  position: string().required('Position is required'),
+  department: string().required('Department is required'),
+  manager: string().required('Manager is required'),
+  salary: number().positive('Salary must be positive').required('Salary is required'),
+  employmentType: string().oneOf(['fullTime', 'partTime', 'contractor'], 'Invalid employment type').required('Employment type is required'),
+  workLocation: string().oneOf(['office', 'remote', 'hybrid'], 'Invalid work location').required('Work location is required')
+});
+
 // Reactive state
 const currentStep = ref(1);
 const totalSteps = 4;
 const isSubmitting = ref(false);
-const errors = ref<Record<string, string>>({});
+const showCancelModal = ref(false);
 
-// Form data
-const formData = ref({
+// Form data - reactive state for UForm
+const formData = reactive({
   firstName: '',
   lastName: '',
   email: '',
@@ -444,47 +480,33 @@ const workLocationOptions = [
 
 // Computed properties
 const canProceed = computed(() => {
-  try {
-    if (currentStep.value === 1) {
-      // Validate personal information fields
-      const personalFields = {
-        firstName: formData.value.firstName,
-        lastName: formData.value.lastName,
-        email: formData.value.email,
-        phone: formData.value.phone,
-        dateOfBirth: formData.value.dateOfBirth,
-        employeeId: formData.value.employeeId,
-        street: formData.value.street,
-        city: formData.value.city,
-        state: formData.value.state,
-        zipCode: formData.value.zipCode,
-        country: formData.value.country
-      };
-      
-      return Object.values(personalFields).every(value => value && value.toString().trim() !== '');
-    } else if (currentStep.value === 2) {
-      // Validate employment fields
-      const employmentFields = {
-        position: formData.value.position,
-        department: formData.value.department,
-        manager: formData.value.manager,
-        salary: formData.value.salary,
-        employmentType: formData.value.employmentType,
-        workLocation: formData.value.workLocation
-      };
-      
-      return Object.values(employmentFields).every(value => 
-        value !== null && value !== undefined && value.toString().trim() !== ''
-      ) && formData.value.salary > 0;
-    } else if (currentStep.value === 3) {
-      // Check if all required documents are marked as completed
-      return Object.values(documentChecklist.value).every(checked => checked);
-    }
-    
-    return true;
-  } catch (error) {
-    return false;
+  if (currentStep.value === 1) {
+    // Check if all personal information fields are filled
+    return !!(formData.firstName && 
+              formData.lastName && 
+              formData.email && 
+              formData.phone && 
+              formData.dateOfBirth && 
+              formData.employeeId && 
+              formData.street && 
+              formData.city && 
+              formData.state && 
+              formData.zipCode && 
+              formData.country);
+  } else if (currentStep.value === 2) {
+    // Check if all employment fields are filled
+    return !!(formData.position && 
+              formData.department && 
+              formData.manager && 
+              formData.salary > 0 && 
+              formData.employmentType && 
+              formData.workLocation);
+  } else if (currentStep.value === 3) {
+    // Check if all required documents are marked as completed
+    return Object.values(documentChecklist.value).every(checked => checked);
   }
+  
+  return true;
 });
 
 // Methods
@@ -502,36 +524,19 @@ const getStepStatusClass = (stepNumber: number) => {
   }
 };
 
-const getFieldError = (field: string) => {
-  return errors.value[field] || '';
-};
-
 const getEmploymentTypeLabel = (value: string) => {
   const option = employmentTypeOptions.find(opt => opt.value === value);
   return option?.label || value;
 };
 
-const validateCurrentStep = async () => {
-  errors.value = {};
-  
-  try {
-    if (currentStep.value === 1 || currentStep.value === 2) {
-      await employeeInfoSchema.validate(formData.value, { abortEarly: false });
-    }
-    return true;
-  } catch (error: any) {
-    if (error.inner) {
-      error.inner.forEach((err: any) => {
-        errors.value[err.path] = err.message;
-      });
-    }
-    return false;
-  }
+const handleStepSubmit = async (event: FormSubmitEvent<any>) => {
+  // Form validation is handled automatically by UForm
+  // If we get here, the form is valid
+  console.log('Form data validated:', event.data);
 };
 
-const nextStep = async () => {
-  const isValid = await validateCurrentStep();
-  if (isValid && currentStep.value < totalSteps) {
+const nextStep = () => {
+  if (canProceed.value && currentStep.value < totalSteps) {
     currentStep.value++;
   }
 };
@@ -543,18 +548,17 @@ const previousStep = () => {
 };
 
 const cancelOnboarding = () => {
-  if (confirm('Are you sure you want to cancel the onboarding process? All entered data will be lost.')) {
-    navigateTo('/employees');
-  }
+  showCancelModal.value = true;
+};
+
+const confirmCancel = () => {
+  navigateTo('/employees');
 };
 
 const submitOnboarding = async () => {
   isSubmitting.value = true;
   
   try {
-    // Validate all data
-    await employeeInfoSchema.validate(formData.value);
-    
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
     
@@ -562,13 +566,12 @@ const submitOnboarding = async () => {
     navigateTo({
       path: '/employees/onboarding-success',
       query: { 
-        name: `${formData.value.firstName} ${formData.value.lastName}`,
-        employeeId: formData.value.employeeId
+        name: `${formData.firstName} ${formData.lastName}`,
+        employeeId: formData.employeeId
       }
     });
   } catch (error) {
     console.error('Onboarding submission failed:', error);
-    // Handle error - could show a toast notification
   } finally {
     isSubmitting.value = false;
   }
