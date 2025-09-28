@@ -20,7 +20,7 @@ This repository contains a Human Resources Management System (HRMS) user interfa
 
 ### UI Framework
 
-- **Nuxt UI 3.x** - Primary UI component library
+- **Nuxt UI 4.x** - Primary UI component library
 - Strictly implement Nuxt UI components for every UI surface
 - Only author custom components when Nuxt UI cannot satisfy the requirement
 - Follow Nuxt UI patterns and conventions
@@ -119,7 +119,7 @@ This is an HRMS (Human Resources Management System) application with the followi
 - Eliminate duplication aggressively; extract shared layouts, composables, and helper utilities
 - Guard asynchronous flows and handle loading, success, and error states explicitly
 - Validate edge cases (empty datasets, long-running requests, permissions) before shipping features
-- Always refer to Nuxt UI documentation for component usage and props (https://ui.nuxt.com/docs/components)
+- Always refer to Nuxt UI v4 documentation for component usage and props (https://ui.nuxt.com/docs/components)
 - Always fix typescript and linting errors after adding new code
 
 ## Available Scripts
