@@ -125,11 +125,7 @@ interface Props {
 
 interface Emits {
   /** Emitted when modal should close */
-  (e: 'close'): void;
-  /** Emitted when confirm action is triggered */
-  (e: 'confirm'): void;
-  /** Emitted when cancel action is triggered */
-  (e: 'cancel'): void;
+  (e: 'close' | 'confirm' | 'cancel'): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
