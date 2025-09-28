@@ -1,9 +1,15 @@
 <template>
   <div class="space-y-6">
-    <PageHeader
-      title="Interviews"
-      description="Schedule and manage interviews with candidates."
-    />
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+          Interviews
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">
+          Schedule and manage interviews with candidates.
+        </p>
+      </div>
+    </div>
 
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
