@@ -1,4 +1,4 @@
-import { type InferType } from 'yup';
+import type { InferType } from 'yup';
 
 // Auth form types
 export interface LoginFormData {

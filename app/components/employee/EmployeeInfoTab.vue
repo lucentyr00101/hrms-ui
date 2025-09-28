@@ -26,18 +26,24 @@
           <UFormField label="Phone" name="phone">
             <UInput v-model="phone" />
           </UFormField>
+          <UFormField label="Position" name="position">
+            <UInput v-model="position" />
+          </UFormField>
+          <UFormField label="Department" name="department">
+            <USelectMenu
+              v-model="department"
+              :options="departmentOptions"
+              placeholder="Select department"
+            />
+          </UFormField>
           <UFormField label="Date of Birth" name="dateOfBirth">
             <UInput 
-              v-model="formState.dateOfBirth"
+              v-model="dateOfBirth"
               type="date"
-              @input="handleFormUpdate('dateOfBirth', $event.target.value)"
             />
           </UFormField>
           <UFormField label="Employee ID" name="employeeId">
-            <UInput 
-              v-model="formState.employeeId"
-              @input="handleFormUpdate('employeeId', $event.target.value)"
-            />
+            <UInput v-model="employeeId" />
           </UFormField>
         </div>
       </UForm>
@@ -82,34 +88,19 @@
       <UForm v-if="isEditMode && formState" :schema="employeeInfoSchema" :state="formState" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <UFormField label="Street Address" name="street" class="md:col-span-2">
-            <UInput 
-              v-model="formState.street"
-              @input="handleFormUpdate('street', $event.target.value)"
-            />
+            <UInput v-model="street" />
           </UFormField>
           <UFormField label="City" name="city">
-            <UInput 
-              v-model="formState.city"
-              @input="handleFormUpdate('city', $event.target.value)"
-            />
+            <UInput v-model="city" />
           </UFormField>
           <UFormField label="State" name="state">
-            <UInput 
-              v-model="formState.state"
-              @input="handleFormUpdate('state', $event.target.value)"
-            />
+            <UInput v-model="state" />
           </UFormField>
           <UFormField label="Zip Code" name="zipCode">
-            <UInput 
-              v-model="formState.zipCode"
-              @input="handleFormUpdate('zipCode', $event.target.value)"
-            />
+            <UInput v-model="zipCode" />
           </UFormField>
           <UFormField label="Country" name="country">
-            <UInput 
-              v-model="formState.country"
-              @input="handleFormUpdate('country', $event.target.value)"
-            />
+            <UInput v-model="country" />
           </UFormField>
         </div>
       </UForm>
@@ -163,30 +154,24 @@
             />
           </UFormField>
           <UFormField label="Manager" name="manager">
-            <UInput 
-              v-model="formState.manager"
-              @input="handleFormUpdate('manager', $event.target.value)"
-            />
+            <UInput v-model="manager" />
           </UFormField>
           <UFormField label="Employment Type" name="employmentType">
             <USelectMenu
-              v-model="formState.employmentType"
+              v-model="employmentType"
               :options="employmentTypeOptions"
-              @change="handleFormUpdate('employmentType', $event)"
             />
           </UFormField>
           <UFormField label="Work Location" name="workLocation">
             <USelectMenu
-              v-model="formState.workLocation"
+              v-model="workLocation"
               :options="workLocationOptions"
-              @change="handleFormUpdate('workLocation', $event)"
             />
           </UFormField>
           <UFormField label="Salary" name="salary">
             <UInput 
-              v-model="formState.salary"
+              v-model="salary"
               type="number"
-              @input="handleFormUpdate('salary', Number($event.target.value))"
             />
           </UFormField>
         </div>
