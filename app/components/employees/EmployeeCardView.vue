@@ -1,5 +1,10 @@
 <template>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <!-- Debug info -->
+    <div class="col-span-full p-2 bg-pink-100 rounded text-xs">
+      🔍 EmployeeCardView: Received {{ employees?.length || 0 }} employees
+    </div>
+    
     <UCard
       v-for="employee in employees"
       :key="employee.id"
@@ -116,7 +121,10 @@ interface Props {
   employees: Employee[];
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+console.log('🔍 EmployeeCardView: Received props:', props.employees?.length || 0, 'employees');
+console.log('🔍 EmployeeCardView: First employee:', props.employees?.[0]);
 
 const _emit = defineEmits<{
   'view-profile': [employee: Employee];

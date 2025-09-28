@@ -40,14 +40,30 @@
         <!-- Card View -->
         <div v-if="viewMode === 'card'" class="border border-blue-500 p-2 rounded mb-4">
           <h4>🃏 Card View Section ({{ filteredEmployees.length }} employees)</h4>
+          
+          <!-- Test with simple implementation -->
+          <div class="mb-4 p-4 border border-green-300 rounded">
+            <h5>🟢 Simple Implementation (no UCard):</h5>
+            <SimpleEmployeeCardView
+              :employees="filteredEmployees"
+              @view-profile="handleViewProfile"
+              @edit-employee="handleEditEmployee"
+              @archive-employee="handleArchiveEmployee"
+            />
+          </div>
+          
           <TestEmployeeCardView :employees="filteredEmployees" />
-          <!-- Original component for comparison -->
-          <!-- <EmployeeCardView
-            :employees="filteredEmployees"
-            @view-profile="handleViewProfile"
-            @edit-employee="handleEditEmployee"
-            @archive-employee="handleArchiveEmployee"
-          /> -->
+          
+          <!-- Try the original component -->
+          <div class="mt-4 p-4 border border-purple-300 rounded">
+            <h5>🧪 Original EmployeeCardView (with UCard):</h5>
+            <EmployeeCardView
+              :employees="filteredEmployees"
+              @view-profile="handleViewProfile"
+              @edit-employee="handleEditEmployee"
+              @archive-employee="handleArchiveEmployee"
+            />
+          </div>
         </div>
 
         <!-- Table View -->
