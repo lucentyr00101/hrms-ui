@@ -65,28 +65,46 @@
 
 <script setup lang="ts">
 import type { Employee } from '~/types';
-import { useEmployees } from '~/composables/useEmployees';
+import { DUMMY_EMPLOYEES } from '~/constants/EMPLOYEE_DATA';
 
-// Use the employees composable
-const {
-  viewMode,
-  allFilteredEmployees,
-  filteredEmployees,
-  totalPages,
-  hasFilters,
-  currentPage,
-  itemsPerPage,
-  handleSearch,
-  handleFilterChange,
-  handleViewChange,
-  handlePageChange,
-  clearFilters,
-} = useEmployees();
+// Simplified approach - directly use dummy data first
+const employees = ref<Employee[]>(DUMMY_EMPLOYEES);
+const viewMode = ref<'card' | 'table'>('card');
+const currentPage = ref(1);
+const itemsPerPage = ref(6);
 
-// Debug: Log the employees data
-console.log('🐛 DEBUG: allFilteredEmployees.value.length:', allFilteredEmployees.value.length);
-console.log('🐛 DEBUG: filteredEmployees.value:', filteredEmployees.value);
-console.log('🐛 DEBUG: viewMode.value:', viewMode.value);
+// Simple computed properties
+const allFilteredEmployees = computed(() => employees.value);
+const filteredEmployees = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return allFilteredEmployees.value.slice(start, end);
+});
+const totalPages = computed(() => Math.ceil(allFilteredEmployees.value.length / itemsPerPage.value));
+const hasFilters = ref(false);
+
+// Simple handlers
+const handleSearch = (query: string) => {
+  console.log('Search:', query);
+};
+const handleFilterChange = (filters: any) => {
+  console.log('Filter change:', filters);
+};
+const handleViewChange = (mode: 'card' | 'table') => {
+  viewMode.value = mode;
+};
+const handlePageChange = (page: number) => {
+  currentPage.value = page;
+};
+const clearFilters = () => {
+  console.log('Clear filters');
+};
+
+// Debug logs
+console.log('🐛 DIRECT DEBUG: employees.value.length:', employees.value.length);
+console.log('🐛 DIRECT DEBUG: first employee:', employees.value[0]);
+console.log('🐛 DIRECT DEBUG: allFilteredEmployees.value.length:', allFilteredEmployees.value.length);
+console.log('🐛 DIRECT DEBUG: filteredEmployees.value.length:', filteredEmployees.value.length);
 
 // Navigation handlers
 const handleAddEmployee = () => {
