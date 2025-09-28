@@ -1,5 +1,5 @@
 import { DUMMY_EMPLOYEES } from '~/constants/EMPLOYEE_DATA';
-import type { Employee, EmployeeFilters, ViewMode } from '~/types';
+import type { Employee, ViewMode } from '~/types';
 
 export function useEmployees() {
   // Reactive data

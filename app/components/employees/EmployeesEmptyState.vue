@@ -39,7 +39,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   clearFilters: [];
   addEmployee: [];
 }>();

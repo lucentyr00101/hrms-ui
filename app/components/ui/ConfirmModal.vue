@@ -102,7 +102,7 @@ interface Props {
   /** Main content message */
   message?: string;
   /** Optional description below title */
-  description?: string;
+  description: string;
   /** Icon name (Material Symbols format) */
   icon?: string;
   /** CSS classes for icon styling */

@@ -32,7 +32,7 @@ export function useEmployeeProfile(employeeId: string) {
       
       // Initialize form state
       initializeFormState();
-    } catch (err) {
+    } catch (_err) {
       error.value = true;
     } finally {
       pending.value = false;

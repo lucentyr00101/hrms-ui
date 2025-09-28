@@ -12,29 +12,19 @@
       <UForm v-if="isEditMode && formState" :schema="employeeInfoSchema" :state="formState" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <UFormField label="First Name" name="firstName">
-            <UInput 
-              v-model="formState.firstName" 
-              @input="handleFormUpdate('firstName', $event.target.value)"
-            />
+            <UInput v-model="firstName" />
           </UFormField>
           <UFormField label="Last Name" name="lastName">
-            <UInput 
-              v-model="formState.lastName"
-              @input="handleFormUpdate('lastName', $event.target.value)"
-            />
+            <UInput v-model="lastName" />
           </UFormField>
           <UFormField label="Email" name="email">
-            <UInput 
-              v-model="formState.email"
+            <UInput
+              v-model="email"
               type="email"
-              @input="handleFormUpdate('email', $event.target.value)"
             />
           </UFormField>
           <UFormField label="Phone" name="phone">
-            <UInput 
-              v-model="formState.phone"
-              @input="handleFormUpdate('phone', $event.target.value)"
-            />
+            <UInput v-model="phone" />
           </UFormField>
           <UFormField label="Date of Birth" name="dateOfBirth">
             <UInput 
@@ -255,7 +245,7 @@ interface Emits {
   (e: 'update:form-state', value: Partial<EmployeeInfoSchema>): void;
 }
 
-const props = defineProps<Props>();
+const _props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 // Select options
@@ -283,9 +273,95 @@ const workLocationOptions = [
 ];
 
 // Handle form updates
-const handleFormUpdate = (field: keyof EmployeeInfoSchema, value: any) => {
+const handleFormUpdate = (field: keyof EmployeeInfoSchema, value: string | number) => {
   emit('update:form-state', { [field]: value });
 };
+
+// Create computed properties for form fields to avoid prop mutations
+const firstName = computed({
+  get: () => _props.formState?.firstName || '',
+  set: (value) => handleFormUpdate('firstName', value)
+});
+
+const lastName = computed({
+  get: () => _props.formState?.lastName || '',
+  set: (value) => handleFormUpdate('lastName', value)
+});
+
+const email = computed({
+  get: () => _props.formState?.email || '',
+  set: (value) => handleFormUpdate('email', value)
+});
+
+const phone = computed({
+  get: () => _props.formState?.phone || '',
+  set: (value) => handleFormUpdate('phone', value)
+});
+
+const position = computed({
+  get: () => _props.formState?.position || '',
+  set: (value) => handleFormUpdate('position', value)
+});
+
+const department = computed({
+  get: () => _props.formState?.department || '',
+  set: (value) => handleFormUpdate('department', value)
+});
+
+const manager = computed({
+  get: () => _props.formState?.manager || '',
+  set: (value) => handleFormUpdate('manager', value)
+});
+
+const employeeId = computed({
+  get: () => _props.formState?.employeeId || '',
+  set: (value) => handleFormUpdate('employeeId', value)
+});
+
+const dateOfBirth = computed({
+  get: () => _props.formState?.dateOfBirth || '',
+  set: (value) => handleFormUpdate('dateOfBirth', value)
+});
+
+const street = computed({
+  get: () => _props.formState?.street || '',
+  set: (value) => handleFormUpdate('street', value)
+});
+
+const city = computed({
+  get: () => _props.formState?.city || '',
+  set: (value) => handleFormUpdate('city', value)
+});
+
+const state = computed({
+  get: () => _props.formState?.state || '',
+  set: (value) => handleFormUpdate('state', value)
+});
+
+const zipCode = computed({
+  get: () => _props.formState?.zipCode || '',
+  set: (value) => handleFormUpdate('zipCode', value)
+});
+
+const country = computed({
+  get: () => _props.formState?.country || '',
+  set: (value) => handleFormUpdate('country', value)
+});
+
+const salary = computed({
+  get: () => _props.formState?.salary || 0,
+  set: (value) => handleFormUpdate('salary', Number(value))
+});
+
+const employmentType = computed({
+  get: () => _props.formState?.employmentType || 'fullTime',
+  set: (value) => handleFormUpdate('employmentType', value)
+});
+
+const workLocation = computed({
+  get: () => _props.formState?.workLocation || 'office',
+  set: (value) => handleFormUpdate('workLocation', value)
+});
 
 // Utility functions
 const formatDate = (dateString: string) => {

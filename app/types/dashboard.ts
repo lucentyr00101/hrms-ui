@@ -33,7 +33,16 @@ export interface DashboardStats {
 
 export interface ChartData {
   labels: string[];
-  datasets: any[];
+  datasets: ChartDataset[];
+}
+
+interface ChartDataset {
+  label?: string;
+  data: number[];
+  borderColor?: string | string[];
+  backgroundColor?: string | string[];
+  tension?: number;
+  borderWidth?: number;
 }
 
 export interface DashboardChartData {
