@@ -119,6 +119,8 @@ This is an HRMS (Human Resources Management System) application with the followi
 - Eliminate duplication aggressively; extract shared layouts, composables, and helper utilities
 - Guard asynchronous flows and handle loading, success, and error states explicitly
 - Validate edge cases (empty datasets, long-running requests, permissions) before shipping features
+- Always refer to Nuxt UI documentation for component usage and props (https://ui.nuxt.com/docs/components)
+- Always fix typescript and linting errors after adding new code
 
 ## Available Scripts
 
