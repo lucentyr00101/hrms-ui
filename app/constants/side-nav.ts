@@ -13,6 +13,13 @@ export const navItems = [
     label: "Interviews",
     icon: "i-material-symbols:3p-rounded",
     to: "/interviews",
+    children: [
+      {
+        label: "Candidates",
+        icon: "i-material-symbols:person-search",
+        to: "/interviews/candidates",
+      }
+    ]
   },
 ];
 
