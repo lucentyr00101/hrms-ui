@@ -1,184 +1,215 @@
 <template>
-  <div>
-    <div class="space-y-6">
-      <div class="p-4 bg-blue-100 rounded">
-        <h2>🐛 DEBUG INFO:</h2>
-        <p>Total employees: {{ employees.length }}</p>
-        <p>All filtered: {{ allFilteredEmployees.length }}</p>
-        <p>Filtered employees: {{ filteredEmployees.length }}</p>
-        <p>View mode: {{ viewMode }}</p>
-        <p>Current page: {{ currentPage }}</p>
-        <p>Total pages: {{ totalPages }}</p>
+  <div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+          Employees
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Manage your organization's employees and their information.
+        </p>
       </div>
+      <div class="text-sm text-gray-500 dark:text-gray-400">
+        {{ allFilteredEmployees.length }} {{ allFilteredEmployees.length === 1 ? 'employee' : 'employees' }} found
+        {{ totalPages > 1 ? `(Page ${currentPage} of ${totalPages})` : '' }}
+      </div>
+    </div>
 
-      <EmployeesPageHeader
-        :employee-count="allFilteredEmployees.length"
-        :current-page="currentPage"
-        :total-pages="totalPages"
+    <!-- Filters and Search -->
+    <EmployeeFilters
+      :view-mode="viewMode"
+      @search="handleSearch"
+      @filter-change="handleFilterChange"
+      @view-change="handleViewChange"
+      @add-employee="handleAddEmployee"
+    />
+
+    <!-- Employee Directory Content -->
+    <div v-if="allFilteredEmployees.length > 0">
+      <!-- Card View -->
+      <EmployeeCardView
+        v-if="viewMode === 'card'"
+        :employees="filteredEmployees"
+        @view-profile="handleViewProfile"
+        @edit-employee="handleEditEmployee"
+        @archive-employee="handleArchiveEmployee"
       />
 
-      <EmployeeFilters
-        :view-mode="viewMode"
-        @search="handleSearch"
-        @filter-change="handleFilterChange"
-        @view-change="handleViewChange"
-        @add-employee="handleAddEmployee"
+      <!-- Table View -->
+      <EmployeeTableView
+        v-else
+        :employees="filteredEmployees"
+        @view-profile="handleViewProfile"
+        @edit-employee="handleEditEmployee"
+        @archive-employee="handleArchiveEmployee"
       />
 
-      <!-- TEST: Inline v-for directly in page -->
-      <div class="p-4 bg-orange-100 rounded">
-        <h3>🧪 INLINE TEST: Direct v-for in page template ({{ filteredEmployees.length }} employees)</h3>
-        <div class="mt-2">
-          <div v-for="employee in filteredEmployees" :key="employee.id" class="p-2 border mb-2 bg-white rounded">
-            <strong>{{ employee.firstName }} {{ employee.lastName }}</strong> - {{ employee.position }}
-            <br>
-            <small>ID: {{ employee.id }} | Dept: {{ employee.department }}</small>
-          </div>
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="text-sm text-gray-700 dark:text-gray-300">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+          {{ Math.min(currentPage * itemsPerPage, allFilteredEmployees.length) }} 
+          of {{ allFilteredEmployees.length }} employees
         </div>
-        <div v-if="!filteredEmployees || filteredEmployees.length === 0" class="text-red-500">
-          No employees to display inline
-        </div>
-      </div>
-
-      <!-- Employee Directory Content -->
-      <div v-if="allFilteredEmployees.length > 0" class="border-2 border-green-500 p-4 rounded">
-        <h3>✅ This section should show when employees.length > 0</h3>
         
-        <!-- Card View -->
-        <div v-if="viewMode === 'card'" class="border border-blue-500 p-2 rounded mb-4">
-          <h4>🃏 Card View Section ({{ filteredEmployees.length }} employees)</h4>
-          
-          <!-- WORKING Implementation - Only render when mounted -->
-          <div v-if="isMounted" class="mb-4 p-4 border border-green-500 rounded">
-            <h5>✅ WORKING Implementation (isMounted: {{ isMounted }}):</h5>
-            <WorkingEmployeeCards
-              :employees="filteredEmployees"
-              @view-profile="handleViewProfile"
-              @edit-employee="handleEditEmployee"
-              @archive-employee="handleArchiveEmployee"
-            />
-          </div>
-          <div v-else class="mb-4 p-4 border border-gray-300 rounded">
-            <div class="flex items-center justify-center py-8">
-              <div class="text-center">
-                <div class="w-8 h-8 animate-spin border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
-                <p class="text-gray-600">Loading employees...</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- MINIMAL TEST - Absolutely basic -->
-          <div class="mb-4 p-4 border border-red-500 rounded">
-            <h5>🔬 MINIMAL TEST (isMounted: {{ isMounted }}):</h5>
-            <div v-if="isMounted">
-              <MinimalEmployeeTest :employees="filteredEmployees" />
-            </div>
-            <div v-else class="text-gray-500">Waiting for mount...</div>
-          </div>
-        </div>
-
-        <!-- Table View -->
-        <div v-else class="border border-purple-500 p-2 rounded mb-4">
-          <h4>📊 Table View Section</h4>
-          <EmployeeTableView
-            :employees="filteredEmployees"
-            @view-profile="handleViewProfile"
-            @edit-employee="handleEditEmployee"
-            @archive-employee="handleArchiveEmployee"
-          />
-        </div>
-
-        <EmployeesPagination
-          :current-page="currentPage"
-          :total-pages="totalPages"
-          :items-per-page="itemsPerPage"
-          :total-items="allFilteredEmployees.length"
-          @page-change="handlePageChange"
-        />
-      </div>
-
-      <!-- Empty State -->
-      <div v-else class="border-2 border-red-500 p-4 rounded">
-        <h3>❌ Empty State (showing because allFilteredEmployees.length = {{ allFilteredEmployees.length }})</h3>
-        <EmployeesEmptyState
-          :has-filters-applied="hasFilters"
-          @clear-filters="clearFilters"
-          @add-employee="handleAddEmployee"
+        <UPagination
+          v-model="currentPage"
+          :page-count="totalPages"
+          :total="allFilteredEmployees.length"
+          :ui="{
+            wrapper: 'flex items-center gap-1',
+            rounded: '!rounded-full min-w-[32px] justify-center',
+            default: {
+              activeButton: {
+                variant: 'outline'
+              }
+            }
+          }"
         />
       </div>
     </div>
 
-    <!-- Offboarding Modal -->
-    <EmployeeOffboardingModal 
-      v-if="selectedEmployeeForArchive"
-      v-model="showOffboardingModal"
-      :employee="selectedEmployeeForArchive"
-      @archived="handleEmployeeArchived"
-    />
+    <!-- Empty State -->
+    <div 
+      v-else
+      class="text-center py-12"
+    >
+      <UIcon name="i-material-symbols:person-off" class="w-16 h-16 mx-auto text-gray-400 mb-4" />
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+        {{ hasFilters ? 'No employees found' : 'No employees yet' }}
+      </h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">
+        {{ searchQuery || hasFilters 
+          ? 'Try adjusting your search query or filters.' 
+          : 'Get started by adding your first employee.' 
+        }}
+      </p>
+      <div class="flex justify-center gap-3">
+        <UButton
+          v-if="searchQuery || hasFilters"
+          color="gray"
+          variant="outline"
+          @click="clearFilters"
+        >
+          Clear Filters
+        </UButton>
+        <UButton 
+          color="primary"
+          @click="handleAddEmployee"
+        >
+          <UIcon name="i-material-symbols:person-add" class="w-4 h-4 mr-2" />
+          Add Employee
+        </UButton>
+      </div>
+    </div>
   </div>
+
+  <!-- Offboarding Modal -->
+  <EmployeeOffboardingModal 
+    v-if="selectedEmployeeForArchive"
+    v-model="showOffboardingModal"
+    :employee="selectedEmployeeForArchive"
+    @archived="handleEmployeeArchived"
+  />
 </template>
 
 <script setup lang="ts">
-import type { Employee } from '~/types';
-import { DUMMY_EMPLOYEES } from '~/constants/EMPLOYEE_DATA';
+import { DUMMY_EMPLOYEES, type Employee } from '~/constants/EMPLOYEE_DATA';
+import EmployeeFilters from '~/components/employees/EmployeeFilters.vue';
+import EmployeeCardView from '~/components/employees/EmployeeCardView.vue';
+import EmployeeTableView from '~/components/employees/EmployeeTableView.vue';
+import EmployeeOffboardingModal from '~/components/employees/EmployeeOffboardingModal.vue';
 
-console.log('🔥 SCRIPT SETUP RUNNING');
-
-// Fix the hydration mismatch by using a mounted flag
-const isMounted = ref(false);
-const employees = ref<Employee[]>([]);
+// Reactive data
 const viewMode = ref<'card' | 'table'>('card');
+const searchQuery = ref('');
+const departmentFilter = ref<string | undefined>(undefined);
+const statusFilter = ref<string | undefined>(undefined);
+
+// Pagination
 const currentPage = ref(1);
 const itemsPerPage = ref(6);
 
-// Use onMounted to avoid hydration mismatch
-onMounted(() => {
-  console.log('🔥 MOUNTED: Setting employees data and mounted flag');
-  employees.value = DUMMY_EMPLOYEES;
-  isMounted.value = true; // This is the key fix!
-  console.log('🔥 MOUNTED: employees.value.length =', employees.value.length);
-});
+// Load employees data
+const employees = ref<Employee[]>(DUMMY_EMPLOYEES);
 
-// Simple computed properties - but only return data if mounted
+// Computed properties
 const allFilteredEmployees = computed(() => {
-  if (!isMounted.value) {
-    console.log('🔥 COMPUTED allFilteredEmployees: Not mounted yet, returning empty');
-    return [];
+  let filtered = employees.value;
+  
+  // Apply search filter
+  if (searchQuery.value && searchQuery.value.trim()) {
+    const query = searchQuery.value.trim().toLowerCase();
+    filtered = filtered.filter(emp => {
+      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
+      const searchFields = [
+        fullName,
+        emp.firstName.toLowerCase(),
+        emp.lastName.toLowerCase(),
+        emp.email.toLowerCase(),
+        emp.position.toLowerCase(),
+        emp.department.toLowerCase(),
+        emp.employeeId.toLowerCase(),
+        emp.phone.replace(/\D/g, '')
+      ];
+      
+      return searchFields.some(field => field.includes(query));
+    });
   }
-  console.log('🔥 COMPUTED allFilteredEmployees running, length:', employees.value.length);
-  return employees.value;
+  
+  // Apply department filter
+  if (departmentFilter.value) {
+    filtered = filtered.filter(emp => emp.department === departmentFilter.value);
+  }
+  
+  // Apply status filter
+  if (statusFilter.value) {
+    filtered = filtered.filter(emp => emp.status === statusFilter.value);
+  }
+  
+  return filtered;
 });
 
 const filteredEmployees = computed(() => {
-  if (!isMounted.value) {
-    console.log('🔥 COMPUTED filteredEmployees: Not mounted yet, returning empty');
-    return [];
-  }
   const start = (currentPage.value - 1) * itemsPerPage.value;
   const end = start + itemsPerPage.value;
-  const result = allFilteredEmployees.value.slice(start, end);
-  console.log('🔥 COMPUTED filteredEmployees running, result length:', result.length);
-  return result;
+  return allFilteredEmployees.value.slice(start, end);
 });
 
-const totalPages = computed(() => Math.ceil(allFilteredEmployees.value.length / itemsPerPage.value));
-const hasFilters = ref(false);
+const totalPages = computed(() => 
+  Math.ceil(allFilteredEmployees.value.length / itemsPerPage.value)
+);
 
-// Simple handlers
+const hasFilters = computed(() => {
+  return departmentFilter.value || statusFilter.value || (searchQuery.value && searchQuery.value.trim());
+});
+
+// Event handlers
 const handleSearch = (query: string) => {
-  console.log('Search:', query);
+  searchQuery.value = query;
+  currentPage.value = 1; // Reset to first page when searching
 };
-const handleFilterChange = (filters: any) => {
-  console.log('Filter change:', filters);
+
+const handleFilterChange = (filters: { department?: string; status?: string }) => {
+  departmentFilter.value = filters.department;
+  statusFilter.value = filters.status;
+  currentPage.value = 1; // Reset to first page when filtering
 };
+
 const handleViewChange = (mode: 'card' | 'table') => {
   viewMode.value = mode;
 };
+
 const handlePageChange = (page: number) => {
   currentPage.value = page;
 };
+
 const clearFilters = () => {
-  console.log('Clear filters');
+  searchQuery.value = '';
+  departmentFilter.value = undefined;
+  statusFilter.value = undefined;
+  currentPage.value = 1; // Reset to first page when clearing filters
 };
 
 // Navigation handlers
