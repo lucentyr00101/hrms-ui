@@ -25,11 +25,18 @@
         @add-employee="handleAddEmployee"
       />
 
-      <!-- TEST: Simple employee list -->
-      <div class="p-4 bg-yellow-100 rounded">
-        <h3>🧪 TEST: Direct Employee List ({{ filteredEmployees.length }} employees)</h3>
-        <div v-for="emp in filteredEmployees" :key="emp.id" class="p-2 border mb-2">
-          {{ emp.firstName }} {{ emp.lastName }} - {{ emp.position }}
+      <!-- TEST: Inline v-for directly in page -->
+      <div class="p-4 bg-orange-100 rounded">
+        <h3>🧪 INLINE TEST: Direct v-for in page template ({{ filteredEmployees.length }} employees)</h3>
+        <div class="mt-2">
+          <div v-for="employee in filteredEmployees" :key="employee.id" class="p-2 border mb-2 bg-white rounded">
+            <strong>{{ employee.firstName }} {{ employee.lastName }}</strong> - {{ employee.position }}
+            <br>
+            <small>ID: {{ employee.id }} | Dept: {{ employee.department }}</small>
+          </div>
+        </div>
+        <div v-if="!filteredEmployees || filteredEmployees.length === 0" class="text-red-500">
+          No employees to display inline
         </div>
       </div>
 
@@ -40,6 +47,12 @@
         <!-- Card View -->
         <div v-if="viewMode === 'card'" class="border border-blue-500 p-2 rounded mb-4">
           <h4>🃏 Card View Section ({{ filteredEmployees.length }} employees)</h4>
+          
+          <!-- MINIMAL TEST - Absolutely basic -->
+          <div class="mb-4 p-4 border border-red-500 rounded">
+            <h5>🔬 MINIMAL TEST (Absolutely Basic):</h5>
+            <MinimalEmployeeTest :employees="filteredEmployees" />
+          </div>
           
           <!-- FIXED Implementation with ClientOnly -->
           <div class="mb-4 p-4 border border-red-300 rounded">
@@ -64,22 +77,6 @@
               <strong>First employee preview:</strong> {{ filteredEmployees?.[0]?.firstName }} {{ filteredEmployees?.[0]?.lastName }}
             </div>
             <SimpleEmployeeCardView
-              :employees="filteredEmployees"
-              @view-profile="handleViewProfile"
-              @edit-employee="handleEditEmployee"
-              @archive-employee="handleArchiveEmployee"
-            />
-          </div>
-          
-          <div class="mb-4 p-4 border border-yellow-300 rounded">
-            <h5>🟡 Test Implementation:</h5>
-            <TestEmployeeCardView :employees="filteredEmployees" />
-          </div>
-          
-          <!-- Try the original component -->
-          <div class="mt-4 p-4 border border-purple-300 rounded">
-            <h5>🧪 Original EmployeeCardView (with UCard):</h5>
-            <EmployeeCardView
               :employees="filteredEmployees"
               @view-profile="handleViewProfile"
               @edit-employee="handleEditEmployee"
