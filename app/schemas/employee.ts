@@ -1,4 +1,4 @@
-import { object, string, number, date, type InferType } from "yup";
+import { object, string, number, type InferType } from "yup";
 
 export const employeeInfoSchema = object({
   firstName: string().required("First name is required"),

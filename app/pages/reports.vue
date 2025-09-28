@@ -1,20 +1,21 @@
 <template>
   <div class="space-y-6">
-    <div>
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-        Reports
-      </h1>
-      <p class="text-gray-600 dark:text-gray-400">
-        View analytics and reports for your HRMS data.
-      </p>
-    </div>
+    <PageHeader
+      title="Reports"
+      description="View analytics and reports for your HRMS data."
+    />
 
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-      <div class="text-center py-12">
-        <UIcon name="i-material-symbols:analytics" class="w-16 h-16 mx-auto text-gray-400 mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Reports coming soon</h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">Advanced reporting features are being developed.</p>
-      </div>
-    </div>
+    <EmptyState
+      icon="i-material-symbols:analytics"
+      title="Reports coming soon"
+      description="Advanced reporting features are being developed."
+      button-text="View Dashboard"
+      button-icon="i-material-symbols:dashboard"
+      @action="navigateTo('/dashboard')"
+    />
   </div>
 </template>
+
+<script setup lang="ts">
+// No additional logic needed for this page
+</script>

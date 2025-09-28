@@ -1,20 +1,21 @@
 <template>
   <div class="space-y-6">
-    <div>
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-        Settings
-      </h1>
-      <p class="text-gray-600 dark:text-gray-400">
-        Configure your HRMS application settings.
-      </p>
-    </div>
+    <PageHeader
+      title="Settings"
+      description="Configure your HRMS application settings."
+    />
 
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-      <div class="text-center py-12">
-        <UIcon name="i-material-symbols:settings" class="w-16 h-16 mx-auto text-gray-400 mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Settings panel coming soon</h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">System configuration options are being developed.</p>
-      </div>
-    </div>
+    <EmptyState
+      icon="i-material-symbols:settings"
+      title="Settings panel coming soon"
+      description="System configuration options are being developed."
+      button-text="Back to Dashboard"
+      button-icon="i-material-symbols:home"
+      @action="navigateTo('/dashboard')"
+    />
   </div>
 </template>
+
+<script setup lang="ts">
+// No additional logic needed for this page
+</script>

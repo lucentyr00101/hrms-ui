@@ -241,7 +241,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Employee } from '~/constants/EMPLOYEE_DATA';
+import type { Employee } from '~/types';
 import type { EmployeeInfoSchema } from '~/schemas/employee';
 import { employeeInfoSchema } from '~/schemas/employee';
 

@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Employee } from '~/constants/EMPLOYEE_DATA';
+import type { Employee } from '~/types';
 
 interface Props {
   employees: Employee[];

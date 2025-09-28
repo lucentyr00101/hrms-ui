@@ -156,7 +156,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ActivityItem } from '~/constants/EMPLOYEE_DATA';
+import type { ActivityItem } from '~/types';
 
 interface Props {
   employeeId: string;

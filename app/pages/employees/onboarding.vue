@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+  <div>
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
     <div class="max-w-4xl mx-auto px-4">
       <!-- Header -->
       <div class="text-center mb-8">
@@ -301,7 +302,7 @@
       <div class="flex justify-between items-center">
         <UButton 
           v-if="currentStep > 1"
-          color="gray" 
+          color="neutral" 
           variant="outline"
           @click="previousStep"
         >
@@ -312,7 +313,7 @@
 
         <div class="flex space-x-3">
           <UButton 
-            color="gray" 
+            color="neutral" 
             variant="outline" 
             @click="cancelOnboarding"
           >
@@ -321,8 +322,8 @@
           <UButton 
             v-if="currentStep < totalSteps"
             color="primary"
-            @click="nextStep"
             :disabled="!canProceed"
+            @click="nextStep"
           >
             Next
             <UIcon name="i-material-symbols:arrow-forward" class="w-4 h-4 ml-2" />
@@ -330,8 +331,8 @@
           <UButton 
             v-else
             color="primary"
-            @click="submitOnboarding"
             :loading="isSubmitting"
+            @click="submitOnboarding"
           >
             <UIcon name="i-material-symbols:person-add" class="w-4 h-4 mr-2" />
             Complete Onboarding
@@ -352,17 +353,50 @@
     icon-class="text-orange-500"
     confirm-label="Yes, Cancel"
     cancel-label="Continue"
-    confirm-color="orange"
+    confirm-color="warning"
     @confirm="confirmCancel"
     @close="showCancelModal = false"
   />
+  </div>
 </template>
 
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui';
 import { object, string, number } from 'yup';
-import { DEPARTMENTS } from '~/constants/EMPLOYEE_DATA';
+import { DEPARTMENTS } from '~/types/constants';
 import ConfirmModal from '~/components/ui/ConfirmModal.vue';
+
+type StepKey = 'personal' | 'employment' | 'documents' | 'review';
+type EmploymentType = 'fullTime' | 'partTime' | 'contractor';
+type WorkLocation = 'office' | 'remote' | 'hybrid';
+type RequiredDocumentKey = 'identification' | 'contract' | 'taxForms' | 'emergencyContact';
+
+interface OnboardingFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  employeeId: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  position: string;
+  department: string;
+  manager: string;
+  salary: number;
+  employmentType?: EmploymentType;
+  workLocation?: WorkLocation;
+}
+
+type Step = {
+  key: StepKey;
+  title: string;
+  description: string;
+  icon: string;
+};
 
 // Page meta
 definePageMeta({
@@ -394,14 +428,8 @@ const employmentInfoSchema = object({
   workLocation: string().oneOf(['office', 'remote', 'hybrid'], 'Invalid work location').required('Work location is required')
 });
 
-// Reactive state
-const currentStep = ref(1);
-const totalSteps = 4;
-const isSubmitting = ref(false);
-const showCancelModal = ref(false);
-
 // Form data - reactive state for UForm
-const formData = reactive({
+const formData = reactive<OnboardingFormData>({
   firstName: '',
   lastName: '',
   email: '',
@@ -417,12 +445,12 @@ const formData = reactive({
   department: '',
   manager: '',
   salary: 0,
-  employmentType: '',
-  workLocation: ''
+  employmentType: undefined,
+  workLocation: undefined
 });
 
 // Document checklist
-const documentChecklist = ref({
+const documentChecklist = ref<Record<RequiredDocumentKey, boolean>>({
   identification: false,
   contract: false,
   taxForms: false,
@@ -430,7 +458,7 @@ const documentChecklist = ref({
 });
 
 // Step configuration
-const steps = [
+const steps: Step[] = [
   { 
     key: 'personal', 
     title: 'Personal Information', 
@@ -458,23 +486,29 @@ const steps = [
 ];
 
 // Required documents
-const requiredDocuments = [
+const requiredDocuments: Array<{ key: RequiredDocumentKey; label: string }> = [
   { key: 'identification', label: 'Government ID / Passport' },
   { key: 'contract', label: 'Signed Employment Contract' },
   { key: 'taxForms', label: 'Tax Forms (W-4, etc.)' },
   { key: 'emergencyContact', label: 'Emergency Contact Information' }
 ];
 
+// Reactive state
+const totalSteps = steps.length;
+const currentStep = ref(1);
+const isSubmitting = ref(false);
+const showCancelModal = ref(false);
+
 // Select options
 const departmentOptions = DEPARTMENTS.map(dept => ({ label: dept, value: dept }));
 
-const employmentTypeOptions = [
+const employmentTypeOptions: Array<{ label: string; value: EmploymentType }> = [
   { label: 'Full Time', value: 'fullTime' },
   { label: 'Part Time', value: 'partTime' },
   { label: 'Contractor', value: 'contractor' }
 ];
 
-const workLocationOptions = [
+const workLocationOptions: Array<{ label: string; value: WorkLocation }> = [
   { label: 'Office', value: 'office' },
   { label: 'Remote', value: 'remote' },
   { label: 'Hybrid', value: 'hybrid' }
@@ -512,7 +546,10 @@ const canProceed = computed(() => {
 });
 
 // Methods
-const getCurrentStep = () => steps[currentStep.value - 1];
+const getCurrentStep = (): Step => {
+  const index = Math.min(Math.max(currentStep.value - 1, 0), steps.length - 1);
+  return steps[index]!;
+};
 
 const getCurrentStepIcon = () => getCurrentStep().icon;
 
@@ -526,12 +563,12 @@ const getStepStatusClass = (stepNumber: number) => {
   }
 };
 
-const getEmploymentTypeLabel = (value: string) => {
+const getEmploymentTypeLabel = (value: EmploymentType | undefined) => {
   const option = employmentTypeOptions.find(opt => opt.value === value);
-  return option?.label || value;
+  return option?.label ?? value ?? '';
 };
 
-const handleStepSubmit = async (event: FormSubmitEvent<any>) => {
+const handleStepSubmit = async (event: FormSubmitEvent<Record<string, unknown>>) => {
   // Form validation is handled automatically by UForm
   // If we get here, the form is valid
   console.log('Form data validated:', event.data);
