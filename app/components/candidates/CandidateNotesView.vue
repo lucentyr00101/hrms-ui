@@ -77,85 +77,87 @@
     </div>
 
     <!-- Add Note Modal -->
-    <UModal v-model="showAddNote">
-      <UCard>
-        <template #header>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Add Interview Note</h3>
-        </template>
+    <Teleport to="body">
+      <UModal v-model="showAddNote">
+        <UCard>
+          <template #header>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Add Interview Note</h3>
+          </template>
 
-        <form @submit.prevent="saveNote" class="space-y-4">
-          <!-- Stage Selection -->
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Interview Stage</label>
-            <USelectMenu
-              v-model="newNote.stage"
-              :options="stageOptions"
-              placeholder="Select stage"
-            />
-          </div>
-
-          <!-- Note Content -->
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
-            <UTextarea
-              v-model="newNote.content"
-              placeholder="Enter your interview notes..."
-              :rows="4"
-              required
-            />
-          </div>
-
-          <!-- Rating -->
-          <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Overall Rating (Optional)</label>
-            <div class="flex items-center space-x-2">
-              <div class="flex items-center space-x-1">
-                <button
-                  v-for="i in 5"
-                  :key="i"
-                  type="button"
-                  @click="newNote.rating = i"
-                  class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <UIcon 
-                    name="i-material-symbols:star"
-                    class="w-5 h-5"
-                    :class="i <= (newNote.rating || 0) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'"
-                  />
-                </button>
-              </div>
-              <span class="text-sm text-gray-600 dark:text-gray-400">
-                {{ newNote.rating ? `${newNote.rating}/5` : 'No rating' }}
-              </span>
-              <UButton
-                v-if="newNote.rating"
-                size="xs"
-                variant="ghost"
-                icon="i-material-symbols:close"
-                @click="newNote.rating = null"
+          <form @submit.prevent="saveNote" class="space-y-4">
+            <!-- Stage Selection -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Interview Stage</label>
+              <USelectMenu
+                v-model="newNote.stage"
+                :options="stageOptions"
+                placeholder="Select stage"
               />
             </div>
-          </div>
 
-          <!-- Actions -->
-          <div class="flex items-center justify-end space-x-3 pt-4">
-            <UButton
-              type="button"
-              variant="ghost"
-              @click="cancelAddNote"
-            >
-              Cancel
-            </UButton>
-            <UButton
-              type="submit"
-              :disabled="!newNote.content.trim() || !newNote.stage"
-            >
-              Save Note
-            </UButton>
-          </div>
-        </form>
-      </UCard>
-    </UModal>
+            <!-- Note Content -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
+              <UTextarea
+                v-model="newNote.content"
+                placeholder="Enter your interview notes..."
+                :rows="4"
+                required
+              />
+            </div>
+
+            <!-- Rating -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Overall Rating (Optional)</label>
+              <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-1">
+                  <button
+                    v-for="i in 5"
+                    :key="i"
+                    type="button"
+                    @click="newNote.rating = i"
+                    class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <UIcon 
+                      name="i-material-symbols:star"
+                      class="w-5 h-5"
+                      :class="i <= (newNote.rating || 0) ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'"
+                    />
+                  </button>
+                </div>
+                <span class="text-sm text-gray-600 dark:text-gray-400">
+                  {{ newNote.rating ? `${newNote.rating}/5` : 'No rating' }}
+                </span>
+                <UButton
+                  v-if="newNote.rating"
+                  size="xs"
+                  variant="ghost"
+                  icon="i-material-symbols:close"
+                  @click="newNote.rating = null"
+                />
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end space-x-3 pt-4">
+              <UButton
+                type="button"
+                variant="ghost"
+                @click="cancelAddNote"
+              >
+                Cancel
+              </UButton>
+              <UButton
+                type="submit"
+                :disabled="!newNote.content.trim() || !newNote.stage"
+              >
+                Save Note
+              </UButton>
+            </div>
+          </form>
+        </UCard>
+      </UModal>
+    </Teleport>
   </UCard>
 </template>
 
@@ -182,6 +184,11 @@ const emit = defineEmits<{
 }>();
 
 const showAddNote = ref(false);
+
+// Ensure modal is closed on mount
+onMounted(() => {
+  showAddNote.value = false;
+});
 
 // Mock current user - in a real app, this would come from auth
 const currentUser = 'Sarah Johnson';
@@ -223,13 +230,13 @@ const stageOptions = [
 
 const getStageColor = (stage: InterviewStage) => {
   const colors: Record<InterviewStage, string> = {
-    applied: 'blue',
-    screening: 'yellow',
-    technical: 'orange',
-    final: 'purple',
-    offer: 'green',
-    hired: 'emerald',
-    rejected: 'red'
+    applied: 'primary',
+    screening: 'warning', 
+    technical: 'info',
+    final: 'secondary',
+    offer: 'success',
+    hired: 'success',
+    rejected: 'error'
   };
   return colors[stage] || 'gray';
 };

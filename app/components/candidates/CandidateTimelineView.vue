@@ -33,11 +33,7 @@
           <UIcon 
             :name="getStageIcon(stage.key, stage.completed, stage.current)"
             class="w-4 h-4"
-            :class="{
-              'text-green-600 dark:text-green-400': stage.completed,
-              'text-primary-600 dark:text-primary-400': stage.current && !stage.completed,
-              'text-gray-400 dark:text-gray-500': !stage.current && !stage.completed
-            }"
+            :class="getIconClass(stage)"
           />
         </div>
 
@@ -76,8 +72,8 @@
             <!-- Stage Badge -->
             <UBadge 
               v-if="stage.current || stage.completed"
-              :color="stage.completed ? 'green' : 'primary'"
-              :label="stage.completed ? 'Completed' : 'Current'"
+              :color="getStageColor(stage)"
+              :label="getStageLabel(stage)"
               size="xs"
             />
           </div>
@@ -220,6 +216,14 @@ const getStageDetails = (stage: InterviewStage) => {
 };
 
 const getStageIcon = (stage: InterviewStage, completed: boolean, current: boolean) => {
+  // For rejected candidates, show cross marks for completed/current stages
+  if (props.candidate.interviewStage === 'rejected') {
+    if (completed || current) {
+      return 'i-material-symbols:cancel';
+    }
+  }
+  
+  // Normal flow
   if (completed) {
     return 'i-material-symbols:check';
   }
@@ -227,6 +231,52 @@ const getStageIcon = (stage: InterviewStage, completed: boolean, current: boolea
     return 'i-material-symbols:cancel';
   }
   return stageConfig[stage].icon;
+};
+
+// Helper functions for stage colors and labels
+const getStageColor = (stage: any) => {
+  if (props.candidate.interviewStage === 'rejected') {
+    if (stage.current || stage.completed) {
+      return 'error'; // Use semantic error color for rejected stages
+    }
+  }
+  
+  // Normal flow for non-rejected candidates
+  if (stage.completed) return 'success';
+  if (stage.current) return 'primary';
+  return 'gray';
+};
+
+const getStageLabel = (stage: any) => {
+  if (props.candidate.interviewStage === 'rejected') {
+    if (stage.current) {
+      return 'Rejected';
+    } else if (stage.completed) {
+      return 'Rejected';
+    }
+  }
+  
+  // Normal flow for non-rejected candidates  
+  if (stage.completed) return 'Completed';
+  if (stage.current) return 'Current';
+  return '';
+};
+
+const getIconClass = (stage: any) => {
+  if (props.candidate.interviewStage === 'rejected') {
+    if (stage.current || stage.completed) {
+      return 'text-red-600 dark:text-red-400';
+    }
+  }
+  
+  // Normal flow for non-rejected candidates
+  if (stage.completed) {
+    return 'text-green-600 dark:text-green-400';
+  }
+  if (stage.current) {
+    return 'text-primary-600 dark:text-primary-400';
+  }
+  return 'text-gray-400 dark:text-gray-500';
 };
 
 const formatDate = (dateString: string) => {

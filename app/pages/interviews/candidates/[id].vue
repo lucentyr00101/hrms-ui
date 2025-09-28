@@ -204,13 +204,13 @@ const candidate = ref<Candidate | null>(
 // Helper functions for badges
 const getStageColor = (stage: InterviewStage) => {
   const colors: Record<InterviewStage, string> = {
-    applied: 'blue',
-    screening: 'yellow',
-    technical: 'orange',
-    final: 'purple',
-    offer: 'green',
-    hired: 'emerald',
-    rejected: 'red'
+    applied: 'primary',
+    screening: 'warning', 
+    technical: 'info',
+    final: 'secondary',
+    offer: 'success',
+    hired: 'success',
+    rejected: 'error'
   };
   return colors[stage] || 'gray';
 };
@@ -230,12 +230,12 @@ const getStageLabel = (stage: InterviewStage) => {
 
 const getStatusColor = (status: CandidateStatus) => {
   const colors: Record<CandidateStatus, string> = {
-    active: 'green',
-    scheduled: 'blue',
-    completed: 'purple',
-    rejected: 'red',
+    active: 'success',
+    scheduled: 'info',
+    completed: 'secondary',
+    rejected: 'error',
     withdrawn: 'gray',
-    hired: 'emerald'
+    hired: 'success'
   };
   return colors[status] || 'gray';
 };
