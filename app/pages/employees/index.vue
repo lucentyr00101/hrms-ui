@@ -41,6 +41,17 @@
         <div v-if="viewMode === 'card'" class="border border-blue-500 p-2 rounded mb-4">
           <h4>🃏 Card View Section ({{ filteredEmployees.length }} employees)</h4>
           
+          <!-- FIXED Implementation with ClientOnly -->
+          <div class="mb-4 p-4 border border-red-300 rounded">
+            <h5>🔴 FIXED Implementation (with ClientOnly):</h5>
+            <FixedEmployeeCardView
+              :employees="filteredEmployees"
+              @view-profile="handleViewProfile"
+              @edit-employee="handleEditEmployee"
+              @archive-employee="handleArchiveEmployee"
+            />
+          </div>
+          
           <!-- Test with simple implementation -->
           <div class="mb-4 p-4 border border-green-300 rounded">
             <h5>🟢 Simple Implementation (no UCard):</h5>
@@ -123,24 +134,19 @@ import type { Employee } from '~/types';
 import { DUMMY_EMPLOYEES } from '~/constants/EMPLOYEE_DATA';
 
 console.log('🔥 SCRIPT SETUP RUNNING');
-console.log('🔥 DUMMY_EMPLOYEES imported:', DUMMY_EMPLOYEES.length);
 
-// Initialize with nextTick to ensure reactivity
+// Fix hydration mismatch by ensuring client-side only initialization
 const employees = ref<Employee[]>([]);
 const viewMode = ref<'card' | 'table'>('card');
 const currentPage = ref(1);
 const itemsPerPage = ref(6);
 
-// Force reactive assignment
-nextTick(() => {
-  console.log('🔥 NEXTTICK: Setting employees data');
-  employees.value = [...DUMMY_EMPLOYEES];
-  console.log('🔥 NEXTTICK: employees.value.length =', employees.value.length);
+// Use onMounted to avoid hydration mismatch
+onMounted(() => {
+  console.log('🔥 MOUNTED: Setting employees data to avoid hydration mismatch');
+  employees.value = DUMMY_EMPLOYEES;
+  console.log('🔥 MOUNTED: employees.value.length =', employees.value.length);
 });
-
-// Immediate assignment as well
-employees.value = DUMMY_EMPLOYEES;
-console.log('🔥 IMMEDIATE: employees.value.length =', employees.value.length);
 
 // Simple computed properties
 const allFilteredEmployees = computed(() => {
