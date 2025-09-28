@@ -48,40 +48,32 @@
         <div v-if="viewMode === 'card'" class="border border-blue-500 p-2 rounded mb-4">
           <h4>🃏 Card View Section ({{ filteredEmployees.length }} employees)</h4>
           
+          <!-- WORKING Implementation - Only render when mounted -->
+          <div v-if="isMounted" class="mb-4 p-4 border border-green-500 rounded">
+            <h5>✅ WORKING Implementation (isMounted: {{ isMounted }}):</h5>
+            <WorkingEmployeeCards
+              :employees="filteredEmployees"
+              @view-profile="handleViewProfile"
+              @edit-employee="handleEditEmployee"
+              @archive-employee="handleArchiveEmployee"
+            />
+          </div>
+          <div v-else class="mb-4 p-4 border border-gray-300 rounded">
+            <div class="flex items-center justify-center py-8">
+              <div class="text-center">
+                <div class="w-8 h-8 animate-spin border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+                <p class="text-gray-600">Loading employees...</p>
+              </div>
+            </div>
+          </div>
+          
           <!-- MINIMAL TEST - Absolutely basic -->
           <div class="mb-4 p-4 border border-red-500 rounded">
-            <h5>🔬 MINIMAL TEST (Absolutely Basic):</h5>
-            <MinimalEmployeeTest :employees="filteredEmployees" />
-          </div>
-          
-          <!-- FIXED Implementation with ClientOnly -->
-          <div class="mb-4 p-4 border border-red-300 rounded">
-            <h5>🔴 FIXED Implementation (with ClientOnly):</h5>
-            <FixedEmployeeCardView
-              :employees="filteredEmployees"
-              @view-profile="handleViewProfile"
-              @edit-employee="handleEditEmployee"
-              @archive-employee="handleArchiveEmployee"
-            />
-          </div>
-          
-          <!-- Test with simple implementation -->
-          <div class="mb-4 p-4 border border-green-300 rounded">
-            <h5>🟢 Simple Implementation (no UCard):</h5>
-            <div class="p-2 bg-gray-50 rounded text-sm mb-2">
-              <strong>Passing to SimpleEmployeeCardView:</strong>
-              {{ filteredEmployees?.length || 0 }} employees
-              <br>
-              <strong>Type:</strong> {{ Array.isArray(filteredEmployees) ? 'Array' : typeof filteredEmployees }}
-              <br>
-              <strong>First employee preview:</strong> {{ filteredEmployees?.[0]?.firstName }} {{ filteredEmployees?.[0]?.lastName }}
+            <h5>🔬 MINIMAL TEST (isMounted: {{ isMounted }}):</h5>
+            <div v-if="isMounted">
+              <MinimalEmployeeTest :employees="filteredEmployees" />
             </div>
-            <SimpleEmployeeCardView
-              :employees="filteredEmployees"
-              @view-profile="handleViewProfile"
-              @edit-employee="handleEditEmployee"
-              @archive-employee="handleArchiveEmployee"
-            />
+            <div v-else class="text-gray-500">Waiting for mount...</div>
           </div>
         </div>
 
@@ -132,7 +124,8 @@ import { DUMMY_EMPLOYEES } from '~/constants/EMPLOYEE_DATA';
 
 console.log('🔥 SCRIPT SETUP RUNNING');
 
-// Fix hydration mismatch by ensuring client-side only initialization
+// Fix the hydration mismatch by using a mounted flag
+const isMounted = ref(false);
 const employees = ref<Employee[]>([]);
 const viewMode = ref<'card' | 'table'>('card');
 const currentPage = ref(1);
@@ -140,18 +133,27 @@ const itemsPerPage = ref(6);
 
 // Use onMounted to avoid hydration mismatch
 onMounted(() => {
-  console.log('🔥 MOUNTED: Setting employees data to avoid hydration mismatch');
+  console.log('🔥 MOUNTED: Setting employees data and mounted flag');
   employees.value = DUMMY_EMPLOYEES;
+  isMounted.value = true; // This is the key fix!
   console.log('🔥 MOUNTED: employees.value.length =', employees.value.length);
 });
 
-// Simple computed properties
+// Simple computed properties - but only return data if mounted
 const allFilteredEmployees = computed(() => {
+  if (!isMounted.value) {
+    console.log('🔥 COMPUTED allFilteredEmployees: Not mounted yet, returning empty');
+    return [];
+  }
   console.log('🔥 COMPUTED allFilteredEmployees running, length:', employees.value.length);
   return employees.value;
 });
 
 const filteredEmployees = computed(() => {
+  if (!isMounted.value) {
+    console.log('🔥 COMPUTED filteredEmployees: Not mounted yet, returning empty');
+    return [];
+  }
   const start = (currentPage.value - 1) * itemsPerPage.value;
   const end = start + itemsPerPage.value;
   const result = allFilteredEmployees.value.slice(start, end);
