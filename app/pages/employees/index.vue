@@ -44,6 +44,14 @@
           <!-- Test with simple implementation -->
           <div class="mb-4 p-4 border border-green-300 rounded">
             <h5>🟢 Simple Implementation (no UCard):</h5>
+            <div class="p-2 bg-gray-50 rounded text-sm mb-2">
+              <strong>Passing to SimpleEmployeeCardView:</strong>
+              {{ filteredEmployees?.length || 0 }} employees
+              <br>
+              <strong>Type:</strong> {{ Array.isArray(filteredEmployees) ? 'Array' : typeof filteredEmployees }}
+              <br>
+              <strong>First employee preview:</strong> {{ filteredEmployees?.[0]?.firstName }} {{ filteredEmployees?.[0]?.lastName }}
+            </div>
             <SimpleEmployeeCardView
               :employees="filteredEmployees"
               @view-profile="handleViewProfile"
@@ -52,7 +60,10 @@
             />
           </div>
           
-          <TestEmployeeCardView :employees="filteredEmployees" />
+          <div class="mb-4 p-4 border border-yellow-300 rounded">
+            <h5>🟡 Test Implementation:</h5>
+            <TestEmployeeCardView :employees="filteredEmployees" />
+          </div>
           
           <!-- Try the original component -->
           <div class="mt-4 p-4 border border-purple-300 rounded">
