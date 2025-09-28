@@ -65,6 +65,7 @@
 
 <script setup lang="ts">
 import type { Employee } from '~/types';
+import { useEmployees } from '~/composables/useEmployees';
 
 // Use the employees composable
 const {
@@ -81,6 +82,11 @@ const {
   handlePageChange,
   clearFilters,
 } = useEmployees();
+
+// Debug: Log the employees data
+console.log('🐛 DEBUG: allFilteredEmployees.value.length:', allFilteredEmployees.value.length);
+console.log('🐛 DEBUG: filteredEmployees.value:', filteredEmployees.value);
+console.log('🐛 DEBUG: viewMode.value:', viewMode.value);
 
 // Navigation handlers
 const handleAddEmployee = () => {

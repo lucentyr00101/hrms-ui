@@ -8,10 +8,10 @@ interface NotificationItem {
   type: 'info' | 'warning' | 'success' | 'error';
 }
 
-const isSearchOpen = ref(false);
+const _isSearchOpen = ref(false);
 const searchQuery = ref('');
-const showNotifications = ref(false);
-const showUserMenu = ref(false);
+const _showNotifications = ref(false);
+const _showUserMenu = ref(false);
 
 // Mock notifications data
 const notifications = ref<NotificationItem[]>([
@@ -54,14 +54,14 @@ const handleSearch = () => {
   }
 };
 
-const markAsRead = (id: string) => {
+const _markAsRead = (id: string) => {
   const notification = notifications.value.find(n => n.id === id);
   if (notification) {
     notification.read = true;
   }
 };
 
-const markAllAsRead = () => {
+const _markAllAsRead = () => {
   notifications.value.forEach(n => n.read = true);
 };
 

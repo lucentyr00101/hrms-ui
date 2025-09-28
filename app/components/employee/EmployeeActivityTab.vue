@@ -29,7 +29,7 @@
         <!-- Timeline items -->
         <div class="space-y-6">
           <div
-            v-for="(activity, index) in filteredActivities"
+            v-for="activity in filteredActivities"
             :key="activity.id"
             class="relative flex items-start space-x-4"
           >

@@ -67,7 +67,7 @@ const chartOptions = {
     },
     tooltip: {
       callbacks: {
-        label: function(context: any) {
+        label: function(context: { label: string; parsed: number }) {
           return `${context.label}: ${context.parsed}%`;
         }
       }

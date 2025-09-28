@@ -141,16 +141,12 @@
       <UForm v-if="isEditMode && formState" :schema="employeeInfoSchema" :state="formState" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <UFormField label="Position" name="position">
-            <UInput 
-              v-model="formState.position"
-              @input="handleFormUpdate('position', $event.target.value)"
-            />
+            <UInput v-model="position" />
           </UFormField>
           <UFormField label="Department" name="department">
             <USelectMenu
-              v-model="formState.department"
+              v-model="department"
               :options="departmentOptions"
-              @change="handleFormUpdate('department', $event)"
             />
           </UFormField>
           <UFormField label="Manager" name="manager">

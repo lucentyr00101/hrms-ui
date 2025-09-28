@@ -2,6 +2,9 @@ import { DUMMY_EMPLOYEES } from '~/constants/EMPLOYEE_DATA';
 import type { Employee, ViewMode } from '~/types';
 
 export function useEmployees() {
+  console.log('🐛 DEBUG: useEmployees called');
+  console.log('🐛 DEBUG: DUMMY_EMPLOYEES length:', DUMMY_EMPLOYEES.length);
+  
   // Reactive data
   const viewMode = ref<ViewMode>('card');
   const searchQuery = ref('');
@@ -14,6 +17,8 @@ export function useEmployees() {
   
   // Load employees data (in real app, this would come from an API)
   const employees = ref<Employee[]>(DUMMY_EMPLOYEES);
+  
+  console.log('🐛 DEBUG: employees.value length:', employees.value.length);
   
   // Computed properties
   const allFilteredEmployees = computed(() => {
