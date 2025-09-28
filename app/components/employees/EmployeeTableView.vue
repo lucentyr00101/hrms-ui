@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Employee } from '~/constants/EMPLOYEE_DATA';
+import type { Employee } from '~/types';
 
 interface Props {
   employees: Employee[];
@@ -154,7 +154,7 @@ interface Props {
 
 defineProps<Props>();
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   'view-profile': [employee: Employee];
   'edit-employee': [employee: Employee];
   'archive-employee': [employee: Employee];

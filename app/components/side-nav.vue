@@ -5,7 +5,7 @@ interface Props {
   collapsed?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const _props = withDefaults(defineProps<Props>(), {
   collapsed: false
 });
 

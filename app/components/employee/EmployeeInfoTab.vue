@@ -12,42 +12,38 @@
       <UForm v-if="isEditMode && formState" :schema="employeeInfoSchema" :state="formState" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <UFormField label="First Name" name="firstName">
-            <UInput 
-              v-model="formState.firstName" 
-              @input="handleFormUpdate('firstName', $event.target.value)"
-            />
+            <UInput v-model="firstName" />
           </UFormField>
           <UFormField label="Last Name" name="lastName">
-            <UInput 
-              v-model="formState.lastName"
-              @input="handleFormUpdate('lastName', $event.target.value)"
-            />
+            <UInput v-model="lastName" />
           </UFormField>
           <UFormField label="Email" name="email">
-            <UInput 
-              v-model="formState.email"
+            <UInput
+              v-model="email"
               type="email"
-              @input="handleFormUpdate('email', $event.target.value)"
             />
           </UFormField>
           <UFormField label="Phone" name="phone">
-            <UInput 
-              v-model="formState.phone"
-              @input="handleFormUpdate('phone', $event.target.value)"
+            <UInput v-model="phone" />
+          </UFormField>
+          <UFormField label="Position" name="position">
+            <UInput v-model="position" />
+          </UFormField>
+          <UFormField label="Department" name="department">
+            <USelectMenu
+              v-model="department"
+              :options="departmentOptions"
+              placeholder="Select department"
             />
           </UFormField>
           <UFormField label="Date of Birth" name="dateOfBirth">
             <UInput 
-              v-model="formState.dateOfBirth"
+              v-model="dateOfBirth"
               type="date"
-              @input="handleFormUpdate('dateOfBirth', $event.target.value)"
             />
           </UFormField>
           <UFormField label="Employee ID" name="employeeId">
-            <UInput 
-              v-model="formState.employeeId"
-              @input="handleFormUpdate('employeeId', $event.target.value)"
-            />
+            <UInput v-model="employeeId" />
           </UFormField>
         </div>
       </UForm>
@@ -92,34 +88,19 @@
       <UForm v-if="isEditMode && formState" :schema="employeeInfoSchema" :state="formState" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <UFormField label="Street Address" name="street" class="md:col-span-2">
-            <UInput 
-              v-model="formState.street"
-              @input="handleFormUpdate('street', $event.target.value)"
-            />
+            <UInput v-model="street" />
           </UFormField>
           <UFormField label="City" name="city">
-            <UInput 
-              v-model="formState.city"
-              @input="handleFormUpdate('city', $event.target.value)"
-            />
+            <UInput v-model="city" />
           </UFormField>
           <UFormField label="State" name="state">
-            <UInput 
-              v-model="formState.state"
-              @input="handleFormUpdate('state', $event.target.value)"
-            />
+            <UInput v-model="state" />
           </UFormField>
           <UFormField label="Zip Code" name="zipCode">
-            <UInput 
-              v-model="formState.zipCode"
-              @input="handleFormUpdate('zipCode', $event.target.value)"
-            />
+            <UInput v-model="zipCode" />
           </UFormField>
           <UFormField label="Country" name="country">
-            <UInput 
-              v-model="formState.country"
-              @input="handleFormUpdate('country', $event.target.value)"
-            />
+            <UInput v-model="country" />
           </UFormField>
         </div>
       </UForm>
@@ -160,43 +141,33 @@
       <UForm v-if="isEditMode && formState" :schema="employeeInfoSchema" :state="formState" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <UFormField label="Position" name="position">
-            <UInput 
-              v-model="formState.position"
-              @input="handleFormUpdate('position', $event.target.value)"
-            />
+            <UInput v-model="position" />
           </UFormField>
           <UFormField label="Department" name="department">
             <USelectMenu
-              v-model="formState.department"
+              v-model="department"
               :options="departmentOptions"
-              @change="handleFormUpdate('department', $event)"
             />
           </UFormField>
           <UFormField label="Manager" name="manager">
-            <UInput 
-              v-model="formState.manager"
-              @input="handleFormUpdate('manager', $event.target.value)"
-            />
+            <UInput v-model="manager" />
           </UFormField>
           <UFormField label="Employment Type" name="employmentType">
             <USelectMenu
-              v-model="formState.employmentType"
+              v-model="employmentType"
               :options="employmentTypeOptions"
-              @change="handleFormUpdate('employmentType', $event)"
             />
           </UFormField>
           <UFormField label="Work Location" name="workLocation">
             <USelectMenu
-              v-model="formState.workLocation"
+              v-model="workLocation"
               :options="workLocationOptions"
-              @change="handleFormUpdate('workLocation', $event)"
             />
           </UFormField>
           <UFormField label="Salary" name="salary">
             <UInput 
-              v-model="formState.salary"
+              v-model="salary"
               type="number"
-              @input="handleFormUpdate('salary', Number($event.target.value))"
             />
           </UFormField>
         </div>
@@ -241,7 +212,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Employee } from '~/constants/EMPLOYEE_DATA';
+import type { Employee } from '~/types';
 import type { EmployeeInfoSchema } from '~/schemas/employee';
 import { employeeInfoSchema } from '~/schemas/employee';
 
@@ -255,7 +226,7 @@ interface Emits {
   (e: 'update:form-state', value: Partial<EmployeeInfoSchema>): void;
 }
 
-const props = defineProps<Props>();
+const _props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 // Select options
@@ -283,9 +254,95 @@ const workLocationOptions = [
 ];
 
 // Handle form updates
-const handleFormUpdate = (field: keyof EmployeeInfoSchema, value: any) => {
+const handleFormUpdate = (field: keyof EmployeeInfoSchema, value: string | number) => {
   emit('update:form-state', { [field]: value });
 };
+
+// Create computed properties for form fields to avoid prop mutations
+const firstName = computed({
+  get: () => _props.formState?.firstName || '',
+  set: (value) => handleFormUpdate('firstName', value)
+});
+
+const lastName = computed({
+  get: () => _props.formState?.lastName || '',
+  set: (value) => handleFormUpdate('lastName', value)
+});
+
+const email = computed({
+  get: () => _props.formState?.email || '',
+  set: (value) => handleFormUpdate('email', value)
+});
+
+const phone = computed({
+  get: () => _props.formState?.phone || '',
+  set: (value) => handleFormUpdate('phone', value)
+});
+
+const position = computed({
+  get: () => _props.formState?.position || '',
+  set: (value) => handleFormUpdate('position', value)
+});
+
+const department = computed({
+  get: () => _props.formState?.department || '',
+  set: (value) => handleFormUpdate('department', value)
+});
+
+const manager = computed({
+  get: () => _props.formState?.manager || '',
+  set: (value) => handleFormUpdate('manager', value)
+});
+
+const employeeId = computed({
+  get: () => _props.formState?.employeeId || '',
+  set: (value) => handleFormUpdate('employeeId', value)
+});
+
+const dateOfBirth = computed({
+  get: () => _props.formState?.dateOfBirth || '',
+  set: (value) => handleFormUpdate('dateOfBirth', value)
+});
+
+const street = computed({
+  get: () => _props.formState?.street || '',
+  set: (value) => handleFormUpdate('street', value)
+});
+
+const city = computed({
+  get: () => _props.formState?.city || '',
+  set: (value) => handleFormUpdate('city', value)
+});
+
+const state = computed({
+  get: () => _props.formState?.state || '',
+  set: (value) => handleFormUpdate('state', value)
+});
+
+const zipCode = computed({
+  get: () => _props.formState?.zipCode || '',
+  set: (value) => handleFormUpdate('zipCode', value)
+});
+
+const country = computed({
+  get: () => _props.formState?.country || '',
+  set: (value) => handleFormUpdate('country', value)
+});
+
+const salary = computed({
+  get: () => _props.formState?.salary || 0,
+  set: (value) => handleFormUpdate('salary', Number(value))
+});
+
+const employmentType = computed({
+  get: () => _props.formState?.employmentType || 'fullTime',
+  set: (value) => handleFormUpdate('employmentType', value)
+});
+
+const workLocation = computed({
+  get: () => _props.formState?.workLocation || 'office',
+  set: (value) => handleFormUpdate('workLocation', value)
+});
 
 // Utility functions
 const formatDate = (dateString: string) => {

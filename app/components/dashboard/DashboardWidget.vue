@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   defaultPeriod: 'week'
 });
 
-const emit = defineEmits<{
+const _emit = defineEmits<{
   'period-change': [period: string];
 }>();
 

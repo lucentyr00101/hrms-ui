@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { DEPARTMENTS, EMPLOYEE_STATUSES } from '~/constants/EMPLOYEE_DATA';
+import { DEPARTMENTS, EMPLOYEE_STATUSES } from '~/types/constants';
 
 interface Props {
   viewMode: 'card' | 'table';

@@ -9,7 +9,7 @@
       <!-- Department List -->
       <div class="space-y-2">
         <div 
-          v-for="(dept, index) in departmentData" 
+          v-for="dept in departmentData" 
           :key="dept.name"
           class="flex items-center justify-between p-2 rounded-lg bg-gray-50 dark:bg-gray-800"
         >
@@ -57,7 +57,7 @@ const chartOptions = {
     },
     tooltip: {
       callbacks: {
-        label: function(context: any) {
+        label: function(context: { label: string; parsed: number }) {
           return `${context.label}: ${context.parsed} employees`;
         }
       }

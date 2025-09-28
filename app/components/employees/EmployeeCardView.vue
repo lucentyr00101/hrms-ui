@@ -1,5 +1,6 @@
 <template>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    
     <UCard
       v-for="employee in employees"
       :key="employee.id"
@@ -110,15 +111,18 @@
 </template>
 
 <script setup lang="ts">
-import type { Employee } from '~/constants/EMPLOYEE_DATA';
+import type { Employee } from '~/types';
 
 interface Props {
   employees: Employee[];
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
-const emit = defineEmits<{
+console.log('🔍 EmployeeCardView: Received props:', props.employees?.length || 0, 'employees');
+console.log('🔍 EmployeeCardView: First employee:', props.employees?.[0]);
+
+const _emit = defineEmits<{
   'view-profile': [employee: Employee];
   'edit-employee': [employee: Employee];
   'archive-employee': [employee: Employee];

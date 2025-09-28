@@ -190,7 +190,7 @@
 </template>
 
 <script setup lang="ts">
-import type { EmployeeDocument } from '~/constants/EMPLOYEE_DATA';
+import type { EmployeeDocument } from '~/types';
 
 interface Props {
   employeeId: string;
@@ -394,7 +394,7 @@ const formatCategory = (category: string) => {
 };
 
 // Watch for prop changes
-watch(() => props.documents, (newDocuments) => {
+watch(() => props.documents, (_newDocuments) => {
   filterDocuments();
 }, { immediate: true });
 </script>

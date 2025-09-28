@@ -1,35 +1,4 @@
-export interface InterviewData {
-  id: string;
-  candidateName: string;
-  position: string;
-  date: string;
-  time: string;
-  status: 'scheduled' | 'completed' | 'cancelled';
-  interviewer: string;
-}
-
-export interface EmployeeLeaveData {
-  id: string;
-  employeeName: string;
-  department: string;
-  startDate: string;
-  endDate: string;
-  leaveType: 'vacation' | 'sick' | 'personal' | 'maternity' | 'paternity';
-  status: 'approved' | 'pending' | 'denied';
-}
-
-export interface DashboardStats {
-  interviewsThisWeek: number;
-  interviewsThisMonth: number;
-  interviewsThisYear: number;
-  employeesOnLeaveThisWeek: number;
-  employeesOnLeaveThisMonth: number;
-  employeesOnLeaveThisYear: number;
-  passingRate: number;
-  failingRate: number;
-  totalInterviews: number;
-  successfulHires: number;
-}
+import type { InterviewData, EmployeeLeaveData, DashboardStats, DashboardChartData } from '~/types';
 
 export const DUMMY_INTERVIEW_DATA: InterviewData[] = [
   {
@@ -131,7 +100,7 @@ export const DUMMY_DASHBOARD_STATS: DashboardStats = {
   successfulHires: 97
 };
 
-export const DUMMY_CHART_DATA = {
+export const DUMMY_CHART_DATA: DashboardChartData = {
   interviewTrends: {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
     datasets: [

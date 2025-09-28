@@ -55,62 +55,63 @@
         
         <UPagination
           v-model="currentPage"
-          :page-count="itemsPerPage"
+          :page-count="totalPages"
           :total="allFilteredEmployees.length"
           :ui="{
             wrapper: 'flex items-center gap-1',
             rounded: '!rounded-full min-w-[32px] justify-center',
             default: {
               activeButton: {
-                variant: 'solid'
+                variant: 'outline'
               }
             }
           }"
-          show-last
-          show-first
         />
       </div>
     </div>
 
     <!-- Empty State -->
-    <div
+    <div 
       v-else
-      class="bg-white dark:bg-gray-800 rounded-lg shadow p-6"
+      class="text-center py-12"
     >
-      <div class="text-center py-12">
-        <UIcon 
-          name="i-material-symbols:emoji-people" 
-          class="w-16 h-16 mx-auto text-gray-400 mb-4" 
-        />
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-          {{ searchQuery || hasFilters ? 'No employees match your criteria' : 'No employees found' }}
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400 mb-4">
-          {{ searchQuery || hasFilters 
-            ? 'Try adjusting your search query or filters.' 
-            : 'Get started by adding your first employee.' 
-          }}
-        </p>
-        <div class="flex justify-center gap-3">
-          <UButton
-            v-if="searchQuery || hasFilters"
-            color="gray"
-            variant="outline"
-            @click="clearFilters"
-          >
-            Clear Filters
-          </UButton>
-          <UButton 
-            color="primary"
-            @click="handleAddEmployee"
-          >
-            <UIcon name="i-material-symbols:person-add" class="w-4 h-4 mr-2" />
-            Add Employee
-          </UButton>
-        </div>
+      <UIcon name="i-material-symbols:person-off" class="w-16 h-16 mx-auto text-gray-400 mb-4" />
+      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+        {{ hasFilters ? 'No employees found' : 'No employees yet' }}
+      </h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">
+        {{ searchQuery || hasFilters 
+          ? 'Try adjusting your search query or filters.' 
+          : 'Get started by adding your first employee.' 
+        }}
+      </p>
+      <div class="flex justify-center gap-3">
+        <UButton
+          v-if="searchQuery || hasFilters"
+          color="gray"
+          variant="outline"
+          @click="clearFilters"
+        >
+          Clear Filters
+        </UButton>
+        <UButton 
+          color="primary"
+          @click="handleAddEmployee"
+        >
+          <UIcon name="i-material-symbols:person-add" class="w-4 h-4 mr-2" />
+          Add Employee
+        </UButton>
       </div>
     </div>
   </div>
+
+  <!-- Offboarding Modal -->
+  <EmployeeOffboardingModal 
+    v-if="selectedEmployeeForArchive"
+    v-model="showOffboardingModal"
+    :employee="selectedEmployeeForArchive"
+    @archived="handleEmployeeArchived"
+  />
 </template>
 
 <script setup lang="ts">
@@ -118,6 +119,7 @@ import { DUMMY_EMPLOYEES, type Employee } from '~/constants/EMPLOYEE_DATA';
 import EmployeeFilters from '~/components/employees/EmployeeFilters.vue';
 import EmployeeCardView from '~/components/employees/EmployeeCardView.vue';
 import EmployeeTableView from '~/components/employees/EmployeeTableView.vue';
+import EmployeeOffboardingModal from '~/components/employees/EmployeeOffboardingModal.vue';
 
 // Reactive data
 const viewMode = ref<'card' | 'table'>('card');
@@ -127,17 +129,16 @@ const statusFilter = ref<string | undefined>(undefined);
 
 // Pagination
 const currentPage = ref(1);
-const itemsPerPage = ref(6); // Show 6 employees per page for better UX
-const totalPages = ref(1);
+const itemsPerPage = ref(6);
 
-// Load employees data (in real app, this would come from an API)
+// Load employees data
 const employees = ref<Employee[]>(DUMMY_EMPLOYEES);
 
 // Computed properties
 const allFilteredEmployees = computed(() => {
   let filtered = employees.value;
-
-  // Apply search filter - make it more robust
+  
+  // Apply search filter
   if (searchQuery.value && searchQuery.value.trim()) {
     const query = searchQuery.value.trim().toLowerCase();
     filtered = filtered.filter(emp => {
@@ -150,23 +151,23 @@ const allFilteredEmployees = computed(() => {
         emp.position.toLowerCase(),
         emp.department.toLowerCase(),
         emp.employeeId.toLowerCase(),
-        emp.phone.replace(/\D/g, '') // Remove non-digits for phone search
+        emp.phone.replace(/\D/g, '')
       ];
       
       return searchFields.some(field => field.includes(query));
     });
   }
-
+  
   // Apply department filter
   if (departmentFilter.value) {
     filtered = filtered.filter(emp => emp.department === departmentFilter.value);
   }
-
+  
   // Apply status filter
   if (statusFilter.value) {
     filtered = filtered.filter(emp => emp.status === statusFilter.value);
   }
-
+  
   return filtered;
 });
 
@@ -176,18 +177,12 @@ const filteredEmployees = computed(() => {
   return allFilteredEmployees.value.slice(start, end);
 });
 
-// Update total pages whenever filtered employees change
-watchEffect(() => {
-  totalPages.value = Math.ceil(allFilteredEmployees.value.length / itemsPerPage.value);
-  
-  // Reset to page 1 if current page is beyond available pages
-  if (currentPage.value > totalPages.value && totalPages.value > 0) {
-    currentPage.value = 1;
-  }
-});
+const totalPages = computed(() => 
+  Math.ceil(allFilteredEmployees.value.length / itemsPerPage.value)
+);
 
 const hasFilters = computed(() => {
-  return departmentFilter.value || statusFilter.value;
+  return departmentFilter.value || statusFilter.value || (searchQuery.value && searchQuery.value.trim());
 });
 
 // Event handlers
@@ -210,13 +205,19 @@ const handlePageChange = (page: number) => {
   currentPage.value = page;
 };
 
+const clearFilters = () => {
+  searchQuery.value = '';
+  departmentFilter.value = undefined;
+  statusFilter.value = undefined;
+  currentPage.value = 1; // Reset to first page when clearing filters
+};
+
+// Navigation handlers
 const handleAddEmployee = () => {
-  // TODO: Implement add employee functionality
-  console.log('Add employee clicked');
+  navigateTo('/employees/onboarding');
 };
 
 const handleViewProfile = (employee: Employee) => {
-  // Navigate to employee profile page
   navigateTo(`/employees/${employee.id}`);
 };
 
@@ -225,15 +226,18 @@ const handleEditEmployee = (employee: Employee) => {
   console.log('Edit employee:', employee);
 };
 
+// Offboarding modal state
+const showOffboardingModal = ref(false);
+const selectedEmployeeForArchive = ref<Employee | null>(null);
+
 const handleArchiveEmployee = (employee: Employee) => {
-  // TODO: Implement archive employee functionality
-  console.log('Archive employee:', employee);
+  selectedEmployeeForArchive.value = employee;
+  showOffboardingModal.value = true;
 };
 
-const clearFilters = () => {
-  searchQuery.value = '';
-  departmentFilter.value = undefined;
-  statusFilter.value = undefined;
-  currentPage.value = 1; // Reset to first page when clearing filters
+const handleEmployeeArchived = (employee: Employee) => {
+  console.log('Employee archived:', employee);
+  showOffboardingModal.value = false;
+  selectedEmployeeForArchive.value = null;
 };
 </script>
