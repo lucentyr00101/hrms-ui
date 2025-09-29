@@ -173,7 +173,7 @@
 </template>
 
 <script setup lang="ts">
-import type { InterviewScheduleForm, InterviewSlot, Candidate } from '~/types';
+import type { InterviewScheduleForm, InterviewSlot } from '~/types';
 import { interviewScheduleSchema } from '~/schemas/interview';
 
 interface Props {
@@ -196,7 +196,7 @@ const emit = defineEmits<{
 }>();
 
 // Composables
-const { getAllSlots, hasConflict } = useInterviewSlots();
+const { hasConflict } = useInterviewSlots();
 const { candidates } = useCandidates();
 
 // Reactive state
@@ -265,7 +265,7 @@ const hasTimeConflict = computed(() => {
   return hasConflict(formState.date, formState.startTime, formState.endTime, excludeId);
 });
 
-// Methods (declared before watchers to avoid reference errors)
+// Methods
 const getDefaultEndTime = (startTime: string): string => {
   const [hours, minutes] = startTime.split(':').map(Number);
   const endHour = hours + 1;
@@ -304,47 +304,6 @@ const populateFormFromSlot = (slot: InterviewSlot) => {
   locationType.value = slot.meetingLink ? 'remote' : 'in-person';
 };
 
-// Watchers
-watch(() => props.editingSlot, (slot) => {
-  if (slot) {
-    populateFormFromSlot(slot);
-  } else {
-    resetForm();
-  }
-}, { immediate: true });
-
-watch(() => props.initialDate, (date) => {
-  if (date && !props.editingSlot) {
-    formState.date = date;
-  }
-});
-
-watch(() => props.initialTime, (time) => {
-  if (time && !props.editingSlot) {
-    formState.startTime = time;
-    // Set end time to 1 hour later
-    const [hours, minutes] = time.split(':').map(Number);
-    const endHour = hours + 1;
-    formState.endTime = `${endHour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-  }
-});
-
-// Additional methods
-  Object.assign(formState, {
-    candidateId: slot.candidateId || '',
-    date: slot.date,
-    startTime: slot.startTime,
-    endTime: slot.endTime,
-    interviewer: slot.interviewer,
-    interviewType: slot.interviewType,
-    location: slot.location || '',
-    notes: slot.notes || '',
-    meetingLink: slot.meetingLink || ''
-  
-  locationType.value = slot.meetingLink ? 'remote' : 'in-person';
-};
-
-// Additional methods
 const handleSubmit = async () => {
   isSubmitting.value = true;
   
@@ -380,6 +339,28 @@ const closeModal = () => {
     }
   }, 300);
 };
+
+// Watchers
+watch(() => props.editingSlot, (slot) => {
+  if (slot) {
+    populateFormFromSlot(slot);
+  } else {
+    resetForm();
+  }
+}, { immediate: true });
+
+watch(() => props.initialDate, (date) => {
+  if (date && !props.editingSlot) {
+    formState.date = date;
+  }
+});
+
+watch(() => props.initialTime, (time) => {
+  if (time && !props.editingSlot) {
+    formState.startTime = time;
+    formState.endTime = getDefaultEndTime(time);
+  }
+});
 
 // Initialize form
 onMounted(() => {
