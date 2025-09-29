@@ -77,7 +77,7 @@
     </div>
 
     <!-- Add Note Modal -->
-    <Teleport to="body">
+    <ClientOnly>
       <UModal v-model="showAddNote">
         <UCard>
           <template #header>
@@ -157,7 +157,7 @@
           </form>
         </UCard>
       </UModal>
-    </Teleport>
+    </ClientOnly>
   </UCard>
 </template>
 
