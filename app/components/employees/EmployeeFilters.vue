@@ -12,7 +12,7 @@
       >
         <template v-if="searchQuery" #trailing>
           <UButton
-            color="gray"
+            color="neutral"
             variant="ghost"
             size="xs"
             icon="i-material-symbols:close"
@@ -51,16 +51,16 @@
           color="primary"
           size="sm"
           icon="i-material-symbols:grid-view"
-          @click="$emit('view-change', 'card')"
           class="rounded-md"
+          @click="$emit('view-change', 'card')"
         />
         <UButton
           :variant="viewMode === 'table' ? 'solid' : 'ghost'"
           color="primary"
           size="sm"
           icon="i-material-symbols:table-rows"
-          @click="$emit('view-change', 'table')"
           class="rounded-md"
+          @click="$emit('view-change', 'table')"
         />
       </div>
 
@@ -82,9 +82,12 @@ import { DEPARTMENTS, EMPLOYEE_STATUSES } from '~/types/constants';
 
 interface Props {
   viewMode: 'card' | 'table';
+  searchQuery: string;
+  department?: string;
+  status?: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const emit = defineEmits<{
   'search': [query: string];
@@ -93,9 +96,36 @@ const emit = defineEmits<{
   'add-employee': [];
 }>();
 
-const searchQuery = ref('');
-const selectedDepartment = ref<string | undefined>(undefined);
-const selectedStatus = ref<string | undefined>(undefined);
+const searchQuery = ref(props.searchQuery);
+const selectedDepartment = ref<string | undefined>(props.department);
+const selectedStatus = ref<string | undefined>(props.status);
+
+watch(
+  () => props.searchQuery,
+  value => {
+    if (value !== searchQuery.value) {
+      searchQuery.value = value;
+    }
+  }
+);
+
+watch(
+  () => props.department,
+  value => {
+    if (value !== selectedDepartment.value) {
+      selectedDepartment.value = value;
+    }
+  }
+);
+
+watch(
+  () => props.status,
+  value => {
+    if (value !== selectedStatus.value) {
+      selectedStatus.value = value;
+    }
+  }
+);
 
 const departmentOptions = computed(() => [
   { label: 'All Departments', value: undefined },
@@ -116,7 +146,7 @@ const clearSearch = () => {
 };
 
 // Better search handling with debounce
-let searchTimeout: NodeJS.Timeout | null = null;
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const handleSearchInput = () => {
   // Clear existing timeout

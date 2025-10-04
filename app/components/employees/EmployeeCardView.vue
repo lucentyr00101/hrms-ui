@@ -6,14 +6,14 @@
       :key="employee.id"
       class="hover:shadow-lg transition-shadow duration-200"
       :ui="{ 
-        body: { padding: 'p-6' },
-        header: { padding: 'p-0' },
-        footer: { padding: 'p-0' }
+        body: 'p-6',
+        header: 'p-0',
+        footer: 'p-0'
       }"
     >
       <template #header>
         <div class="relative">
-          <div class="h-20 bg-gradient-to-r from-primary-400 to-primary-600 rounded-t-lg"></div>
+          <div class="h-20 bg-gradient-to-r from-primary-400 to-primary-600 rounded-t-lg" />
           <div class="absolute -bottom-6 left-6">
             <UAvatar
               :alt="`${employee.firstName} ${employee.lastName}`"
@@ -89,7 +89,7 @@
           <div class="flex gap-1">
             <UButton
               size="sm"
-              color="gray"
+              color="neutral"
               variant="ghost"
               @click="$emit('edit-employee', employee)"
             >
@@ -97,7 +97,7 @@
             </UButton>
             <UButton
               size="sm"
-              color="red"
+              color="error"
               variant="ghost"
               @click="$emit('archive-employee', employee)"
             >
@@ -111,6 +111,7 @@
 </template>
 
 <script setup lang="ts">
+import { getEmployeeStatusClasses, getEmployeeStatusLabel } from '~/composables/useEmployees';
 import type { Employee } from '~/types';
 
 interface Props {
@@ -136,29 +137,6 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const getStatusClasses = (status: string) => {
-  switch (status) {
-    case 'active':
-      return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-800 dark:text-emerald-100';
-    case 'inactive':
-      return 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
-    case 'on-leave':
-      return 'bg-amber-100 text-amber-800 dark:bg-amber-800 dark:text-amber-100';
-    default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
-  }
-};
-
-const getStatusLabel = (status: string) => {
-  switch (status) {
-    case 'active':
-      return 'Active';
-    case 'inactive':
-      return 'Inactive';
-    case 'on-leave':
-      return 'On Leave';
-    default:
-      return status;
-  }
-};
+const getStatusClasses = getEmployeeStatusClasses;
+const getStatusLabel = getEmployeeStatusLabel;
 </script>

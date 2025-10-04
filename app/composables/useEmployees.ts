@@ -1,6 +1,35 @@
 import { DUMMY_EMPLOYEES } from '~/constants/EMPLOYEE_DATA';
 import type { Employee, ViewMode } from '~/types';
 
+const STATUS_META = {
+  active: {
+    label: 'Active',
+    classes: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-800 dark:text-emerald-100'
+  },
+  inactive: {
+    label: 'Inactive',
+    classes: 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
+  },
+  'on-leave': {
+    label: 'On Leave',
+    classes: 'bg-amber-100 text-amber-800 dark:bg-amber-800 dark:text-amber-100'
+  }
+} satisfies Record<Employee['status'], { label: string; classes: string }>;
+
+const DEFAULT_STATUS_META = {
+  label: 'Unknown',
+  classes: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100'
+};
+
+export const getEmployeeStatusMeta = (status: string): { label: string; classes: string } => {
+  const keyedStatus = status as Employee['status'];
+  return STATUS_META[keyedStatus] ?? DEFAULT_STATUS_META;
+};
+
+export const getEmployeeStatusLabel = (status: string) => getEmployeeStatusMeta(status).label;
+
+export const getEmployeeStatusClasses = (status: string) => getEmployeeStatusMeta(status).classes;
+
 export function useEmployees() {
   console.log('🐛 DEBUG: useEmployees called');
   console.log('🐛 DEBUG: DUMMY_EMPLOYEES length:', DUMMY_EMPLOYEES.length);
@@ -110,6 +139,8 @@ export function useEmployees() {
     viewMode,
     searchQuery,
     employees,
+    departmentFilter,
+    statusFilter,
     
     // Computed
     allFilteredEmployees,

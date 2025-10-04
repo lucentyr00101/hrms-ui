@@ -108,7 +108,7 @@
                 </UButton>
                 <UButton
                   size="xs"
-                  color="gray"
+                  color="neutral"
                   variant="ghost"
                   @click="$emit('edit-employee', employee)"
                 >
@@ -116,7 +116,7 @@
                 </UButton>
                 <UButton
                   size="xs"
-                  color="red"
+                  color="error"
                   variant="ghost"
                   @click="$emit('archive-employee', employee)"
                 >
@@ -146,6 +146,7 @@
 </template>
 
 <script setup lang="ts">
+import { getEmployeeStatusClasses, getEmployeeStatusLabel } from '~/composables/useEmployees';
 import type { Employee } from '~/types';
 
 interface Props {
@@ -169,29 +170,6 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const getStatusClasses = (status: string) => {
-  switch (status) {
-    case 'active':
-      return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-800 dark:text-emerald-100';
-    case 'inactive':
-      return 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100';
-    case 'on-leave':
-      return 'bg-amber-100 text-amber-800 dark:bg-amber-800 dark:text-amber-100';
-    default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
-  }
-};
-
-const getStatusLabel = (status: string) => {
-  switch (status) {
-    case 'active':
-      return 'Active';
-    case 'inactive':
-      return 'Inactive';
-    case 'on-leave':
-      return 'On Leave';
-    default:
-      return status;
-  }
-};
+const getStatusClasses = getEmployeeStatusClasses;
+const getStatusLabel = getEmployeeStatusLabel;
 </script>

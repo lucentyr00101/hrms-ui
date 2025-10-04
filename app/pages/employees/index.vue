@@ -18,12 +18,15 @@
 
     <!-- Filters and Search -->
     <EmployeeFilters
-      :view-mode="viewMode"
-      @search="handleSearch"
-      @filter-change="handleFilterChange"
-      @view-change="handleViewChange"
-      @add-employee="handleAddEmployee"
-    />
+          :view-mode="viewMode"
+          :search-query="searchQuery"
+          :department="departmentFilter"
+          :status="statusFilter"
+          @search="handleSearch"
+          @filter-change="handleFilterChange"
+          @view-change="handleViewChange"
+          @add-employee="handleAddEmployee"
+        />
 
     <!-- Employee Directory Content -->
     <div v-if="allFilteredEmployees.length > 0">
@@ -57,15 +60,7 @@
           v-model="currentPage"
           :page-count="totalPages"
           :total="allFilteredEmployees.length"
-          :ui="{
-            wrapper: 'flex items-center gap-1',
-            rounded: '!rounded-full min-w-[32px] justify-center',
-            default: {
-              activeButton: {
-                variant: 'outline'
-              }
-            }
-          }"
+          class="flex items-center gap-1"
         />
       </div>
     </div>
@@ -88,9 +83,9 @@
       <div class="flex justify-center gap-3">
         <UButton
           v-if="searchQuery || hasFilters"
-          color="gray"
+          color="neutral"
           variant="outline"
-          @click="clearFilters"
+          @click="resetFilters"
         >
           Clear Filters
         </UButton>
@@ -103,114 +98,40 @@
         </UButton>
       </div>
     </div>
+    <!-- Offboarding Modal -->
+    <EmployeeOffboardingModal 
+      v-if="selectedEmployeeForArchive"
+      v-model="showOffboardingModal"
+      :employee="selectedEmployeeForArchive"
+      @archived="handleEmployeeArchived"
+    />
   </div>
-
-  <!-- Offboarding Modal -->
-  <EmployeeOffboardingModal 
-    v-if="selectedEmployeeForArchive"
-    v-model="showOffboardingModal"
-    :employee="selectedEmployeeForArchive"
-    @archived="handleEmployeeArchived"
-  />
 </template>
 
 <script setup lang="ts">
-import { DUMMY_EMPLOYEES, type Employee } from '~/constants/EMPLOYEE_DATA';
 import EmployeeFilters from '~/components/employees/EmployeeFilters.vue';
 import EmployeeCardView from '~/components/employees/EmployeeCardView.vue';
 import EmployeeTableView from '~/components/employees/EmployeeTableView.vue';
 import EmployeeOffboardingModal from '~/components/employees/EmployeeOffboardingModal.vue';
+import { useEmployees } from '~/composables/useEmployees';
+import type { Employee } from '~/types';
 
-// Reactive data
-const viewMode = ref<'card' | 'table'>('card');
-const searchQuery = ref('');
-const departmentFilter = ref<string | undefined>(undefined);
-const statusFilter = ref<string | undefined>(undefined);
-
-// Pagination
-const currentPage = ref(1);
-const itemsPerPage = ref(6);
-
-// Load employees data
-const employees = ref<Employee[]>(DUMMY_EMPLOYEES);
-
-// Computed properties
-const allFilteredEmployees = computed(() => {
-  let filtered = employees.value;
-  
-  // Apply search filter
-  if (searchQuery.value && searchQuery.value.trim()) {
-    const query = searchQuery.value.trim().toLowerCase();
-    filtered = filtered.filter(emp => {
-      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
-      const searchFields = [
-        fullName,
-        emp.firstName.toLowerCase(),
-        emp.lastName.toLowerCase(),
-        emp.email.toLowerCase(),
-        emp.position.toLowerCase(),
-        emp.department.toLowerCase(),
-        emp.employeeId.toLowerCase(),
-        emp.phone.replace(/\D/g, '')
-      ];
-      
-      return searchFields.some(field => field.includes(query));
-    });
-  }
-  
-  // Apply department filter
-  if (departmentFilter.value) {
-    filtered = filtered.filter(emp => emp.department === departmentFilter.value);
-  }
-  
-  // Apply status filter
-  if (statusFilter.value) {
-    filtered = filtered.filter(emp => emp.status === statusFilter.value);
-  }
-  
-  return filtered;
-});
-
-const filteredEmployees = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  const end = start + itemsPerPage.value;
-  return allFilteredEmployees.value.slice(start, end);
-});
-
-const totalPages = computed(() => 
-  Math.ceil(allFilteredEmployees.value.length / itemsPerPage.value)
-);
-
-const hasFilters = computed(() => {
-  return departmentFilter.value || statusFilter.value || (searchQuery.value && searchQuery.value.trim());
-});
-
-// Event handlers
-const handleSearch = (query: string) => {
-  searchQuery.value = query;
-  currentPage.value = 1; // Reset to first page when searching
-};
-
-const handleFilterChange = (filters: { department?: string; status?: string }) => {
-  departmentFilter.value = filters.department;
-  statusFilter.value = filters.status;
-  currentPage.value = 1; // Reset to first page when filtering
-};
-
-const handleViewChange = (mode: 'card' | 'table') => {
-  viewMode.value = mode;
-};
-
-const handlePageChange = (page: number) => {
-  currentPage.value = page;
-};
-
-const clearFilters = () => {
-  searchQuery.value = '';
-  departmentFilter.value = undefined;
-  statusFilter.value = undefined;
-  currentPage.value = 1; // Reset to first page when clearing filters
-};
+const {
+  viewMode,
+  searchQuery,
+  departmentFilter,
+  statusFilter,
+  allFilteredEmployees,
+  filteredEmployees,
+  totalPages,
+  hasFilters,
+  currentPage,
+  itemsPerPage,
+  handleSearch,
+  handleFilterChange,
+  handleViewChange,
+  clearFilters: resetFilters,
+} = useEmployees();
 
 // Navigation handlers
 const handleAddEmployee = () => {
