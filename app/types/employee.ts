@@ -26,6 +26,29 @@ export interface Employee {
   workLocation?: 'office' | 'remote' | 'hybrid';
 }
 
+export type EmploymentTypeOption = NonNullable<Employee['employmentType']>;
+export type WorkLocationOption = NonNullable<Employee['workLocation']>;
+
+export interface EditableEmployeeFormState {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  position: string;
+  department: string;
+  manager: string;
+  employeeId: string;
+  dateOfBirth: string;
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  salary: number;
+  employmentType?: EmploymentTypeOption;
+  workLocation?: WorkLocationOption;
+}
+
 export interface EmployeeDocument {
   id: string;
   name: string;
