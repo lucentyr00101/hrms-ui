@@ -7,162 +7,243 @@
     </template>
 
     <template #content>
-      <UCard>
-        <UForm
-          :schema="interviewSchema"
-          :state="formState"
-          @submit="handleSubmit"
-          class="space-y-6"
-        >
-          <!-- Candidate Selection -->
-          <UFormGroup
-            label="Candidate"
-            name="candidateId"
-            required
+      <UCard class="shadow-lg">
+        <div class="space-y-8">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p class="text-sm uppercase tracking-wide text-primary-600 dark:text-primary-300 font-semibold">
+                {{ isEditing ? 'Update details' : 'Quick scheduling' }}
+              </p>
+              <p class="text-gray-600 dark:text-gray-400">
+                Confirm the essentials below so candidates receive a clear, modern interview invite.
+              </p>
+            </div>
+            <UBadge
+              :color="isEditing ? 'orange' : 'primary'"
+              variant="soft"
+              class="w-fit self-start sm:self-auto"
+            >
+              <span class="flex items-center gap-2">
+                <UIcon :name="isEditing ? 'i-material-symbols:edit' : 'i-material-symbols:add-task'" class="h-4 w-4" />
+                {{ isEditing ? 'Editing existing slot' : 'New interview' }}
+              </span>
+            </UBadge>
+          </div>
+
+          <UForm
+            :schema="interviewSchema"
+            :state="formState"
+            @submit="handleSubmit"
+            class="space-y-10"
           >
-            <USelectMenu
-              v-model="formState.candidateId"
-              :options="candidateOptions"
-              placeholder="Select a candidate"
-              searchable
-              :loading="loadingCandidates"
-            />
-          </UFormGroup>
-
-          <!-- Date and Time -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <UFormGroup
-              label="Date"
-              name="date"
-              required
-            >
-              <UInput
-                v-model="formState.date"
-                type="date"
-                :min="minDate"
-              />
-            </UFormGroup>
-
-            <UFormGroup
-              label="Start Time"
-              name="startTime"
-              required
-            >
-              <UInput
-                v-model="formState.startTime"
-                type="time"
-              />
-            </UFormGroup>
-
-            <UFormGroup
-              label="End Time"
-              name="endTime"
-              required
-            >
-              <UInput
-                v-model="formState.endTime"
-                type="time"
-              />
-            </UFormGroup>
-          </div>
-
-          <!-- Interview Details -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <UFormGroup
-              label="Interview Type"
-              name="interviewType"
-              required
-            >
-              <USelectMenu
-                v-model="formState.interviewType"
-                :options="interviewTypeOptions"
-                placeholder="Select interview type"
-              />
-            </UFormGroup>
-
-            <UFormGroup
-              label="Interviewer"
-              name="interviewer"
-              required
-            >
-              <USelectMenu
-                v-model="formState.interviewer"
-                :options="interviewerOptions"
-                placeholder="Select interviewer"
-                searchable
-              />
-            </UFormGroup>
-          </div>
-
-          <!-- Location Options -->
-          <UFormGroup label="Location">
-            <div class="space-y-3">
-              <div class="flex items-center space-x-2">
-                <URadio
-                  v-model="locationType"
-                  value="in-person"
-                  label="In-person"
-                />
-                <URadio
-                  v-model="locationType"
-                  value="remote"
-                  label="Remote"
-                />
+            <!-- Candidate Selection -->
+            <section class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="rounded-full bg-primary/10 text-primary p-2">
+                  <UIcon name="i-material-symbols:badge" class="h-5 w-5" />
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">Candidate overview</p>
+                  <p class="text-xs text-gray-500">Select who you are meeting with so invites route correctly.</p>
+                </div>
               </div>
 
-              <UInput
-                v-if="locationType === 'in-person'"
-                v-model="formState.location"
-                placeholder="Conference Room A, Building 1"
-              />
+              <UFormField
+                label="Candidate"
+                name="candidateId"
+                required
+                class="w-full"
+              >
+                <USelectMenu
+                  v-model="formState.candidateId"
+                  :options="candidateOptions"
+                  placeholder="Search name or role"
+                  searchable
+                  :loading="loadingCandidates"
+                  class="w-full"
+                />
+              </UFormField>
+            </section>
 
-              <UInput
-                v-if="locationType === 'remote'"
-                v-model="formState.meetingLink"
-                placeholder="https://meet.google.com/abc-defg-hij"
-              />
+            <!-- Date and Time -->
+            <section class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="rounded-full bg-primary/10 text-primary p-2">
+                  <UIcon name="i-material-symbols:calendar-month" class="h-5 w-5" />
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">Schedule</p>
+                  <p class="text-xs text-gray-500">Share the exact date and timeframe for the discussion.</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4">
+                <UFormField label="Date" name="date" required class="min-w-0 w-full">
+                  <UInput
+                    v-model="formState.date"
+                    type="date"
+                    :min="minDate"
+                    class="w-full md:w-full"
+                  />
+                </UFormField>
+
+                <UFormField label="Start Time" name="startTime" required class="w-full">
+                  <UInput
+                    v-model="formState.startTime"
+                    type="time"
+                    class="w-full"
+                  />
+                </UFormField>
+
+                <UFormField label="End Time" name="endTime" required class="w-full">
+                  <UInput
+                    v-model="formState.endTime"
+                    type="time"
+                    class="w-full"
+                  />
+                </UFormField>
+              </div>
+            </section>
+
+            <!-- Interview Details -->
+            <section class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="rounded-full bg-primary/10 text-primary p-2">
+                  <UIcon name="i-material-symbols:groups-2" class="h-5 w-5" />
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">Interview format</p>
+                  <p class="text-xs text-gray-500">Clarify the interview type and who will run it.</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+                <UFormField label="Interview Type" name="interviewType" required class="min-w-0">
+                  <USelectMenu
+                    v-model="formState.interviewType"
+                    :options="interviewTypeOptions"
+                    placeholder="Select interview type"
+                    class="w-full"
+                  />
+                </UFormField>
+
+                <UFormField label="Interviewer" name="interviewer" required class="min-w-0">
+                  <USelectMenu
+                    v-model="formState.interviewer"
+                    :options="interviewerOptions"
+                    placeholder="Select interviewer"
+                    searchable
+                    class="w-full"
+                  />
+                </UFormField>
+              </div>
+            </section>
+
+            <!-- Location & Notes -->
+            <section class="space-y-4">
+              <div class="flex items-center gap-3">
+                <div class="rounded-full bg-primary/10 text-primary p-2">
+                  <UIcon name="i-material-symbols:explore" class="h-5 w-5" />
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-900 dark:text-white">Access details</p>
+                  <p class="text-xs text-gray-500">Share how candidates should join and any prep notes.</p>
+                </div>
+              </div>
+
+              <div class="rounded-2xl border border-gray-200 dark:border-gray-800 p-4 space-y-5 bg-gray-50/60 dark:bg-gray-900/40">
+                <div class="flex flex-wrap gap-3">
+                  <UButton
+                    v-for="option in locationOptions"
+                    :key="option.value"
+                    type="button"
+                    size="sm"
+                    :color="locationType === option.value ? 'primary' : 'neutral'"
+                    :variant="locationType === option.value ? 'solid' : 'soft'"
+                    @click="locationType = option.value"
+                  >
+                    {{ option.label }}
+                  </UButton>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+                  <Transition name="fade" mode="out-in">
+                    <UFormField
+                      v-if="locationType === 'in-person'"
+                      key="in-person"
+                      label="Physical Location"
+                      name="location"
+                      required
+                      class="min-w-0"
+                    >
+                      <UInput
+                        v-model="formState.location"
+                        placeholder="Conference Room A, Building 1"
+                        class="w-full"
+                      />
+                    </UFormField>
+                    <UFormField
+                      v-else
+                      key="remote"
+                      label="Meeting Link"
+                      name="meetingLink"
+                      required
+                      class="min-w-0"
+                    >
+                      <UInput
+                        v-model="formState.meetingLink"
+                        placeholder="https://meet.google.com/abc-defg-hij"
+                        class="w-full"
+                      />
+                    </UFormField>
+                  </Transition>
+
+                  <UFormField
+                    label="Notes"
+                    name="notes"
+                    class="md:col-span-2"
+                  >
+                    <UTextarea
+                      v-model="formState.notes"
+                      placeholder="Share panel details, preparation steps, or quick reminders."
+                      rows="4"
+                      class="w-full"
+                    />
+                  </UFormField>
+                </div>
+              </div>
+
+              <UAlert
+                v-if="hasTimeConflict"
+                icon="i-material-symbols:warning"
+                color="yellow"
+                variant="soft"
+                title="Scheduling conflict"
+              >
+                There is already an interview scheduled at this time. Please choose a different slot.
+              </UAlert>
+            </section>
+
+            <!-- Form Actions -->
+            <div class="flex flex-col gap-3 border-t border-gray-200 pt-4 dark:border-gray-800 sm:flex-row sm:items-center sm:justify-end">
+              <UButton
+                type="button"
+                color="neutral"
+                variant="ghost"
+                @click="closeModal"
+              >
+                Cancel
+              </UButton>
+              <UButton
+                type="submit"
+                :loading="isSubmitting"
+                :disabled="hasTimeConflict"
+              >
+                {{ isEditing ? 'Update Interview' : 'Schedule Interview' }}
+              </UButton>
             </div>
-          </UFormGroup>
-
-          <!-- Notes -->
-          <UFormGroup
-            label="Notes"
-            name="notes"
-          >
-            <UTextarea
-              v-model="formState.notes"
-              placeholder="Additional notes or instructions for the interview..."
-              rows="3"
-            />
-          </UFormGroup>
-
-          <!-- Conflict Warning -->
-          <UAlert
-            v-if="hasTimeConflict"
-            icon="i-material-symbols:warning"
-            color="yellow"
-            variant="soft"
-            title="Scheduling Conflict"
-            description="There is already an interview scheduled at this time. Please choose a different time slot."
-          />
-
-          <!-- Form Actions -->
-          <div class="flex justify-end space-x-3 pt-4">
-            <UButton
-              variant="ghost"
-              @click="closeModal"
-            >
-              Cancel
-            </UButton>
-            <UButton
-              type="submit"
-              :loading="isSubmitting"
-              :disabled="hasTimeConflict"
-            >
-              {{ isEditing ? 'Update Interview' : 'Schedule Interview' }}
-            </UButton>
-          </div>
-        </UForm>
+          </UForm>
+        </div>
       </UCard>
     </template>
   </UModal>
@@ -205,6 +286,10 @@ const isEditing = computed(() => Boolean(props.editingSlot));
 const isSubmitting = ref(false);
 const loadingCandidates = ref(false);
 const locationType = ref<'in-person' | 'remote'>('in-person');
+const locationOptions = [
+  { label: 'In-person', value: 'in-person' as const },
+  { label: 'Remote', value: 'remote' as const }
+];
 
 // Form state
 const formState = reactive<InterviewScheduleForm>({
@@ -367,3 +452,15 @@ onMounted(() => {
   }
 });
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 150ms ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
