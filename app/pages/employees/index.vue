@@ -143,8 +143,7 @@ const handleViewProfile = (employee: Employee) => {
 };
 
 const handleEditEmployee = (employee: Employee) => {
-  // TODO: Implement edit employee functionality
-  console.log('Edit employee:', employee);
+  navigateTo(`/employees/edit/${employee.id}`);
 };
 
 // Offboarding modal state
