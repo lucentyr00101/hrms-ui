@@ -1,3 +1,86 @@
+// Leave Type Management Types
+export type LeaveStatus = 'active' | 'inactive';
+export type ApprovalWorkflow = 'manager' | 'hr' | 'manager-hr';
+export type AccrualMethod = 'annual-fixed' | 'monthly-accrual' | 'no-accrual' | 'custom';
+export type EmployeeEligibility = 'probation' | 'permanent' | 'contract';
+export type ApplicableGender = 'all' | 'male' | 'female';
+
+export interface BlackoutDate {
+  startDate: string;
+  endDate: string;
+  reason: string;
+}
+
+export interface LeaveType {
+  id: string;
+  name: string;
+  code: string;
+  description?: string;
+  icon: string;
+  color: string;
+  status: LeaveStatus;
+  requiresApproval: boolean;
+  approvalWorkflow: ApprovalWorkflow | null;
+  requiresDocumentation: boolean;
+  requiredDocuments?: string;
+  maxConsecutiveDays: number;
+  minNoticePeriod: number;
+  allowHalfDays: boolean;
+  applicableGender: ApplicableGender;
+  isPaid: boolean;
+  accrualMethod: AccrualMethod;
+  annualDays?: number;
+  monthlyDays?: number;
+  maxBalanceLimit: number;
+  allowCarryOver: boolean;
+  maxCarryOverDays?: number;
+  carryOverExpiryMonths?: number;
+  prorationEnabled: boolean;
+  negativeBalanceAllowed: boolean;
+  maxNegativeBalance?: number;
+  eligibility: EmployeeEligibility[];
+  minTenureMonths: number;
+  blackoutDates: BlackoutDate[];
+  usageCount: number;
+  approvalRate: number;
+  createdBy: string;
+  createdAt: string;
+  modifiedBy: string;
+  modifiedAt: string;
+}
+
+export interface LeaveTypeFormData {
+  name: string;
+  code: string;
+  description?: string;
+  icon: string;
+  color: string;
+  status: LeaveStatus;
+  requiresApproval: boolean;
+  approvalWorkflow: ApprovalWorkflow | null;
+  requiresDocumentation: boolean;
+  requiredDocuments?: string;
+  maxConsecutiveDays: number;
+  minNoticePeriod: number;
+  allowHalfDays: boolean;
+  applicableGender: ApplicableGender;
+  isPaid: boolean;
+  accrualMethod: AccrualMethod;
+  annualDays?: number;
+  monthlyDays?: number;
+  maxBalanceLimit: number;
+  allowCarryOver: boolean;
+  maxCarryOverDays?: number;
+  carryOverExpiryMonths?: number;
+  prorationEnabled: boolean;
+  negativeBalanceAllowed: boolean;
+  maxNegativeBalance?: number;
+  eligibility: EmployeeEligibility[];
+  minTenureMonths: number;
+  blackoutDates: BlackoutDate[];
+}
+
+// Existing leave dashboard types (renamed to avoid conflicts)
 export interface LeaveTypeConfig {
   id: string;
   label: string;
@@ -65,12 +148,6 @@ export interface LeavePolicy {
   minNoticePeriodInDays: number;
   blackoutDates: BlackoutDate[];
   policyDocumentUrl: string;
-}
-
-export interface BlackoutDate {
-  startDate: string;
-  endDate: string;
-  reason: string;
 }
 
 export interface UpcomingLeave {

@@ -19,6 +19,13 @@ export type {
 } from './interview';
 
 export type { 
+  LeaveType,
+  LeaveTypeFormData,
+  LeaveStatus,
+  ApprovalWorkflow,
+  AccrualMethod,
+  EmployeeEligibility,
+  ApplicableGender,
   LeaveTypeConfig,
   LeaveBreakdown,
   LeaveSummary,
