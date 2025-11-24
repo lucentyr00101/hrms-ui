@@ -21,6 +21,11 @@ export const navItems = [
       }
     ]
   },
+  {
+    label: "Leave Management",
+    icon: "i-material-symbols:event-available",
+    to: "/leave",
+  },
 ];
 
 // Additional navigation sections for collapsible groups
