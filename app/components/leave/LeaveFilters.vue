@@ -59,22 +59,20 @@
           Date Range
         </label>
         <div class="grid grid-cols-2 gap-2">
-          <div>
-            <UInput
-              v-model="startDate"
-              type="date"
-              size="sm"
-              placeholder="Start Date"
-            />
-          </div>
-          <div>
-            <UInput
-              v-model="endDate"
-              type="date"
-              size="sm"
-              placeholder="End Date"
-            />
-          </div>
+          <UInput
+            v-model="startDate"
+            type="date"
+            size="sm"
+            placeholder="Start Date"
+            class="min-w-auto"
+          />
+          <UInput
+            v-model="endDate"
+            type="date"
+            size="sm"
+            placeholder="End Date"
+            class="min-w-auto"
+          />
         </div>
         <div class="flex flex-wrap gap-2 mt-2">
           <UButton
