@@ -65,6 +65,18 @@ app/
 - Keep form state reactive and centralized; prefer refs over on-the-fly mutations
 - Derive submit-side effects from composables to keep components declarative
 
+### Modal Development
+
+- When using `UModal`, always use `v-model:open` instead of just `v-model`
+- Place modal content inside the `#content` slot template:
+  ```vue
+  <UModal v-model:open="isOpen">
+    <template #content>
+      <!-- Modal content here -->
+    </template>
+  </UModal>
+  ```
+
 ### Styling Guidelines
 
 - Use TailwindCSS utility classes

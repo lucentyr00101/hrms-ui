@@ -291,47 +291,51 @@
     </UCard>
 
     <!-- Delete Confirmation Modal -->
-    <UModal v-model="showDeleteModal">
-      <UCard>
-        <template #header>
-          <h3 class="text-lg font-semibold">Confirm Delete</h3>
-        </template>
-        <p class="text-gray-600 dark:text-gray-400">
-          Are you sure you want to delete this leave type? This action cannot be undone.
-        </p>
-        <template #footer>
-          <div class="flex justify-end gap-2">
-            <UButton color="neutral" variant="outline" @click="showDeleteModal = false">
-              Cancel
-            </UButton>
-            <UButton color="error" @click="confirmDelete">
-              Delete
-            </UButton>
-          </div>
-        </template>
-      </UCard>
+    <UModal v-model:open="showDeleteModal">
+      <template #content>
+        <UCard>
+          <template #header>
+            <h3 class="text-lg font-semibold">Confirm Delete</h3>
+          </template>
+          <p class="text-gray-600 dark:text-gray-400">
+            Are you sure you want to delete this leave type? This action cannot be undone.
+          </p>
+          <template #footer>
+            <div class="flex justify-end gap-2">
+              <UButton color="neutral" variant="outline" @click="showDeleteModal = false">
+                Cancel
+              </UButton>
+              <UButton color="error" @click="confirmDelete">
+                Delete
+              </UButton>
+            </div>
+          </template>
+        </UCard>
+      </template>
     </UModal>
 
     <!-- Bulk Delete Confirmation Modal -->
-    <UModal v-model="showBulkDeleteModal">
-      <UCard>
-        <template #header>
-          <h3 class="text-lg font-semibold">Confirm Bulk Delete</h3>
-        </template>
-        <p class="text-gray-600 dark:text-gray-400">
-          Are you sure you want to delete {{ selectedLeaveTypes.length }} leave type(s)? This action cannot be undone.
-        </p>
-        <template #footer>
-          <div class="flex justify-end gap-2">
-            <UButton color="neutral" variant="outline" @click="showBulkDeleteModal = false">
-              Cancel
-            </UButton>
-            <UButton color="error" @click="confirmBulkDelete">
-              Delete All
-            </UButton>
-          </div>
-        </template>
-      </UCard>
+    <UModal v-model:open="showBulkDeleteModal">
+      <template #content>
+        <UCard>
+          <template #header>
+            <h3 class="text-lg font-semibold">Confirm Bulk Delete</h3>
+          </template>
+          <p class="text-gray-600 dark:text-gray-400">
+            Are you sure you want to delete {{ selectedLeaveTypes.length }} leave type(s)? This action cannot be undone.
+          </p>
+          <template #footer>
+            <div class="flex justify-end gap-2">
+              <UButton color="neutral" variant="outline" @click="showBulkDeleteModal = false">
+                Cancel
+              </UButton>
+              <UButton color="error" @click="confirmBulkDelete">
+                Delete All
+              </UButton>
+            </div>
+          </template>
+        </UCard>
+      </template>
     </UModal>
   </div>
 </template>
