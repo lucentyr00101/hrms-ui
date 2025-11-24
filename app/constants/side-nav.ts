@@ -12,8 +12,12 @@ export const navItems = [
   {
     label: "Interviews",
     icon: "i-material-symbols:3p-rounded",
-    to: "/interviews",
     children: [
+      {
+        label: "Overview",
+        icon: "i-material-symbols:3p-rounded",
+        to: "/interviews",
+      },
       {
         label: "Candidates",
         icon: "i-material-symbols:person-search",
@@ -24,8 +28,12 @@ export const navItems = [
   {
     label: "Leave Management",
     icon: "i-material-symbols:event-available",
-    to: "/leave",
     children: [
+      {
+        label: "Overview",
+        icon: "i-material-symbols:event-available",
+        to: "/leave",
+      },
       {
         label: "Leave Types",
         icon: "i-material-symbols:category",
