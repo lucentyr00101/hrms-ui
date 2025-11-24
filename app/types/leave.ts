@@ -1,4 +1,4 @@
-export interface LeaveType {
+export interface LeaveTypeConfig {
   id: string;
   label: string;
   color: string;

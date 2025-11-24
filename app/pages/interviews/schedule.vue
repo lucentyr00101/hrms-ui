@@ -34,7 +34,6 @@
     <UCard
       v-if="showFilters"
       class="mb-6"
-      :ui="{ body: { padding: 'p-4' } }"
     >
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <UFormGroup label="Interviewer">
@@ -210,13 +209,13 @@ const handleCreateInterview = async (formData: InterviewScheduleForm) => {
     toast.add({
       title: 'Interview Scheduled',
       description: 'The interview has been successfully scheduled.',
-      color: 'green'
+      color: 'success'
     });
   } catch (error) {
     toast.add({
       title: 'Error',
       description: 'Failed to schedule the interview. Please try again.',
-      color: 'red'
+      color: 'error'
     });
   }
 };
@@ -227,7 +226,7 @@ const handleUpdateInterview = async (id: string, updates: Partial<InterviewSlot>
     toast.add({
       title: 'Interview Updated',
       description: 'The interview has been successfully updated.',
-      color: 'green'
+      color: 'success'
     });
     selectedSlot.value = null;
     showSlotDetails.value = false;
@@ -235,7 +234,7 @@ const handleUpdateInterview = async (id: string, updates: Partial<InterviewSlot>
     toast.add({
       title: 'Error',
       description: 'Failed to update the interview. Please try again.',
-      color: 'red'
+      color: 'error'
     });
   }
 };
@@ -253,7 +252,7 @@ const handleDeleteSlot = async (slot: InterviewSlot) => {
       toast.add({
         title: 'Interview Deleted',
         description: 'The interview slot has been deleted.',
-        color: 'green'
+        color: 'success'
       });
       showSlotDetails.value = false;
       selectedSlot.value = null;
@@ -261,7 +260,7 @@ const handleDeleteSlot = async (slot: InterviewSlot) => {
       toast.add({
         title: 'Error',
         description: 'Failed to delete the interview slot. Please try again.',
-        color: 'red'
+        color: 'error'
       });
     }
   }
@@ -279,7 +278,7 @@ const handleMarkCompleted = async (slot: InterviewSlot) => {
     toast.add({
       title: 'Interview Completed',
       description: 'The interview has been marked as completed.',
-      color: 'green'
+      color: 'success'
     });
     showSlotDetails.value = false;
     selectedSlot.value = null;
@@ -287,7 +286,7 @@ const handleMarkCompleted = async (slot: InterviewSlot) => {
     toast.add({
       title: 'Error',
       description: 'Failed to update the interview status. Please try again.',
-      color: 'red'
+      color: 'error'
     });
   }
 };
@@ -299,7 +298,7 @@ const handleCancelInterview = async (slot: InterviewSlot) => {
       toast.add({
         title: 'Interview Cancelled',
         description: 'The interview has been cancelled.',
-        color: 'yellow'
+        color: 'warning'
       });
       showSlotDetails.value = false;
       selectedSlot.value = null;
@@ -307,7 +306,7 @@ const handleCancelInterview = async (slot: InterviewSlot) => {
       toast.add({
         title: 'Error',
         description: 'Failed to cancel the interview. Please try again.',
-        color: 'red'
+        color: 'error'
       });
     }
   }

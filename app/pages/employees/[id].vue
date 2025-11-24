@@ -22,7 +22,7 @@
         <EmployeeSummary :employee="employee" />
 
         <UTabs :items="tabs" class="mt-8">
-          <template #item="{ item }">
+          <template #default="{ item }">
             <!-- Info Tab -->
             <div v-if="item.key === 'info'" class="py-4">
               <EmployeeInfoTab 

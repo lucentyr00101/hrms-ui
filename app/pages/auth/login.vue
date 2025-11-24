@@ -60,16 +60,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
             placeholder="Enter your email address"
             size="lg"
             class="transition-all duration-200 focus-within:scale-[1.02]"
-            :ui="{ 
-              base: 'relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0',
-              rounded: 'rounded-xl',
-              placeholder: 'placeholder-gray-400 dark:placeholder-gray-500',
-              color: {
-                white: {
-                  outline: 'shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
-                }
-              }
-            }"
+
           />
         </UFormField>
 
@@ -87,14 +78,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
             size="lg"
             class="transition-all duration-200 focus-within:scale-[1.02]"
             :ui="{ 
-              base: 'relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0',
-              rounded: 'rounded-xl',
-              placeholder: 'placeholder-gray-400 dark:placeholder-gray-500',
-              color: {
-                white: {
-                  outline: 'shadow-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400'
-                }
-              }
+              base: 'relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0'
             }"
           />
         </UFormField>
@@ -104,14 +88,6 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           type="submit" 
           size="lg"
           class="mt-8 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg hover:shadow-xl rounded-xl font-semibold"
-          :ui="{
-            base: 'focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed disabled:opacity-75 flex-shrink-0',
-            font: 'font-medium',
-            rounded: 'rounded-xl',
-            size: {
-              lg: 'text-base px-6 py-3'
-            }
-          }"
         >
           <div class="flex items-center justify-center space-x-2">
             <UIcon name="i-material-symbols:login" class="w-5 h-5" />

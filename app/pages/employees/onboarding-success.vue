@@ -71,7 +71,7 @@
           View Employee Profile
         </UButton>
         <UButton 
-          color="gray" 
+          color="neutral" 
           variant="outline" 
           size="lg"
           @click="addAnother"
@@ -80,7 +80,7 @@
           Add Another Employee
         </UButton>
         <UButton 
-          color="gray" 
+          color="neutral" 
           variant="outline" 
           size="lg"
           @click="backToEmployees"

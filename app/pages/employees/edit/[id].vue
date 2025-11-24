@@ -573,7 +573,7 @@ const submitEdit = async () => {
     toast.add({
       title: 'Update failed',
       description: 'Something went wrong while saving changes.',
-      color: 'red'
+      color: 'error'
     });
   } finally {
     isSubmitting.value = false;

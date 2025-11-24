@@ -122,6 +122,136 @@ This is an HRMS (Human Resources Management System) application with the followi
 - Always refer to Nuxt UI v4 documentation for component usage and props (https://ui.nuxt.com/docs/components)
 - Always fix typescript and linting errors after adding new code
 
+### TypeScript & Type Safety
+
+#### Nuxt UI Color Prop Pattern
+
+Nuxt UI components (UButton, UBadge, UAlert, Toast, etc.) accept **ONLY** these semantic color values:
+
+```typescript
+type Color = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'
+```
+
+**✅ CORRECT Usage:**
+```vue
+<UButton color="success">Save</UButton>
+<UBadge color="error">Failed</UBadge>
+<UAlert color="warning">Warning message</UAlert>
+
+toast.add({
+  title: 'Success',
+  color: 'success'
+})
+```
+
+**❌ INCORRECT Usage (will cause TypeScript errors):**
+```vue
+<!-- DO NOT USE: -->
+<UButton color="green">Save</UButton>     <!-- Use 'success' instead -->
+<UBadge color="red">Failed</UBadge>       <!-- Use 'error' instead -->
+<UAlert color="blue">Info</UAlert>        <!-- Use 'info' instead -->
+<UButton color="gray">Cancel</UButton>    <!-- Use 'neutral' instead -->
+<UBadge color="yellow">Warning</UBadge>   <!-- Use 'warning' instead -->
+<UBadge color="amber">Alert</UBadge>      <!-- Use 'warning' instead -->
+```
+
+**Color Mapping Reference:**
+- `green` → `success`
+- `red` → `error`
+- `blue` → `info`
+- `yellow` / `amber` / `orange` → `warning`
+- `gray` / `grey` → `neutral`
+- `purple` → `primary` (for accents)
+
+#### Color Helper Functions
+
+When creating functions that return colors for Nuxt UI components, **always specify the return type**:
+
+```typescript
+// ✅ CORRECT: Explicit return type
+const getStatusColor = (status: string): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  switch (status) {
+    case 'active': return 'success';
+    case 'pending': return 'warning';
+    case 'failed': return 'error';
+    default: return 'neutral';
+  }
+};
+
+// ✅ CORRECT: Using Record type with explicit color union
+const getStageColor = (stage: Stage): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const colors: Record<Stage, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
+    applied: 'primary',
+    screening: 'info',
+    technical: 'warning',
+    final: 'secondary',
+    offer: 'success',
+    hired: 'success',
+    rejected: 'error'
+  };
+  return colors[stage] || 'neutral';
+};
+
+// ❌ INCORRECT: No return type, using invalid colors
+const getBadgeColor = (status: string) => {
+  if (status === 'active') return 'green';  // TypeScript error!
+  return 'gray';  // TypeScript error!
+};
+```
+
+#### Type Export Patterns
+
+When re-exporting types that might conflict with constants, use explicit exports:
+
+```typescript
+// ✅ CORRECT: Explicit type-only exports to avoid naming conflicts
+export type { 
+  InterviewSlot, 
+  InterviewType,
+  InterviewSlotStatus  // Renamed to avoid conflict with constant InterviewStatus
+} from './interview';
+
+export type { 
+  LeaveTypeConfig,  // Renamed to avoid conflict with constant LeaveType
+  LeaveSummary
+} from './leave';
+
+// Then export constants separately
+export * from './constants';
+```
+
+#### Common TypeScript Fixes
+
+1. **Avoid `undefined` in required fields**: Use non-null assertion or optional chaining
+   ```typescript
+   // ✅ CORRECT
+   const nextStage = stages[currentIndex + 1]!;
+   const firstLeave = day.leaves[0];
+   if (firstLeave) viewDetails(firstLeave);
+   
+   // ❌ INCORRECT
+   const nextStage = stages[currentIndex + 1];  // May be undefined
+   viewDetails(day.leaves[0]);  // May be undefined
+   ```
+
+2. **Type function parameters properly**:
+   ```typescript
+   // ✅ CORRECT
+   const filter = (items: Item[]) => items.filter((item: Item) => item.active);
+   
+   // ❌ INCORRECT
+   const filter = (items) => items.filter(item => item.active);  // Implicit any
+   ```
+
+3. **Use proper UI prop types**: Don't try to customize UI props that aren't exposed
+   ```typescript
+   // ✅ CORRECT
+   <UInput v-model="email" size="lg" />
+   
+   // ❌ INCORRECT - 'rounded' is not a valid UInput prop
+   <UInput v-model="email" :ui="{ rounded: 'rounded-xl' }" />
+   ```
+
 ## Available Scripts
 
 - `bun run dev` - Start development server

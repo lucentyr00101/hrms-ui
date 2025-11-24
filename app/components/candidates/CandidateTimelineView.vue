@@ -244,7 +244,7 @@ const getStageColor = (stage: any) => {
   // Normal flow for non-rejected candidates
   if (stage.completed) return 'success';
   if (stage.current) return 'primary';
-  return 'gray';
+  return 'neutral';
 };
 
 const getStageLabel = (stage: any) => {

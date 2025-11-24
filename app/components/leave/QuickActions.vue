@@ -15,7 +15,7 @@
       </UButton>
 
       <UButton
-        color="gray"
+        color="neutral"
         variant="soft"
         size="lg"
         block
@@ -25,7 +25,7 @@
       </UButton>
 
       <UButton
-        color="gray"
+        color="neutral"
         variant="soft"
         size="lg"
         block
@@ -35,7 +35,7 @@
       </UButton>
 
       <UButton
-        color="gray"
+        color="neutral"
         variant="soft"
         size="lg"
         block

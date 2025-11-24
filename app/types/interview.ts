@@ -8,7 +8,7 @@ export interface InterviewSlot {
   endTime: string; // HH:MM format
   interviewer: string;
   interviewType: InterviewType;
-  status: InterviewStatus;
+  status: InterviewSlotStatus;
   location?: string;
   notes?: string;
   meetingLink?: string;
@@ -23,7 +23,7 @@ export type InterviewType =
   | 'final'
   | 'panel';
 
-export type InterviewStatus = 
+export type InterviewSlotStatus = 
   | 'pending'
   | 'scheduled'
   | 'completed'
@@ -54,7 +54,7 @@ export interface InterviewFilters {
     end: string;
   };
   interviewer?: string;
-  status?: InterviewStatus;
+  status?: InterviewSlotStatus;
   interviewType?: InterviewType;
 }
 

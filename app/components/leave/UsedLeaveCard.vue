@@ -30,7 +30,7 @@
       <div class="space-y-2">
         <UButton
           variant="ghost"
-          color="gray"
+          color="neutral"
           block
           @click="showBreakdown = !showBreakdown"
           class="justify-between"

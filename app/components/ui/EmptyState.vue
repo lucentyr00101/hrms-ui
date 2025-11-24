@@ -19,7 +19,7 @@ interface Props {
   description: string;
   buttonText: string;
   buttonIcon?: string;
-  buttonColor?: string;
+  buttonColor?: 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral';
 }
 
 withDefaults(defineProps<Props>(), {

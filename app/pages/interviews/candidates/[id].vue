@@ -30,7 +30,6 @@
             <UAvatar
               :alt="`${candidate.firstName} ${candidate.lastName}`"
               size="xl"
-              :ui="{ background: 'bg-primary-500' }"
             />
             <div>
               <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
@@ -58,7 +57,7 @@
             <UButton
               v-if="canAdvanceStage(candidate)"
               icon="i-material-symbols:arrow-forward"
-              color="green"
+              color="success"
               @click="handleAdvanceStage"
             >
               Advance Stage
@@ -66,7 +65,7 @@
             <UButton
               v-if="canReject(candidate)"
               icon="i-material-symbols:person-remove"
-              color="red"
+              color="error"
               variant="outline"
               @click="handleReject"
             >
@@ -202,8 +201,8 @@ const candidate = ref<Candidate | null>(
 );
 
 // Helper functions for badges
-const getStageColor = (stage: InterviewStage) => {
-  const colors: Record<InterviewStage, string> = {
+const getStageColor = (stage: InterviewStage): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const colors: Record<InterviewStage, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
     applied: 'primary',
     screening: 'warning', 
     technical: 'info',
@@ -212,7 +211,7 @@ const getStageColor = (stage: InterviewStage) => {
     hired: 'success',
     rejected: 'error'
   };
-  return colors[stage] || 'gray';
+  return colors[stage] || 'neutral';
 };
 
 const getStageLabel = (stage: InterviewStage) => {
@@ -228,16 +227,16 @@ const getStageLabel = (stage: InterviewStage) => {
   return labels[stage] || stage;
 };
 
-const getStatusColor = (status: CandidateStatus) => {
-  const colors: Record<CandidateStatus, string> = {
+const getStatusColor = (status: CandidateStatus): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const colors: Record<CandidateStatus, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
     active: 'success',
     scheduled: 'info',
     completed: 'secondary',
     rejected: 'error',
-    withdrawn: 'gray',
+    withdrawn: 'neutral',
     hired: 'success'
   };
-  return colors[status] || 'gray';
+  return colors[status] || 'neutral';
 };
 
 const getStatusLabel = (status: CandidateStatus) => {
@@ -274,7 +273,7 @@ const handleAdvanceStage = () => {
   const stages: InterviewStage[] = ['applied', 'screening', 'technical', 'final', 'offer', 'hired'];
   const currentIndex = stages.indexOf(candidate.value.interviewStage);
   if (currentIndex < stages.length - 1) {
-    candidate.value.interviewStage = stages[currentIndex + 1];
+    candidate.value.interviewStage = stages[currentIndex + 1]!;
   }
 };
 

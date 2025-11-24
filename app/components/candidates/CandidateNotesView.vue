@@ -143,8 +143,8 @@ const handleNoteSubmit = (data: NoteSubmitData) => {
   emit('notes-updated', notes.value.map(n => n.content).join('\n\n'))
 }
 
-const getStageColor = (stage: InterviewStage) => {
-  const colors: Record<InterviewStage, string> = {
+const getStageColor = (stage: InterviewStage): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const colors: Record<InterviewStage, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
     applied: 'primary',
     screening: 'warning',
     technical: 'info',
@@ -153,7 +153,7 @@ const getStageColor = (stage: InterviewStage) => {
     hired: 'success',
     rejected: 'error'
   }
-  return colors[stage] || 'gray'
+  return colors[stage] || 'neutral'
 }
 
 const getStageLabel = (stage: InterviewStage) => {

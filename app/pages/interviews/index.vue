@@ -77,7 +77,7 @@
               </p>
             </div>
           </div>
-          <UBadge color="blue" label="Scheduled" size="sm" />
+          <UBadge color="info" label="Scheduled" size="sm" />
         </div>
         
         <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -92,7 +92,7 @@
               </p>
             </div>
           </div>
-          <UBadge color="green" label="Completed" size="sm" />
+          <UBadge color="success" label="Completed" size="sm" />
         </div>
       </div>
       
