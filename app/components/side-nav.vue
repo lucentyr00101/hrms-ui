@@ -22,7 +22,7 @@ const isActive = (path: string) => {
 <template>
   <aside 
     :class="[
-      'bg-gray-900 dark:bg-gray-950 min-h-screen transition-all duration-300 ease-in-out border-r border-gray-700 dark:border-gray-800 flex flex-col',
+      'bg-gray-900 dark:bg-gray-950 h-screen transition-all duration-300 ease-in-out border-r border-gray-700 dark:border-gray-800 flex flex-col',
       collapsed ? 'w-16' : 'w-64'
     ]"
   >

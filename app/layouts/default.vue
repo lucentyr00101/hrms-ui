@@ -37,7 +37,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
     <!-- Mobile Sidebar Overlay -->
     <div 
       v-if="showMobileSidebar"
@@ -56,12 +56,12 @@ onMounted(() => {
     </div>
 
     <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col min-w-0">
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
       <!-- Top Bar -->
       <TopBar @toggle-sidebar="isLargeScreen ? toggleSidebar() : toggleMobileSidebar()" />
 
       <!-- Page Content -->
-      <main class="flex-1 p-4 lg:p-6 pb-20 lg:pb-6">
+      <main class="flex-1 p-4 lg:p-6 pb-20 lg:pb-6 overflow-y-auto">
         <NuxtPage />
       </main>
     </div>
