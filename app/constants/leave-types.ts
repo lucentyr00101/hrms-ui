@@ -192,7 +192,7 @@ export const LEAVE_TYPES_DATA: LeaveType[] = [
     eligibility: ['permanent'],
     minTenureMonths: 12,
     blackoutDates: [
-      { startDate: '2025-12-20', endDate: '2025-12-31', reason: 'Year-end freeze' }
+      { startDate: `${new Date().getFullYear()}-12-20`, endDate: `${new Date().getFullYear()}-12-31`, reason: 'Year-end freeze' }
     ],
     usageCount: 5,
     approvalRate: 80,
@@ -261,7 +261,7 @@ export const LEAVE_TYPES_DATA: LeaveType[] = [
     eligibility: ['permanent'],
     minTenureMonths: 24,
     blackoutDates: [
-      { startDate: '2025-12-01', endDate: '2025-12-31', reason: 'Peak season' }
+      { startDate: `${new Date().getFullYear()}-12-01`, endDate: `${new Date().getFullYear()}-12-31`, reason: 'Peak season' }
     ],
     usageCount: 0,
     approvalRate: 0,

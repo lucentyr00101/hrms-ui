@@ -12,6 +12,7 @@ export function useLeaveTypes() {
   const selectedLeaveTypes = ref<string[]>([]);
   const currentPage = ref(1);
   const itemsPerPage = ref(10);
+  const nextId = ref(LEAVE_TYPES_DATA.length + 1);
 
   // Computed properties
   const filteredLeaveTypes = computed(() => {
@@ -89,7 +90,8 @@ export function useLeaveTypes() {
   };
 
   const createLeaveType = (data: LeaveTypeFormData): LeaveType => {
-    const newId = `LT${String(leaveTypes.value.length + 1).padStart(3, '0')}`;
+    const newId = `LT${String(nextId.value).padStart(3, '0')}`;
+    nextId.value++;
     const now = new Date().toISOString().split('T')[0];
     
     const newLeaveType: LeaveType = {
@@ -144,7 +146,8 @@ export function useLeaveTypes() {
     const original = getLeaveTypeById(id);
     if (!original) return null;
 
-    const newId = `LT${String(leaveTypes.value.length + 1).padStart(3, '0')}`;
+    const newId = `LT${String(nextId.value).padStart(3, '0')}`;
+    nextId.value++;
     const now = new Date().toISOString().split('T')[0];
 
     const duplicate: LeaveType = {

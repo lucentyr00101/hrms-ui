@@ -311,6 +311,28 @@
         </template>
       </UCard>
     </UModal>
+
+    <!-- Bulk Delete Confirmation Modal -->
+    <UModal v-model="showBulkDeleteModal">
+      <UCard>
+        <template #header>
+          <h3 class="text-lg font-semibold">Confirm Bulk Delete</h3>
+        </template>
+        <p class="text-gray-600 dark:text-gray-400">
+          Are you sure you want to delete {{ selectedLeaveTypes.length }} leave type(s)? This action cannot be undone.
+        </p>
+        <template #footer>
+          <div class="flex justify-end gap-2">
+            <UButton color="neutral" variant="outline" @click="showBulkDeleteModal = false">
+              Cancel
+            </UButton>
+            <UButton color="error" @click="confirmBulkDelete">
+              Delete All
+            </UButton>
+          </div>
+        </template>
+      </UCard>
+    </UModal>
   </div>
 </template>
 
@@ -447,16 +469,21 @@ const handleBulkDeactivate = () => {
   clearSelection();
 };
 
+const showBulkDeleteModal = ref(false);
+
 const handleBulkDelete = () => {
-  if (confirm(`Are you sure you want to delete ${selectedLeaveTypes.value.length} leave type(s)?`)) {
-    const count = bulkDelete(selectedLeaveTypes.value);
-    toast.add({
-      title: 'Success',
-      description: `${count} leave type(s) deleted`,
-      color: 'success'
-    });
-    clearSelection();
-  }
+  showBulkDeleteModal.value = true;
+};
+
+const confirmBulkDelete = () => {
+  const count = bulkDelete(selectedLeaveTypes.value);
+  toast.add({
+    title: 'Success',
+    description: `${count} leave type(s) deleted`,
+    color: 'success'
+  });
+  clearSelection();
+  showBulkDeleteModal.value = false;
 };
 
 definePageMeta({
