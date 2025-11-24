@@ -1,7 +1,8 @@
 <template>
   <!-- Archive/Offboard Employee Modal -->
-  <UModal v-model="isOpen" :prevent-close="isProcessing">
-    <UCard>
+  <UModal v-model:open="isOpen" :prevent-close="isProcessing">
+    <template #content>
+      <UCard>
       <template #header>
         <div class="flex items-center space-x-3">
           <UIcon 
@@ -104,7 +105,7 @@
             <div 
               class="bg-blue-600 h-2 rounded-full transition-all duration-300"
               :style="{ width: `${(completedTasks / totalTasks) * 100}%` }"
-            ></div>
+            />
           </div>
         </div>
 
@@ -257,15 +258,15 @@
             <UIcon name="i-material-symbols:arrow-back" class="w-4 h-4 mr-2" />
             Back
           </UButton>
-          <div v-else></div>
+          <div v-else/>
 
           <div class="flex space-x-3">
             <UButton 
               v-if="currentStep !== 'success'"
               color="neutral" 
               variant="outline" 
-              @click="closeModal"
               :disabled="isProcessing"
+              @click="closeModal"
             >
               Cancel
             </UButton>
@@ -273,8 +274,8 @@
             <UButton 
               v-if="currentStep === 'confirm'"
               color="orange"
-              @click="proceedToChecklist"
               :disabled="!canProceedToChecklist"
+              @click="proceedToChecklist"
             >
               Proceed to Checklist
               <UIcon name="i-material-symbols:arrow-forward" class="w-4 h-4 ml-2" />
@@ -283,9 +284,9 @@
             <UButton 
               v-else-if="currentStep === 'checklist'"
               color="error"
-              @click="completeOffboarding"
               :loading="isProcessing"
               :disabled="!allTasksCompleted"
+              @click="completeOffboarding"
             >
               <UIcon name="i-material-symbols:archive" class="w-4 h-4 mr-2" />
               Complete Archive
@@ -302,6 +303,7 @@
         </div>
       </template>
     </UCard>
+    </template>
   </UModal>
 </template>
 

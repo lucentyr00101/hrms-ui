@@ -31,7 +31,7 @@
             accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
             class="hidden"
             @change="handleFileUpload"
-          />
+          >
         </div>
         
         <!-- Upload Progress (if uploading) -->
@@ -44,7 +44,7 @@
                 <div 
                   class="bg-primary h-2 rounded-full transition-all duration-300" 
                   :style="{ width: upload.progress + '%' }"
-                ></div>
+                />
               </div>
             </div>
             <span class="text-sm text-gray-500 dark:text-gray-400">{{ upload.progress }}%</span>
@@ -113,8 +113,9 @@
     </UCard>
 
     <!-- Document Preview Modal -->
-    <UModal v-model="showPreview">
-      <UCard v-if="selectedDocument" :ui="{ body: { padding: 'p-0' } }">
+    <UModal v-model:open="showPreview">
+      <template #content>
+        <UCard v-if="selectedDocument" :ui="{ body: { padding: 'p-0' } }">
         <template #header>
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
@@ -148,7 +149,7 @@
               :alt="selectedDocument.name"
               class="max-w-full h-auto rounded-lg shadow-lg mx-auto"
               style="max-height: 400px;"
-            />
+            >
           </div>
 
           <div v-else class="text-center py-12">
@@ -185,6 +186,7 @@
           </div>
         </div>
       </UCard>
+      </template>
     </UModal>
   </div>
 </template>

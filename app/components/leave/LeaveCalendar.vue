@@ -102,19 +102,19 @@
       <!-- Legend -->
       <div class="flex flex-wrap gap-4 text-xs pt-4 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center space-x-1">
-          <div class="w-4 h-4 bg-green-500 rounded"></div>
+          <div class="w-4 h-4 bg-green-500 rounded"/>
           <span class="text-gray-600 dark:text-gray-400">Approved</span>
         </div>
         <div class="flex items-center space-x-1">
-          <div class="w-4 h-4 bg-amber-500 rounded bg-stripes"></div>
+          <div class="w-4 h-4 bg-amber-500 rounded bg-stripes"/>
           <span class="text-gray-600 dark:text-gray-400">Pending</span>
         </div>
         <div class="flex items-center space-x-1">
-          <div class="w-4 h-4 bg-red-500 rounded opacity-50"></div>
+          <div class="w-4 h-4 bg-red-500 rounded opacity-50"/>
           <span class="text-gray-600 dark:text-gray-400">Rejected</span>
         </div>
         <div class="flex items-center space-x-1">
-          <div class="w-4 h-4 bg-gray-300 dark:bg-gray-700 rounded"></div>
+          <div class="w-4 h-4 bg-gray-300 dark:bg-gray-700 rounded"/>
           <span class="text-gray-600 dark:text-gray-400">Public Holiday</span>
         </div>
       </div>
@@ -122,8 +122,9 @@
   </LeaveCard>
 
   <!-- Leave Details Modal -->
-  <UModal v-model="showLeaveModal">
-    <UCard v-if="selectedLeave">
+  <UModal v-model:open="showLeaveModal">
+    <template #content>
+      <UCard v-if="selectedLeave">
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-semibold">Leave Details</h3>
@@ -174,6 +175,7 @@
         </div>
       </div>
     </UCard>
+    </template>
   </UModal>
 </template>
 
@@ -181,12 +183,17 @@
 import { useLeaveData } from '~/composables/useLeaveData';
 import type { CalendarLeave } from '~/types/leave';
 
+interface PublicHoliday {
+  date: string;
+  name: string;
+}
+
 interface CalendarDay {
   date: Date;
   isCurrentMonth: boolean;
   isToday: boolean;
   leaves: CalendarLeave[];
-  holiday: any;
+  holiday: PublicHoliday | undefined;
 }
 
 const { filteredLeaves, publicHolidays } = useLeaveData();
