@@ -25,6 +25,13 @@ export const navItems = [
     label: "Leave Management",
     icon: "i-material-symbols:event-available",
     to: "/leave",
+    children: [
+      {
+        label: "Leave Types",
+        icon: "i-material-symbols:category",
+        to: "/leave/types",
+      }
+    ]
   },
 ];
 

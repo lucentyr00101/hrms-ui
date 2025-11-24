@@ -1,4 +1,4 @@
-import type { LeaveType, ApprovalWorkflow, AccrualMethod, EmployeeEligibility, BlackoutDate } from '~/types';
+import type { LeaveType, ApprovalWorkflow, AccrualMethod, EmployeeEligibility } from '~/types';
 
 // Leave Types Dummy Data
 export const LEAVE_TYPES_DATA: LeaveType[] = [
