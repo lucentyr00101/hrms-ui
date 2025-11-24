@@ -1,6 +1,7 @@
 <template>
-  <UModal v-model="isOpen" :ui="{ width: 'sm:max-w-lg' }">
-    <div class="p-6">
+  <UModal v-model:open="isOpen" :ui="{ width: 'sm:max-w-lg' }">
+    <template #content>
+      <div class="p-6">
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
           Interview Details
@@ -182,6 +183,7 @@
         </div>
       </div>
     </div>
+    </template>
   </UModal>
 </template>
 

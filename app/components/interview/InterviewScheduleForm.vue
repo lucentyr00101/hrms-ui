@@ -1,6 +1,7 @@
 <template>
-  <UModal v-model="isOpen" :ui="{ width: 'sm:max-w-2xl' }">
-    <div class="p-6">
+  <UModal v-model:open="isOpen" :ui="{ width: 'sm:max-w-2xl' }">
+    <template #content>
+      <div class="p-6">
       <div class="flex items-center justify-between mb-6">
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
           {{ isEditing ? 'Edit Interview' : 'Schedule New Interview' }}
@@ -16,8 +17,8 @@
       <UForm
         :schema="interviewSchema"
         :state="formState"
-        @submit="handleSubmit"
         class="space-y-6"
+        @submit="handleSubmit"
       >
         <!-- Candidate Selection -->
         <UFormGroup
@@ -169,6 +170,7 @@
         </div>
       </UForm>
     </div>
+    </template>
   </UModal>
 </template>
 
