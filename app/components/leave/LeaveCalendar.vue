@@ -5,7 +5,7 @@
         <UButton
           size="xs"
           variant="ghost"
-          color="gray"
+          color="neutral"
           @click="goToToday"
         >
           Today
@@ -13,14 +13,14 @@
         <div class="flex">
           <UButton
             variant="ghost"
-            color="gray"
+            color="neutral"
             size="xs"
             icon="i-material-symbols:chevron-left"
             @click="previousMonth"
           />
           <UButton
             variant="ghost"
-            color="gray"
+            color="neutral"
             size="xs"
             icon="i-material-symbols:chevron-right"
             @click="nextMonth"
@@ -128,7 +128,7 @@
         <div class="flex items-center justify-between">
           <h3 class="text-lg font-semibold">Leave Details</h3>
           <UButton
-            color="gray"
+            color="neutral"
             variant="ghost"
             icon="i-material-symbols:close"
             size="xs"
@@ -165,7 +165,7 @@
         </div>
 
         <div v-if="selectedLeave.isHalfDay">
-          <UBadge color="blue" size="xs">Half Day</UBadge>
+          <UBadge color="info" size="xs">Half Day</UBadge>
         </div>
 
         <div>
@@ -283,12 +283,12 @@ const getLeaveIcon = (leave: CalendarLeave) => {
   return 'i-material-symbols:event';
 };
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: string): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
   switch (status) {
-    case 'Approved': return 'green';
-    case 'Pending': return 'amber';
-    case 'Rejected': return 'red';
-    default: return 'gray';
+    case 'Approved': return 'success';
+    case 'Pending': return 'warning';
+    case 'Rejected': return 'error';
+    default: return 'neutral';
   }
 };
 
@@ -313,7 +313,7 @@ const goToToday = () => {
 };
 
 const handleDayClick = (day: CalendarDay) => {
-  if (day.leaves.length === 1) {
+  if (day.leaves.length === 1 && day.leaves[0]) {
     viewLeaveDetails(day.leaves[0]);
   }
 };

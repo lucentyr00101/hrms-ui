@@ -2,14 +2,14 @@ import type {
   LeaveSummary, 
   CalendarLeave, 
   PublicHoliday, 
-  LeaveType,
+  LeaveTypeConfig,
   LeavePolicy,
   UpcomingLeave,
   TeamLeave,
   TeamSummary
-} from '~/types/leave';
+} from '~/types';
 
-export const LEAVE_TYPES: LeaveType[] = [
+export const LEAVE_TYPES: LeaveTypeConfig[] = [
   { 
     id: 'annual', 
     label: 'Annual Leave', 

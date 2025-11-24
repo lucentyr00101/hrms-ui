@@ -64,7 +64,6 @@
           v-model="itemsPerPage"
           :options="itemsPerPageOptions"
           size="sm"
-          @update:model-value="handlePageSizeChange"
         />
       </div>
     </div>
@@ -90,15 +89,6 @@
         v-model="currentPage"
         :page-count="totalPages"
         :total="allFilteredCandidates.length"
-        :ui="{
-          wrapper: 'flex items-center gap-1',
-          rounded: '!rounded-full min-w-[32px] justify-center',
-          default: {
-            activeButton: {
-              variant: 'outline'
-            }
-          }
-        }"
         @update:model-value="handlePageChange"
       />
     </div>
@@ -162,12 +152,7 @@ const {
 } = useCandidates();
 
 // Items per page options
-const itemsPerPageOptions = [
-  { label: '5', value: 5 },
-  { label: '10', value: 10 },
-  { label: '20', value: 20 },
-  { label: '50', value: 50 }
-];
+const itemsPerPageOptions = [5, 10, 20, 50];
 
 // Methods
 const handlePageSizeChange = (newSize: number) => {

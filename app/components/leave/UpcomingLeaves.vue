@@ -51,14 +51,14 @@ const { upcomingLeaves } = useLeaveData();
 
 const getLeaveTypeColor = (type: string) => {
   const typeMap: Record<string, string> = {
-    'Annual': 'green',
-    'Sick': 'amber',
-    'Personal': 'blue',
+    'Annual': 'success',
+    'Sick': 'warning',
+    'Personal': 'info',
     'Maternity': 'pink',
     'Paternity': 'purple',
-    'Unpaid': 'gray'
+    'Unpaid': 'neutral'
   };
-  return typeMap[type] || 'gray';
+  return typeMap[type] || 'neutral';
 };
 
 const formatDateRange = (startDate: string, endDate: string) => {

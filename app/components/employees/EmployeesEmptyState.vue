@@ -14,7 +14,7 @@
       <div class="flex justify-center gap-3">
         <UButton
           v-if="showClearFilters"
-          color="gray"
+          color="neutral"
           variant="outline"
           @click="$emit('clearFilters')"
         >

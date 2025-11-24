@@ -6,7 +6,7 @@
         <UButton
           v-if="hasActiveFilters"
           size="xs"
-          color="gray"
+          color="neutral"
           variant="ghost"
           @click="clearAllFilters"
         >
@@ -24,7 +24,7 @@
             v-for="type in leaveTypes"
             :key="type.id"
             size="sm"
-            :color="isTypeSelected(type.id) ? 'primary' : 'gray'"
+            :color="isTypeSelected(type.id) ? 'primary' : 'neutral'"
             :variant="isTypeSelected(type.id) ? 'solid' : 'soft'"
             @click="toggleLeaveType(type.id)"
           >
@@ -44,7 +44,7 @@
             v-for="status in statuses"
             :key="status"
             size="sm"
-            :color="isStatusSelected(status) ? 'primary' : 'gray'"
+            :color="isStatusSelected(status) ? 'primary' : 'neutral'"
             :variant="isStatusSelected(status) ? 'solid' : 'soft'"
             @click="toggleStatus(status)"
           >
@@ -79,7 +79,7 @@
             v-for="quickDate in quickDateRanges"
             :key="quickDate.label"
             size="xs"
-            color="gray"
+            color="neutral"
             variant="soft"
             @click="setQuickDateRange(quickDate.value)"
           >
@@ -186,8 +186,8 @@ const setQuickDateRange = (range: string) => {
       break;
   }
 
-  startDate.value = start.toISOString().split('T')[0];
-  endDate.value = end.toISOString().split('T')[0];
+  startDate.value = start.toISOString().split('T')[0]!;
+  endDate.value = end.toISOString().split('T')[0]!;
   
   updateFilters({
     dateRange: {

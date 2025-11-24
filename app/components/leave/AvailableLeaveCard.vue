@@ -15,7 +15,7 @@
       <div class="space-y-2">
         <UButton
           variant="ghost"
-          color="gray"
+          color="neutral"
           block
           @click="showBreakdown = !showBreakdown"
           class="justify-between"
@@ -72,11 +72,11 @@ import { useLeaveData } from '~/composables/useLeaveData';
 const { leaveSummary } = useLeaveData();
 const showBreakdown = ref(false);
 
-const getProgressColor = (balance: number, total: number) => {
+const getProgressColor = (balance: number, total: number): 'success' | 'warning' | 'error' => {
   const percentage = (balance / total) * 100;
-  if (percentage > 60) return 'green';
-  if (percentage > 30) return 'amber';
-  return 'red';
+  if (percentage > 60) return 'success';
+  if (percentage > 30) return 'warning';
+  return 'error';
 };
 
 const isExpiringSoon = (expiresAt: string) => {

@@ -72,8 +72,8 @@ export const useInterviewSlots = () => {
         updatedAt: new Date().toISOString()
       };
 
-      interviewSlots.value[index] = updatedSlot;
-      return updatedSlot;
+      interviewSlots.value[index] = updatedSlot as InterviewSlot;
+      return updatedSlot as InterviewSlot;
     } catch (err) {
       error.value = 'Failed to update interview slot';
       throw err;

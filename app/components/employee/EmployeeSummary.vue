@@ -49,12 +49,12 @@ const initials = computed(() =>
   `${props.employee.firstName[0]}${props.employee.lastName[0]}`
 );
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: string): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
   switch (status) {
-    case 'active': return 'green';
-    case 'inactive': return 'red';
-    case 'on-leave': return 'yellow';
-    default: return 'gray';
+    case 'active': return 'success';
+    case 'inactive': return 'error';
+    case 'on-leave': return 'warning';
+    default: return 'neutral';
   }
 };
 

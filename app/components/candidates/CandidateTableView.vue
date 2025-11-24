@@ -264,15 +264,15 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const getStageColor = (stage: InterviewStage) => {
-  const colors: Record<InterviewStage, string> = {
-    'applied': 'gray',
-    'screening': 'blue',
-    'technical': 'yellow',
-    'final': 'orange',
-    'offer': 'purple',
-    'hired': 'green',
-    'rejected': 'red'
+const getStageColor = (stage: InterviewStage): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const colors: Record<InterviewStage, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
+    'applied': 'neutral',
+    'screening': 'info',
+    'technical': 'warning',
+    'final': 'secondary',
+    'offer': 'primary',
+    'hired': 'success',
+    'rejected': 'error'
   };
   return colors[stage];
 };
@@ -290,14 +290,14 @@ const getStageLabel = (stage: InterviewStage): string => {
   return labels[stage];
 };
 
-const getStatusColor = (status: CandidateStatus) => {
-  const colors: Record<CandidateStatus, string> = {
-    'active': 'blue',
-    'scheduled': 'yellow',
-    'completed': 'green',
-    'rejected': 'red',
-    'withdrawn': 'gray',
-    'hired': 'emerald'
+const getStatusColor = (status: CandidateStatus): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const colors: Record<CandidateStatus, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
+    'active': 'info',
+    'scheduled': 'warning',
+    'completed': 'success',
+    'rejected': 'error',
+    'withdrawn': 'neutral',
+    'hired': 'success'
   };
   return colors[status];
 };

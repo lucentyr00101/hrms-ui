@@ -266,12 +266,12 @@ const closeModal = () => {
 
 const getStatusColor = (status: InterviewStatus): string => {
   const colors = {
-    pending: 'gray',
-    scheduled: 'blue',
-    completed: 'green',
-    cancelled: 'red',
-    rejected: 'red',
-    rescheduled: 'yellow'
+    pending: 'neutral',
+    scheduled: 'info',
+    completed: 'success',
+    cancelled: 'error',
+    rejected: 'error',
+    rescheduled: 'warning'
   };
   return colors[status] || 'gray';
 };

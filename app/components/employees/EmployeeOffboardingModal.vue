@@ -250,7 +250,7 @@
         <div class="flex justify-between items-center">
           <UButton 
             v-if="currentStep === 'checklist'"
-            color="gray" 
+            color="neutral" 
             variant="outline" 
             @click="currentStep = 'confirm'"
           >
@@ -262,7 +262,7 @@
           <div class="flex space-x-3">
             <UButton 
               v-if="currentStep !== 'success'"
-              color="gray" 
+              color="neutral" 
               variant="outline" 
               @click="closeModal"
               :disabled="isProcessing"
@@ -282,7 +282,7 @@
             
             <UButton 
               v-else-if="currentStep === 'checklist'"
-              color="red"
+              color="error"
               @click="completeOffboarding"
               :loading="isProcessing"
               :disabled="!allTasksCompleted"

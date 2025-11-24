@@ -279,12 +279,12 @@ const getActivityBgColor = (type: string) => {
 
 const getActivityBadgeColor = (type: string) => {
   const colors: Record<string, string> = {
-    hire: 'green',
-    promotion: 'blue',
-    leave: 'yellow',
+    hire: 'success',
+    promotion: 'info',
+    leave: 'warning',
     document: 'purple',
     review: 'indigo',
-    update: 'gray'
+    update: 'neutral'
   };
   return colors[type] || 'gray';
 };

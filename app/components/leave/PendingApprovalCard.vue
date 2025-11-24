@@ -26,7 +26,7 @@
                 </span>
                 <UBadge 
                   v-if="request.isUrgent" 
-                  color="red" 
+                  color="error" 
                   size="xs"
                 >
                   Urgent
@@ -39,12 +39,12 @@
           </div>
 
           <div class="flex items-center justify-between">
-            <UBadge color="amber" variant="subtle" size="xs">
+            <UBadge color="warning" variant="subtle" size="xs">
               {{ request.status }}
             </UBadge>
             <UButton
               size="xs"
-              color="gray"
+              color="neutral"
               variant="ghost"
               @click="viewRequest(request.id)"
             >

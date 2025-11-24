@@ -63,7 +63,7 @@ export const useLeaveData = () => {
   });
 
   const getLeaveTypeConfig = (typeId: string) => {
-    return leaveTypes.value.find(lt => lt.id.toLowerCase() === typeId.toLowerCase());
+    return leaveTypes.value.find((lt: any) => lt.id.toLowerCase() === typeId.toLowerCase());
   };
 
   const clearFilters = () => {

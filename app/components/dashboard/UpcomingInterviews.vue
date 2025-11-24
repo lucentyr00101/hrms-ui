@@ -79,16 +79,16 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const getStatusColor = (status: string) => {
+const getStatusColor = (status: string): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
   switch (status) {
     case 'scheduled':
-      return 'blue';
+      return 'info';
     case 'completed':
-      return 'green';
+      return 'success';
     case 'cancelled':
-      return 'red';
+      return 'error';
     default:
-      return 'gray';
+      return 'neutral';
   }
 };
 </script>

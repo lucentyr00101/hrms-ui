@@ -145,7 +145,7 @@
         <UAlert
           v-if="hasTimeConflict"
           icon="i-material-symbols:warning"
-          color="yellow"
+          color="warning"
           variant="soft"
           title="Scheduling Conflict"
           description="There is already an interview scheduled at this time. Please choose a different time slot."
