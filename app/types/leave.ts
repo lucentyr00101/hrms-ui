@@ -184,3 +184,57 @@ export interface LeaveFilters {
   };
   viewMode: 'my-leaves' | 'team-leaves';
 }
+
+// Leave Request Types
+export type LeaveRequestStatus = 'pending' | 'approved' | 'rejected';
+
+export interface LeaveBalance {
+  leaveTypeId: string;
+  leaveTypeName: string;
+  available: number;
+  total: number;
+  used: number;
+}
+
+export interface ExistingLeaveRequest {
+  id: string;
+  leaveTypeId: string;
+  leaveTypeName: string;
+  startDate: string;
+  endDate: string;
+  status: LeaveRequestStatus;
+  submittedAt: string;
+  reason?: string;
+}
+
+export interface LeaveRequestFormData {
+  leaveTypeId: string;
+  startDate: string;
+  endDate: string;
+  reason?: string;
+  files: File[];
+}
+
+export interface LeaveRequestSubmission {
+  id: string;
+  leaveTypeId: string;
+  leaveTypeName: string;
+  startDate: string;
+  endDate: string;
+  totalDays: number;
+  reason?: string;
+  files: { name: string; size: number }[];
+  submittedAt: string;
+}
+
+export interface UploadedFile {
+  file: File;
+  progress: number;
+  error?: string;
+}
+
+export interface DateValidationResult {
+  isValid: boolean;
+  error?: string;
+  conflictingRequest?: ExistingLeaveRequest;
+}
