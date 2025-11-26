@@ -7,7 +7,7 @@
     >
       <!-- Header -->
       <div class="relative">
-        <div class="h-20 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+        <div class="h-20 bg-gradient-to-r from-purple-400 to-purple-600"/>
         <div class="absolute -bottom-6 left-6">
           <div class="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-lg ring-4 ring-white">
             {{ employee.firstName[0] }}{{ employee.lastName[0] }}

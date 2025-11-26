@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model:open="isOpen" :ui="{ width: 'sm:max-w-2xl' }">
+  <UModal v-model:open="isOpen" class="sm:max-w-2xl">
     <template #content>
       <div class="p-6">
       <div class="flex items-center justify-between mb-6">
@@ -138,7 +138,7 @@
           <UTextarea
             v-model="formState.notes"
             placeholder="Additional notes or instructions for the interview..."
-            rows="3"
+            :rows="3"
           />
         </UFormGroup>
 
@@ -270,8 +270,8 @@ const hasTimeConflict = computed(() => {
 // Methods
 const getDefaultEndTime = (startTime: string): string => {
   const [hours, minutes] = startTime.split(':').map(Number);
-  const endHour = hours + 1;
-  return `${endHour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  const endHour = (hours ?? 0) + 1;
+  return `${endHour.toString().padStart(2, '0')}:${(minutes ?? 0).toString().padStart(2, '0')}`;
 };
 
 const resetForm = () => {

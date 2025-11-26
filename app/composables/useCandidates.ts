@@ -61,8 +61,8 @@ export function useCandidates() {
     // Apply sorting
     filtered.sort((a, b) => {
       const { field, direction } = sortOptions.value;
-      let aValue: any;
-      let bValue: any;
+      let aValue: string | number | Date;
+      let bValue: string | number | Date;
       
       switch (field) {
         case 'applicationDate':
@@ -73,7 +73,7 @@ export function useCandidates() {
           aValue = a.position.toLowerCase();
           bValue = b.position.toLowerCase();
           break;
-        case 'interviewStage':
+        case 'interviewStage': {
           // Define stage order for sorting
           const stageOrder: Record<InterviewStage, number> = {
             'applied': 1,
@@ -87,6 +87,7 @@ export function useCandidates() {
           aValue = stageOrder[a.interviewStage];
           bValue = stageOrder[b.interviewStage];
           break;
+        }
         case 'firstName':
           aValue = a.firstName.toLowerCase();
           bValue = b.firstName.toLowerCase();

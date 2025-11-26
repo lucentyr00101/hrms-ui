@@ -23,7 +23,7 @@ const mobileNavItems = navItems;
         :to="item.to"
         :class="[
           'flex flex-col items-center justify-center p-2 rounded-lg min-w-0 flex-1 mx-1 transition-colors duration-200',
-          isActive(item.to)
+          isActive(item.to ?? '')
             ? 'text-primary bg-primary/10'
             : 'text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary'
         ]"

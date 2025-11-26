@@ -23,7 +23,7 @@
             <UAvatar 
               :alt="note.author"
               size="xs"
-              :ui="{ background: 'bg-primary-500' }"
+              class="bg-primary-500"
             />
             <div>
               <p class="text-sm font-medium text-gray-900 dark:text-white">{{ note.author }}</p>

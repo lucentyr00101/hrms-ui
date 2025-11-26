@@ -103,7 +103,7 @@
               />
             </div>
             <UDropdown :items="getDocumentActions(document)">
-              <UButton variant="ghost" size="xs" :ui="{ rounded: 'rounded-full' }">
+              <UButton variant="ghost" size="xs" class="rounded-full">
                 <UIcon name="i-material-symbols:more-vert" class="w-4 h-4" />
               </UButton>
             </UDropdown>
@@ -115,7 +115,7 @@
     <!-- Document Preview Modal -->
     <UModal v-model:open="showPreview">
       <template #content>
-        <UCard v-if="selectedDocument" :ui="{ body: { padding: 'p-0' } }">
+        <UCard v-if="selectedDocument" class="[&>div]:p-0">
         <template #header>
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
@@ -275,7 +275,7 @@ const handleFileUpload = async (event: Event) => {
       name: file.name,
       type: getFileTypeFromMime(file.type),
       size: file.size,
-      uploadDate: new Date().toISOString().split('T')[0],
+      uploadDate: new Date().toISOString().split('T')[0]!,
       category: 'other',
       url: URL.createObjectURL(file)
     };

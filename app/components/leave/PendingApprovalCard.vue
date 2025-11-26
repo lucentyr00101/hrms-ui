@@ -66,7 +66,7 @@
       </div>
     </div>
 
-    <template #footer v-if="leaveSummary.pending.count > 0">
+    <template v-if="leaveSummary.pending.count > 0" #footer>
       <UButton
         color="primary"
         variant="soft"

@@ -8,7 +8,7 @@ import {
   TEAM_LEAVES,
   TEAM_SUMMARY
 } from '~/constants/leave-dashboard';
-import type { CalendarLeave, LeaveFilters } from '~/types/leave';
+import type { CalendarLeave, LeaveFilters, LeaveTypeConfig } from '~/types/leave';
 
 export const useLeaveData = () => {
   const leaveSummary = ref(LEAVE_SUMMARY);
@@ -63,7 +63,7 @@ export const useLeaveData = () => {
   });
 
   const getLeaveTypeConfig = (typeId: string) => {
-    return leaveTypes.value.find((lt: any) => lt.id.toLowerCase() === typeId.toLowerCase());
+    return leaveTypes.value.find((lt: LeaveTypeConfig) => lt.id.toLowerCase() === typeId.toLowerCase());
   };
 
   const clearFilters = () => {

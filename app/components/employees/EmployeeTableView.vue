@@ -146,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { getEmployeeStatusClasses, getEmployeeStatusLabel } from '~/composables/useEmployees';
+import { useEmployeeStatusMeta } from '~/composables/useEmployees';
 import type { Employee } from '~/types';
 
 interface Props {
@@ -170,6 +170,18 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const getStatusClasses = getEmployeeStatusClasses;
-const getStatusLabel = getEmployeeStatusLabel;
+const getStatusClasses = (status: Employee['status']) => {
+  const meta = useEmployeeStatusMeta(status);
+  const colorClasses: Record<string, string> = {
+    success: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+    error: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+    warning: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+  };
+  return colorClasses[meta.color] || '';
+};
+
+const getStatusLabel = (status: Employee['status']) => {
+  const meta = useEmployeeStatusMeta(status);
+  return meta.label;
+};
 </script>

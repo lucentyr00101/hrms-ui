@@ -1,13 +1,16 @@
-// Re-export all types for easy import
-export * from './employee';
-export * from './dashboard';
-export * from './auth';
-export * from './candidate';
+export interface NavigationItem {
+  label: string
+  icon: string
+  to?: string
+  children?: NavigationItem[]
+}
 
-// Export constants first to avoid conflicts
-export * from './constants';
+export * from './employee'
+export * from './dashboard'
+export * from './auth'
+export * from './candidate'
+export * from './constants'
 
-// Explicitly re-export interview and leave types to avoid conflicts
 export type { 
   InterviewSlot, 
   InterviewType,
@@ -16,7 +19,7 @@ export type {
   InterviewScheduleForm, 
   InterviewFilters, 
   CalendarEvent 
-} from './interview';
+} from './interview'
 
 export type { 
   LeaveType,
@@ -38,4 +41,4 @@ export type {
   TeamLeave,
   TeamSummary,
   LeaveFilters
-} from './leave';
+} from './leave'

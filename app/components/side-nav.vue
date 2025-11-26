@@ -1,48 +1,48 @@
 <script setup lang="ts">
-import { navItems, additionalNavItems } from "~/constants/side-nav";
+import { navItems, additionalNavItems } from '~/constants/side-nav'
+import type { NavigationItem } from '~/types'
 
 interface Props {
-  collapsed?: boolean;
+  collapsed?: boolean
 }
 
-const _props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   collapsed: false
-});
+})
 
-const route = useRoute();
-const expandedItems = ref<Set<string>>(new Set());
+const route = useRoute()
+const expandedItems = ref(new Set<string>())
 
-const isAnyChildActive = (item: typeof navItems[0]) => {
-  if (!item.children) return false;
+const isChildActive = (item: NavigationItem): boolean => {
+  if (!item.children) return false
   return item.children.some(child => {
     if (child.to === '/') {
-      return route.path === '/' || route.path === '/dashboard';
+      return route.path === '/' || route.path === '/dashboard'
     }
-    return route.path.startsWith(child.to);
-  });
-};
+    return child.to ? route.path.startsWith(child.to) : false
+  })
+}
 
-const toggleExpanded = (itemLabel: string) => {
+const toggleExpanded = (itemLabel: string): void => {
   if (expandedItems.value.has(itemLabel)) {
-    expandedItems.value.delete(itemLabel);
+    expandedItems.value.delete(itemLabel)
   } else {
-    expandedItems.value.add(itemLabel);
+    expandedItems.value.add(itemLabel)
   }
-};
+}
 
-const isExpanded = (itemLabel: string) => {
-  const item = navItems.find(i => i.label === itemLabel);
-  return expandedItems.value.has(itemLabel) || (item ? isAnyChildActive(item) : false);
-};
+const isExpanded = (itemLabel: string): boolean => {
+  const item = navItems.find(i => i.label === itemLabel)
+  return expandedItems.value.has(itemLabel) || (item ? isChildActive(item) : false)
+}
 
-// Auto-expand parent if child is active
 watchEffect(() => {
   navItems.forEach(item => {
-    if (item.children && isAnyChildActive(item)) {
-      expandedItems.value.add(item.label);
+    if (item.children && isChildActive(item)) {
+      expandedItems.value.add(item.label)
     }
-  });
-});
+  })
+})
 </script>
 
 <template>
@@ -106,7 +106,7 @@ watchEffect(() => {
               type="button"
               :class="[
                 'group flex items-center rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200 hover:bg-gray-800 dark:hover:bg-gray-900 w-full',
-                isAnyChildActive(item) ? 'bg-gray-800 text-white' : 'text-gray-300 hover:text-white'
+                isChildActive(item) ? 'bg-gray-800 text-white' : 'text-gray-300 hover:text-white'
               ]"
               @click="!collapsed ? toggleExpanded(item.label) : null"
             >

@@ -32,8 +32,8 @@
           variant="ghost"
           color="neutral"
           block
-          @click="showBreakdown = !showBreakdown"
           class="justify-between"
+          @click="showBreakdown = !showBreakdown"
         >
           <span>View Breakdown</span>
           <UIcon 

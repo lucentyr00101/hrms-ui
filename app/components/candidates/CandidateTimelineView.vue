@@ -19,7 +19,7 @@
             'bg-green-400 dark:bg-green-500': stage.completed,
             'bg-primary-400 dark:bg-primary-500': stage.current && !stage.completed
           }"
-        ></div>
+        />
 
         <!-- Timeline Icon -->
         <div 
@@ -103,6 +103,15 @@ import type { Candidate, InterviewStage } from '~/types';
 
 interface Props {
   candidate: Candidate;
+}
+
+interface TimelineStage {
+  key: InterviewStage;
+  title: string;
+  description: string;
+  completed: boolean;
+  current: boolean;
+  details: { interviewer?: string; date?: string; time?: string } | null;
 }
 
 const props = defineProps<Props>();
@@ -234,7 +243,7 @@ const getStageIcon = (stage: InterviewStage, completed: boolean, current: boolea
 };
 
 // Helper functions for stage colors and labels
-const getStageColor = (stage: any) => {
+const getStageColor = (stage: TimelineStage) => {
   if (props.candidate.interviewStage === 'rejected') {
     if (stage.current || stage.completed) {
       return 'error'; // Use semantic error color for rejected stages
@@ -247,7 +256,7 @@ const getStageColor = (stage: any) => {
   return 'neutral';
 };
 
-const getStageLabel = (stage: any) => {
+const getStageLabel = (stage: TimelineStage) => {
   if (props.candidate.interviewStage === 'rejected') {
     if (stage.current) {
       return 'Rejected';
@@ -262,7 +271,7 @@ const getStageLabel = (stage: any) => {
   return '';
 };
 
-const getIconClass = (stage: any) => {
+const getIconClass = (stage: TimelineStage) => {
   if (props.candidate.interviewStage === 'rejected') {
     if (stage.current || stage.completed) {
       return 'text-red-600 dark:text-red-400';

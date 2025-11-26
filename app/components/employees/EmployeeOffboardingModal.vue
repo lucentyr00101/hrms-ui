@@ -76,7 +76,7 @@
             <UTextarea 
               v-model="archiveNotes"
               placeholder="Add any additional notes about the archiving process..."
-              rows="3"
+              :rows="3"
             />
           </UFormGroup>
         </div>
@@ -204,7 +204,7 @@
             <UTextarea 
               v-model="finalNotes"
               placeholder="Add any final notes about the offboarding process..."
-              rows="3"
+              :rows="3"
             />
           </UFormGroup>
         </div>
@@ -273,7 +273,7 @@
             
             <UButton 
               v-if="currentStep === 'confirm'"
-              color="orange"
+              color="warning"
               :disabled="!canProceedToChecklist"
               @click="proceedToChecklist"
             >
@@ -350,7 +350,7 @@ const archiveReasons = [
 ];
 
 // Checklist data
-const offboardingChecklist = ref({
+const offboardingChecklist = ref<Record<string, boolean>>({
   // HR Tasks
   exit_interview: false,
   final_paycheck: false,

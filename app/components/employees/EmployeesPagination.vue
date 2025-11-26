@@ -9,13 +9,8 @@
       :page-count="itemsPerPage"
       :total="totalItems"
       :ui="{
-        wrapper: 'flex items-center gap-1',
-        rounded: '!rounded-full min-w-[32px] justify-center',
-        default: {
-          activeButton: {
-            variant: 'solid'
-          }
-        }
+        list: 'flex items-center gap-1',
+        item: '!rounded-full min-w-[32px] justify-center'
       }"
       show-last
       show-first

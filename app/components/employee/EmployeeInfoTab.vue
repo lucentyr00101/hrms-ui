@@ -67,7 +67,7 @@
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Date of Birth</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ formatDate(employee.dateOfBirth) }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ formatDate(employee.dateOfBirth ?? '') }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Employee ID</p>
@@ -108,23 +108,23 @@
       <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="md:col-span-2">
           <p class="text-sm text-gray-500 dark:text-gray-400">Street Address</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address.street }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address?.street }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">City</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address.city }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address?.city }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">State</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address.state }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address?.state }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Zip Code</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address.zipCode }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address?.zipCode }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Country</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address.country }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ employee.address?.country }}</p>
         </div>
       </div>
     </UCard>
@@ -188,19 +188,19 @@
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Employment Type</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ formatEmploymentType(employee.employmentType) }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ formatEmploymentType(employee.employmentType ?? '') }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Work Location</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ formatWorkLocation(employee.workLocation) }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ formatWorkLocation(employee.workLocation ?? '') }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Salary</p>
-          <p class="font-medium text-gray-900 dark:text-white">${{ employee.salary.toLocaleString() }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">${{ (employee.salary ?? 0).toLocaleString() }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Hire Date</p>
-          <p class="font-medium text-gray-900 dark:text-white">{{ formatDate(employee.hireDate) }}</p>
+          <p class="font-medium text-gray-900 dark:text-white">{{ formatDate(employee.hireDate ?? '') }}</p>
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Start Date</p>

@@ -120,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Candidate, CandidateFilters as CandidateFiltersType, CandidateSortOptions } from '~/types';
+import type { Candidate } from '~/types';
 import CandidateFilters from '~/components/candidates/CandidateFilters.vue';
 import CandidateTableView from '~/components/candidates/CandidateTableView.vue';
 
@@ -155,7 +155,7 @@ const {
 const itemsPerPageOptions = [5, 10, 20, 50];
 
 // Methods
-const handlePageSizeChange = (newSize: number) => {
+const _handlePageSizeChange = (newSize: number) => {
   itemsPerPage.value = newSize;
   currentPage.value = 1;
 };

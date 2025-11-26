@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-6">
-    <!-- Page Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div>
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -16,39 +15,34 @@
       </div>
     </div>
 
-    <!-- Filters and Search -->
     <EmployeeFilters
-          :view-mode="viewMode"
-          :search-query="searchQuery"
-          :department="departmentFilter"
-          :status="statusFilter"
-          @search="handleSearch"
-          @filter-change="handleFilterChange"
-          @view-change="handleViewChange"
-          @add-employee="handleAddEmployee"
-        />
+      :view-mode="viewMode"
+      :search-query="searchQuery"
+      :department="departmentFilter"
+      :status="statusFilter"
+      @search="handleSearch"
+      @filter-change="handleFilterChange"
+      @view-change="handleViewChange"
+      @add-employee="navigateTo('/employees/onboarding')"
+    />
 
-    <!-- Employee Directory Content -->
     <div v-if="allFilteredEmployees.length > 0">
-      <!-- Card View -->
       <EmployeeCardView
         v-if="viewMode === 'card'"
         :employees="filteredEmployees"
-        @view-profile="handleViewProfile"
-        @edit-employee="handleEditEmployee"
+        @view-profile="(emp) => navigateTo(`/employees/${emp.id}`)"
+        @edit-employee="(emp) => navigateTo(`/employees/edit/${emp.id}`)"
         @archive-employee="handleArchiveEmployee"
       />
 
-      <!-- Table View -->
       <EmployeeTableView
         v-else
         :employees="filteredEmployees"
-        @view-profile="handleViewProfile"
-        @edit-employee="handleEditEmployee"
+        @view-profile="(emp: Employee) => navigateTo(`/employees/${emp.id}`)"
+        @edit-employee="(emp: Employee) => navigateTo(`/employees/edit/${emp.id}`)"
         @archive-employee="handleArchiveEmployee"
       />
 
-      <!-- Pagination -->
       <div v-if="totalPages > 1" class="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
         <div class="text-sm text-gray-700 dark:text-gray-300">
           Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
@@ -60,48 +54,38 @@
           v-model="currentPage"
           :page-count="totalPages"
           :total="allFilteredEmployees.length"
-          class="flex items-center gap-1"
         />
       </div>
     </div>
 
-    <!-- Empty State -->
-    <div 
+    <EmptyState
       v-else
-      class="text-center py-12"
+      icon="i-material-symbols:person-off"
+      :title="hasFilters ? 'No employees found' : 'No employees yet'"
+      :description="hasFilters ? 'Try adjusting your search query or filters.' : 'Get started by adding your first employee.'"
     >
-      <UIcon name="i-material-symbols:person-off" class="w-16 h-16 mx-auto text-gray-400 mb-4" />
-      <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-        {{ hasFilters ? 'No employees found' : 'No employees yet' }}
-      </h3>
-      <p class="text-gray-600 dark:text-gray-400 mb-4">
-        {{ searchQuery || hasFilters 
-          ? 'Try adjusting your search query or filters.' 
-          : 'Get started by adding your first employee.' 
-        }}
-      </p>
-      <div class="flex justify-center gap-3">
+      <template #actions>
         <UButton
-          v-if="searchQuery || hasFilters"
+          v-if="hasFilters"
           color="neutral"
           variant="outline"
-          @click="resetFilters"
+          @click="clearFilters"
         >
           Clear Filters
         </UButton>
         <UButton 
           color="primary"
-          @click="handleAddEmployee"
+          icon="i-material-symbols:person-add"
+          @click="navigateTo('/employees/onboarding')"
         >
-          <UIcon name="i-material-symbols:person-add" class="w-4 h-4 mr-2" />
           Add Employee
         </UButton>
-      </div>
-    </div>
-    <!-- Offboarding Modal -->
+      </template>
+    </EmptyState>
+
     <EmployeeOffboardingModal 
       v-if="selectedEmployeeForArchive"
-      v-model="showOffboardingModal"
+      v-model:open="showOffboardingModal"
       :employee="selectedEmployeeForArchive"
       @archived="handleEmployeeArchived"
     />
@@ -109,12 +93,13 @@
 </template>
 
 <script setup lang="ts">
-import EmployeeFilters from '~/components/employees/EmployeeFilters.vue';
-import EmployeeCardView from '~/components/employees/EmployeeCardView.vue';
-import EmployeeTableView from '~/components/employees/EmployeeTableView.vue';
-import EmployeeOffboardingModal from '~/components/employees/EmployeeOffboardingModal.vue';
-import { useEmployees } from '~/composables/useEmployees';
-import type { Employee } from '~/types';
+import { useEmployees } from '~/composables/useEmployees'
+import EmployeeCardView from "~/components/employees/EmployeeCardView.vue"
+import type { Employee } from '~/types'
+
+definePageMeta({
+  title: 'Employees'
+})
 
 const {
   viewMode,
@@ -130,34 +115,19 @@ const {
   handleSearch,
   handleFilterChange,
   handleViewChange,
-  clearFilters: resetFilters,
-} = useEmployees();
+  clearFilters,
+} = useEmployees()
 
-// Navigation handlers
-const handleAddEmployee = () => {
-  navigateTo('/employees/onboarding');
-};
+const showOffboardingModal = ref(false)
+const selectedEmployeeForArchive = ref<Employee | null>(null)
 
-const handleViewProfile = (employee: Employee) => {
-  navigateTo(`/employees/${employee.id}`);
-};
+const handleArchiveEmployee = (employee: Employee): void => {
+  selectedEmployeeForArchive.value = employee
+  showOffboardingModal.value = true
+}
 
-const handleEditEmployee = (employee: Employee) => {
-  navigateTo(`/employees/edit/${employee.id}`);
-};
-
-// Offboarding modal state
-const showOffboardingModal = ref(false);
-const selectedEmployeeForArchive = ref<Employee | null>(null);
-
-const handleArchiveEmployee = (employee: Employee) => {
-  selectedEmployeeForArchive.value = employee;
-  showOffboardingModal.value = true;
-};
-
-const handleEmployeeArchived = (employee: Employee) => {
-  console.log('Employee archived:', employee);
-  showOffboardingModal.value = false;
-  selectedEmployeeForArchive.value = null;
-};
+const handleEmployeeArchived = (): void => {
+  showOffboardingModal.value = false
+  selectedEmployeeForArchive.value = null
+}
 </script>

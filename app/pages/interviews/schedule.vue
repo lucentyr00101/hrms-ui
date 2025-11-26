@@ -98,7 +98,7 @@
     <!-- Interview Slot Details Modal -->
     <InterviewSlotDetails
       v-model="showSlotDetails"
-      :slot="selectedSlot"
+      :interview-slot="selectedSlot"
       @edit="handleEditSlot"
       @delete="handleDeleteSlot"
       @assign-candidate="handleAssignCandidate"
@@ -119,8 +119,8 @@ import InterviewSlotDetails from '~/components/interview/InterviewSlotDetails.vu
 
 // Composables
 const { 
-  interviewSlots, 
-  isLoading, 
+  interviewSlots: _interviewSlots, 
+  isLoading: _isLoading, 
   createSlot, 
   updateSlot, 
   deleteSlot,
@@ -211,7 +211,7 @@ const handleCreateInterview = async (formData: InterviewScheduleForm) => {
       description: 'The interview has been successfully scheduled.',
       color: 'success'
     });
-  } catch (error) {
+  } catch {
     toast.add({
       title: 'Error',
       description: 'Failed to schedule the interview. Please try again.',
@@ -230,7 +230,7 @@ const handleUpdateInterview = async (id: string, updates: Partial<InterviewSlot>
     });
     selectedSlot.value = null;
     showSlotDetails.value = false;
-  } catch (error) {
+  } catch {
     toast.add({
       title: 'Error',
       description: 'Failed to update the interview. Please try again.',
@@ -256,7 +256,7 @@ const handleDeleteSlot = async (slot: InterviewSlot) => {
       });
       showSlotDetails.value = false;
       selectedSlot.value = null;
-    } catch (error) {
+    } catch {
       toast.add({
         title: 'Error',
         description: 'Failed to delete the interview slot. Please try again.',
@@ -282,7 +282,7 @@ const handleMarkCompleted = async (slot: InterviewSlot) => {
     });
     showSlotDetails.value = false;
     selectedSlot.value = null;
-  } catch (error) {
+  } catch {
     toast.add({
       title: 'Error',
       description: 'Failed to update the interview status. Please try again.',
@@ -302,7 +302,7 @@ const handleCancelInterview = async (slot: InterviewSlot) => {
       });
       showSlotDetails.value = false;
       selectedSlot.value = null;
-    } catch (error) {
+    } catch {
       toast.add({
         title: 'Error',
         description: 'Failed to cancel the interview. Please try again.',
