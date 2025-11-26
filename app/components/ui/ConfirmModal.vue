@@ -58,8 +58,8 @@
               :color="cancelColor" 
               :variant="cancelVariant" 
               :size="size"
-              @click="cancel"
               class="w-full sm:w-auto"
+              @click="cancel"
             >
               {{ cancelLabel }}
             </UButton>
@@ -71,8 +71,8 @@
               :color="confirmColor"
               :variant="confirmVariant"
               :size="size"
-              @click="confirm"
               class="w-full sm:w-auto"
+              @click="confirm"
             >
               {{ confirmLabel }}
             </UButton>

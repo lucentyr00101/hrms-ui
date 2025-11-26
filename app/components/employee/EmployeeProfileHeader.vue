@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-between">
     <h2 class="text-xl font-semibold">{{ title }}</h2>
-    <UButton @click="$emit('back')" variant="outline">
+    <UButton variant="outline" @click="$emit('back')">
       ← Back to Employees
     </UButton>
   </div>

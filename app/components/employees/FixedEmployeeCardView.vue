@@ -10,7 +10,7 @@
         >
           <!-- Header -->
           <div class="relative">
-            <div class="h-20 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+            <div class="h-20 bg-gradient-to-r from-purple-400 to-purple-600"/>
             <div class="absolute -bottom-6 left-6">
               <div class="w-12 h-12 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-lg ring-4 ring-white">
                 {{ employee.firstName[0] }}{{ employee.lastName[0] }}
@@ -82,7 +82,7 @@
       <template #fallback>
         <div class="flex items-center justify-center py-8">
           <div class="text-center">
-            <div class="w-8 h-8 animate-spin border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+            <div class="w-8 h-8 animate-spin border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"/>
             <p class="text-gray-600">Loading employees...</p>
           </div>
         </div>

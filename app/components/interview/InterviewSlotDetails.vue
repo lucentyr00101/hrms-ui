@@ -1,5 +1,5 @@
 <template>
-  <UModal v-model:open="isOpen" :ui="{ width: 'sm:max-w-lg' }">
+  <UModal v-model:open="isOpen" class="sm:max-w-lg">
     <template #content>
       <div class="p-6">
       <div class="flex items-center justify-between mb-6">
@@ -188,11 +188,11 @@
 </template>
 
 <script setup lang="ts">
-import type { InterviewSlot, InterviewStatus, InterviewType } from '~/types';
+import type { InterviewSlot, InterviewSlotStatus, InterviewType } from '~/types';
 
 interface Props {
   modelValue: boolean;
-  slot: InterviewSlot | null;
+  interviewSlot: InterviewSlot | null;
 }
 
 const props = defineProps<Props>();
@@ -207,13 +207,15 @@ const emit = defineEmits<{
 }>();
 
 // Computed
+const slot = computed(() => props.interviewSlot);
+
 const isOpen = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value)
 });
 
 const actionItems = computed(() => {
-  if (!props.slot) return [];
+  if (!slot.value) return [];
   
   const items = [];
   
@@ -221,31 +223,31 @@ const actionItems = computed(() => {
     {
       label: 'Edit Interview',
       icon: 'i-material-symbols:edit',
-      click: () => emit('edit', props.slot!)
+      click: () => emit('edit', slot.value!)
     }
   ]);
   
-  if (!props.slot.candidateId) {
+  if (!slot.value.candidateId) {
     items.push([
       {
         label: 'Assign Candidate',
         icon: 'i-material-symbols:person-add',
-        click: () => emit('assign-candidate', props.slot!)
+        click: () => emit('assign-candidate', slot.value!)
       }
     ]);
   }
   
-  if (props.slot.status === 'scheduled') {
+  if (slot.value.status === 'scheduled') {
     items.push([
       {
         label: 'Mark as Completed',
         icon: 'i-material-symbols:check-circle',
-        click: () => emit('mark-completed', props.slot!)
+        click: () => emit('mark-completed', slot.value!)
       },
       {
         label: 'Cancel Interview',
         icon: 'i-material-symbols:cancel',
-        click: () => emit('cancel', props.slot!)
+        click: () => emit('cancel', slot.value!)
       }
     ]);
   }
@@ -254,7 +256,7 @@ const actionItems = computed(() => {
     {
       label: 'Delete Slot',
       icon: 'i-material-symbols:delete',
-      click: () => emit('delete', props.slot!)
+      click: () => emit('delete', slot.value!)
     }
   ]);
   
@@ -266,8 +268,8 @@ const closeModal = () => {
   emit('update:modelValue', false);
 };
 
-const getStatusColor = (status: InterviewStatus): string => {
-  const colors = {
+const getStatusColor = (status: InterviewSlotStatus): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const colors: Record<InterviewSlotStatus, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
     pending: 'neutral',
     scheduled: 'info',
     completed: 'success',
@@ -275,11 +277,11 @@ const getStatusColor = (status: InterviewStatus): string => {
     rejected: 'error',
     rescheduled: 'warning'
   };
-  return colors[status] || 'gray';
+  return colors[status] || 'neutral';
 };
 
-const getStatusLabel = (status: InterviewStatus): string => {
-  const labels = {
+const getStatusLabel = (status: InterviewSlotStatus): string => {
+  const labels: Record<InterviewSlotStatus, string> = {
     pending: 'Pending',
     scheduled: 'Scheduled',
     completed: 'Completed',
@@ -314,7 +316,7 @@ const formatDate = (dateStr: string): string => {
 const formatTime = (timeStr: string): string => {
   const [hours, minutes] = timeStr.split(':');
   const date = new Date();
-  date.setHours(parseInt(hours), parseInt(minutes));
+  date.setHours(parseInt(hours || '0'), parseInt(minutes || '0'));
   return date.toLocaleTimeString('en-US', { 
     hour: 'numeric', 
     minute: '2-digit',
@@ -334,8 +336,8 @@ const formatDateTime = (dateTimeStr: string): string => {
 };
 
 const openMeetingLink = () => {
-  if (props.slot?.meetingLink) {
-    window.open(props.slot.meetingLink, '_blank');
+  if (slot.value?.meetingLink) {
+    window.open(slot.value.meetingLink, '_blank');
   }
 };
 </script>

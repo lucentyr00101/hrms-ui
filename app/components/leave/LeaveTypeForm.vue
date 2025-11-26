@@ -16,7 +16,7 @@
         </UFormGroup>
 
         <UFormGroup label="Description" name="description" class="md:col-span-2">
-          <UTextarea v-model="formState.description" placeholder="Brief description of this leave type" rows="3" />
+          <UTextarea v-model="formState.description" placeholder="Brief description of this leave type" :rows="3" />
         </UFormGroup>
 
         <UFormGroup label="Icon" name="icon" required>

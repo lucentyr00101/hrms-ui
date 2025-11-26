@@ -5,14 +5,14 @@
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
           {{ title }}
         </h3>
-        <slot name="header-actions"></slot>
+        <slot name="header-actions"/>
       </div>
     </template>
 
-    <slot></slot>
+    <slot/>
 
-    <template #footer v-if="$slots.footer">
-      <slot name="footer"></slot>
+    <template v-if="$slots.footer" #footer>
+      <slot name="footer"/>
     </template>
   </UCard>
 </template>

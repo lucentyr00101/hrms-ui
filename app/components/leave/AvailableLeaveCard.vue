@@ -17,8 +17,8 @@
           variant="ghost"
           color="neutral"
           block
-          @click="showBreakdown = !showBreakdown"
           class="justify-between"
+          @click="showBreakdown = !showBreakdown"
         >
           <span>View Breakdown</span>
           <UIcon 
@@ -44,8 +44,8 @@
             
             <!-- Progress Bar -->
             <UProgress 
-              :value="(leave.balance / leave.total) * 100"
-              :color="getProgressColor(leave.balance, leave.total)"
+              :value="((leave.balance ?? 0) / (leave.total ?? 1)) * 100"
+              :color="getProgressColor(leave.balance ?? 0, leave.total ?? 1)"
               size="sm"
             />
 

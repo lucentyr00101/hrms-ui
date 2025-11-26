@@ -49,13 +49,13 @@ import { useLeaveData } from '~/composables/useLeaveData';
 
 const { upcomingLeaves } = useLeaveData();
 
-const getLeaveTypeColor = (type: string) => {
-  const typeMap: Record<string, string> = {
+const getLeaveTypeColor = (type: string): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const typeMap: Record<string, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
     'Annual': 'success',
     'Sick': 'warning',
     'Personal': 'info',
-    'Maternity': 'pink',
-    'Paternity': 'purple',
+    'Maternity': 'secondary',
+    'Paternity': 'primary',
     'Unpaid': 'neutral'
   };
   return typeMap[type] || 'neutral';

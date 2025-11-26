@@ -266,7 +266,7 @@ const calendarDays = computed((): CalendarDay[] => {
   const month = currentDate.value.getMonth();
   
   const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
+  const _lastDay = new Date(year, month + 1, 0);
   const startDate = new Date(firstDay);
   startDate.setDate(startDate.getDate() - firstDay.getDay());
   
@@ -309,7 +309,7 @@ const weekDays = computed((): WeekDay[] => {
     days.push({
       date: formatDate(date),
       day: date.getDate(),
-      dayName: dayHeaders[i],
+      dayName: dayHeaders[i] || '',
       isToday: formatDate(date) === formatDate(today)
     });
   }
@@ -319,7 +319,7 @@ const weekDays = computed((): WeekDay[] => {
 
 // Methods
 const formatDate = (date: Date): string => {
-  return date.toISOString().split('T')[0];
+  return date.toISOString().split('T')[0] || '';
 };
 
 const formatHeaderDate = (date: Date): string => {

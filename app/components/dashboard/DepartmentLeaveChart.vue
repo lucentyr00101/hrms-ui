@@ -17,7 +17,7 @@
             <div 
               class="w-3 h-3 rounded-full"
               :style="{ backgroundColor: dept.color }"
-            ></div>
+            />
             <span class="text-sm font-medium text-gray-900 dark:text-white">
               {{ dept.name }}
             </span>
@@ -41,10 +41,13 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const chartData = DUMMY_CHART_DATA.departmentLeaves;
 
 const departmentData = computed(() => {
+  const dataset = chartData.datasets[0];
+  if (!dataset) return [];
+  const bgColors = dataset.backgroundColor ?? [];
   return chartData.labels.map((label, index) => ({
     name: label,
-    count: chartData.datasets[0].data[index],
-    color: chartData.datasets[0].backgroundColor[index]
+    count: dataset.data[index],
+    color: bgColors[index]
   }));
 });
 

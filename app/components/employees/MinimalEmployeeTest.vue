@@ -48,7 +48,7 @@
     <!-- Step 6: Force re-render test -->
     <div class="p-2 bg-gray-100">
       <h4>Force Render Test:</h4>
-      <button @click="forceUpdate" class="px-2 py-1 bg-blue-500 text-white rounded text-sm">
+      <button class="px-2 py-1 bg-blue-500 text-white rounded text-sm" @click="forceUpdate">
         Force Update ({{ updateCount }})
       </button>
       <div v-if="showForced" class="mt-2">

@@ -16,16 +16,16 @@
           
           <!-- Mock PDF content -->
           <div class="space-y-3">
-            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-full"></div>
-            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-4/5"></div>
-            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-3/4"></div>
-            <div class="h-1 bg-gray-100 dark:bg-gray-700 rounded w-full my-4"></div>
-            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-full"></div>
-            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-5/6"></div>
-            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-4/5"></div>
-            <div class="h-1 bg-gray-100 dark:bg-gray-700 rounded w-full my-4"></div>
-            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-full"></div>
-            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-3/4"></div>
+            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-full"/>
+            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-4/5"/>
+            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-3/4"/>
+            <div class="h-1 bg-gray-100 dark:bg-gray-700 rounded w-full my-4"/>
+            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-full"/>
+            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-5/6"/>
+            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-4/5"/>
+            <div class="h-1 bg-gray-100 dark:bg-gray-700 rounded w-full my-4"/>
+            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-full"/>
+            <div class="h-2 bg-gray-200 dark:bg-gray-600 rounded w-3/4"/>
           </div>
           
           <!-- Actions -->

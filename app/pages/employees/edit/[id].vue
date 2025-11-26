@@ -1,8 +1,9 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-    <div class="max-w-4xl mx-auto px-4">
-      <div v-if="employee">
-        <!-- Header -->
+  <div>
+    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+      <div class="max-w-4xl mx-auto px-4">
+        <div v-if="employee">
+          <!-- Header -->
         <div class="text-center mb-8">
           <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             Edit {{ employeeName }}
@@ -26,7 +27,7 @@
             <div 
               class="bg-primary h-2 rounded-full transition-all duration-500 ease-out"
               :style="{ width: `${(currentStep / totalSteps) * 100}%` }"
-            ></div>
+            />
           </div>
         </div>
 
@@ -53,7 +54,7 @@
                 v-if="index < steps.length - 1" 
                 class="w-12 h-0.5 mx-2"
                 :class="index + 1 < currentStep ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'"
-              ></div>
+              />
             </div>
           </div>
         </div>
@@ -306,7 +307,7 @@
             <UIcon name="i-material-symbols:arrow-back" class="w-4 h-4 mr-2" />
             Previous
           </UButton>
-          <div v-else></div>
+          <div v-else/>
 
           <div class="flex space-x-3">
             <UButton 
@@ -353,20 +354,21 @@
     </div>
   </div>
 
-  <ConfirmModal
-    v-if="showCancelModal"
-    :open="showCancelModal"
-    title="Discard Changes?"
-    message="All unsaved updates will be lost if you leave this page."
-    description="This action cannot be undone"
-    icon="i-material-symbols:warning"
-    icon-class="text-orange-500"
-    confirm-label="Discard"
-    cancel-label="Continue Editing"
-    confirm-color="warning"
-    @confirm="confirmCancel"
-    @close="showCancelModal = false"
-  />
+    <ConfirmModal
+      v-if="showCancelModal"
+      :open="showCancelModal"
+      title="Discard Changes?"
+      message="All unsaved updates will be lost if you leave this page."
+      description="This action cannot be undone"
+      icon="i-material-symbols:warning"
+      icon-class="text-orange-500"
+      confirm-label="Discard"
+      cancel-label="Continue Editing"
+      confirm-color="warning"
+      @confirm="confirmCancel"
+      @close="showCancelModal = false"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">

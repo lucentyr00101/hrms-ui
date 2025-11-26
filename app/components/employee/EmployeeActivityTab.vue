@@ -24,7 +24,7 @@
 
       <div v-else class="relative">
         <!-- Timeline line -->
-        <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700"></div>
+        <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700"/>
         
         <!-- Timeline items -->
         <div class="space-y-6">
@@ -38,7 +38,7 @@
               <div 
                 class="w-4 h-4 rounded-full border-2 border-white dark:border-gray-900 z-10"
                 :class="getActivityColor(activity.type)"
-              ></div>
+              />
             </div>
 
             <!-- Activity content -->
@@ -84,7 +84,7 @@
                 
                 <!-- Activity actions -->
                 <UDropdown :items="getActivityActions(activity)">
-                  <UButton variant="ghost" size="xs" :ui="{ rounded: 'rounded-full' }">
+                  <UButton variant="ghost" size="xs" class="rounded-full">
                     <UIcon name="i-material-symbols:more-vert" class="w-4 h-4" />
                   </UButton>
                 </UDropdown>
@@ -277,16 +277,16 @@ const getActivityBgColor = (type: string) => {
   return getActivityColor(type);
 };
 
-const getActivityBadgeColor = (type: string) => {
-  const colors: Record<string, string> = {
+const getActivityBadgeColor = (type: string): 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral' => {
+  const colors: Record<string, 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'neutral'> = {
     hire: 'success',
     promotion: 'info',
     leave: 'warning',
-    document: 'purple',
-    review: 'indigo',
+    document: 'secondary',
+    review: 'primary',
     update: 'neutral'
   };
-  return colors[type] || 'gray';
+  return colors[type] || 'neutral';
 };
 
 const formatActivityType = (type: string) => {

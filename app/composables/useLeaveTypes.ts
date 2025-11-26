@@ -92,7 +92,7 @@ export function useLeaveTypes() {
   const createLeaveType = (data: LeaveTypeFormData): LeaveType => {
     const newId = `LT${String(nextId.value).padStart(3, '0')}`;
     nextId.value++;
-    const now = new Date().toISOString().split('T')[0];
+    const now = new Date().toISOString().split('T')[0]!;
     
     const newLeaveType: LeaveType = {
       ...data,
@@ -113,15 +113,18 @@ export function useLeaveTypes() {
     const index = leaveTypes.value.findIndex((lt) => lt.id === id);
     if (index === -1) return null;
 
-    const now = new Date().toISOString().split('T')[0];
+    const now = new Date().toISOString().split('T')[0]!;
+    const existingLeaveType = leaveTypes.value[index];
+    if (!existingLeaveType) return null;
+    
     leaveTypes.value[index] = {
-      ...leaveTypes.value[index],
+      ...existingLeaveType,
       ...data,
       modifiedBy: 'HR Admin',
       modifiedAt: now
     };
 
-    return leaveTypes.value[index];
+    return leaveTypes.value[index] ?? null;
   };
 
   const deleteLeaveType = (id: string): boolean => {
@@ -138,7 +141,7 @@ export function useLeaveTypes() {
 
     leaveType.status = leaveType.status === 'active' ? 'inactive' : 'active';
     leaveType.modifiedBy = 'HR Admin';
-    leaveType.modifiedAt = new Date().toISOString().split('T')[0];
+    leaveType.modifiedAt = new Date().toISOString().split('T')[0]!;
     return true;
   };
 
@@ -148,7 +151,7 @@ export function useLeaveTypes() {
 
     const newId = `LT${String(nextId.value).padStart(3, '0')}`;
     nextId.value++;
-    const now = new Date().toISOString().split('T')[0];
+    const now = new Date().toISOString().split('T')[0]!;
 
     const duplicate: LeaveType = {
       ...original,
@@ -174,7 +177,7 @@ export function useLeaveTypes() {
       if (leaveType && leaveType.status === 'inactive') {
         leaveType.status = 'active';
         leaveType.modifiedBy = 'HR Admin';
-        leaveType.modifiedAt = new Date().toISOString().split('T')[0];
+        leaveType.modifiedAt = new Date().toISOString().split('T')[0]!;
         count++;
       }
     });
@@ -188,7 +191,7 @@ export function useLeaveTypes() {
       if (leaveType && leaveType.status === 'active') {
         leaveType.status = 'inactive';
         leaveType.modifiedBy = 'HR Admin';
-        leaveType.modifiedAt = new Date().toISOString().split('T')[0];
+        leaveType.modifiedAt = new Date().toISOString().split('T')[0]!;
         count++;
       }
     });

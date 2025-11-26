@@ -10,7 +10,7 @@
       </template>
 
       <div v-if="pending" class="text-center py-8">
-        <div class="w-8 h-8 animate-spin border-4 border-gray-200 border-t-purple-500 rounded-full mx-auto"></div>
+        <div class="w-8 h-8 animate-spin border-4 border-gray-200 border-t-purple-500 rounded-full mx-auto"/>
         <p class="mt-2">Loading employee data...</p>
       </div>
 

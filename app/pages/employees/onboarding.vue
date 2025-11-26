@@ -26,7 +26,7 @@
           <div 
             class="bg-primary h-2 rounded-full transition-all duration-500 ease-out"
             :style="{ width: `${(currentStep / totalSteps) * 100}%` }"
-          ></div>
+          />
         </div>
       </div>
 
@@ -53,7 +53,7 @@
               v-if="index < steps.length - 1" 
               class="w-12 h-0.5 mx-2"
               :class="index + 1 < currentStep ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'"
-            ></div>
+            />
           </div>
         </div>
       </div>
@@ -309,7 +309,7 @@
           <UIcon name="i-material-symbols:arrow-back" class="w-4 h-4 mr-2" />
           Previous
         </UButton>
-        <div v-else></div>
+        <div v-else/>
 
         <div class="flex space-x-3">
           <UButton 

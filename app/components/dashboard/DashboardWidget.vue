@@ -1,7 +1,6 @@
 <template>
   <UCard 
-    class="h-full bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-shadow duration-300"
-    :ui="{ body: { padding: 'p-6' } }"
+    class="h-full bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-shadow duration-300 p-6"
   >
     <template #header>
       <div class="flex items-center justify-between">
