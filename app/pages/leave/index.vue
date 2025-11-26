@@ -34,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+import QuickActions from "~/components/leave/QuickActions.vue";
 definePageMeta({
   title: 'Leave Dashboard'
 })
